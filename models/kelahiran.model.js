@@ -1,5 +1,46 @@
 const mongoose = require("mongoose");
-const family = require("./keluarga.model");
+
+const KeluargaSchema = mongoose.Schema({
+  nama_ibu: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  nik_ibu: {
+    type: String,
+    required: true,
+  },
+  umur_ibu: {
+    type: String,
+    required: true,
+  },
+  pekerjaan_ibu: {
+    type: String,
+    required: true,
+  },
+  nama_ayah: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  nik_ayah: {
+    type: String,
+    required: true,
+  },
+  umur_ayah: {
+    type: String,
+    required: true,
+  },
+  pekerjaan_ayah: {
+    type: String,
+    required: true,
+  },
+  alamat: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+});
 
 const KelahiranSchema = mongoose.Schema(
   {
@@ -20,7 +61,7 @@ const KelahiranSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    keluarga: family,
+    keluarga: KeluargaSchema,
   },
   { timestamps: true }
 );

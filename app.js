@@ -10,7 +10,7 @@ dotenv.config({ path: "./config/config.env" });
 connect();
 
 app.use(express.json());
-app.use("/kelahiran", kelahiran);
+app.use("/api/kelahiran", kelahiran);
 
 const PORT = 5000 || process.env.PORT;
 
