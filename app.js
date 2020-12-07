@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const kelahiran = require("./routes/kelahiran.route");
+const kematian = require("./routes/kematian.route");
 
 const connect = require("./config/db");
 
@@ -11,6 +12,7 @@ connect();
 
 app.use(express.json());
 app.use("/api/kelahiran", kelahiran);
+app.use("/api/kematian", kematian);
 
 const PORT = 5000 || process.env.PORT;
 

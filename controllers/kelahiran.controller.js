@@ -1,6 +1,6 @@
 const KelahiranSchema = require("../models/kelahiran.model");
 
-//@desc     GET all Kelahiran
+//@desc     GET All Data Kelahiran
 //@routes   GET
 //@access   Private
 exports.getKelahiran = async (req, res) => {
@@ -20,7 +20,7 @@ exports.getKelahiran = async (req, res) => {
   }
 };
 
-//@desc     Create Kelahiran
+//@desc     Create Data Kelahiran
 //@routes   POST
 //@access   Private
 exports.postKelahiran = async (req, res) => {
@@ -80,6 +80,12 @@ exports.getDataByName = async (req, res) => {
   try {
     const t = await KelahiranSchema.findOne({ nama: req.query.name });
 
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "Data Not Found",
+      });
+
     return res.status(201).json({
       success: true,
       data: t,
@@ -97,6 +103,14 @@ exports.getDataByName = async (req, res) => {
 //@access   Private
 exports.updateDataById = async (req, res) => {
   try {
+    const yourId = await KelahiranSchema.findById(req.params.id);
+
+    if (!yourId)
+      return res.status(201).json({
+        success: false,
+        message: "Not Found",
+      });
+
     const t = await KelahiranSchema.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
