@@ -1,5 +1,4 @@
 const KelahiranSchema = require("../models/kelahiran.model");
-const { dateNow } = require("../utilities/date");
 
 //@desc     GET All Data Kelahiran
 //@routes   GET

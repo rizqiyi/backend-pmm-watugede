@@ -1,5 +1,4 @@
 const KematianSchema = require("../models/kematian.model");
-const { dateNow } = require("../utilities/date");
 
 //@desc     GET All Data Kematian
 //@routes   GET
