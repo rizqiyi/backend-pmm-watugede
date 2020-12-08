@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path");
 const kelahiran = require("./routes/kelahiran.route");
 const kematian = require("./routes/kematian.route");
 const keterangan_keluar = require("./routes/keterangan_keluar.route");
@@ -12,6 +13,7 @@ dotenv.config({ path: "./config/config.env" });
 connect();
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "assets")));
 
 app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
