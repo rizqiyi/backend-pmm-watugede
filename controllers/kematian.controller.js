@@ -1,4 +1,5 @@
 const KematianSchema = require("../models/kematian.model");
+const { dateNow } = require("../utilities/date");
 
 //@desc     GET All Data Kematian
 //@routes   GET
@@ -25,24 +26,8 @@ exports.getKematian = async (req, res) => {
 //@access   Private
 exports.postKematian = async (req, res) => {
   try {
-    const {
-      nama,
-      nik,
-      jenis_kelamin,
-      alamat_asal,
-      tanggal_meninggal,
-      tempat_meninggal,
-      penyebab_meninggal,
-    } = req.body;
-
     const t = await KematianSchema.create({
-      nama,
-      nik,
-      jenis_kelamin,
-      alamat_asal,
-      tanggal_meninggal,
-      tempat_meninggal,
-      penyebab_meninggal,
+      ...req.body,
     });
 
     return res.status(201).json({
@@ -70,14 +55,25 @@ exports.updateKematian = async (req, res) => {
         message: "Not Found",
       });
 
-    const t = await KematianSchema.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    await KematianSchema.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        ...req.body,
+      },
+      { upsert: true, new: true },
+      (err, result) => {
+        if (err)
+          return res.status(500).json({
+            success: false,
+            message: "Something wrong",
+          });
 
-    return res.status(201).json({
-      success: true,
-      data: t,
-    });
+        return res.status(201).json({
+          success: true,
+          data: result,
+        });
+      }
+    );
   } catch (err) {
     return res.status(500).json({
       success: false,

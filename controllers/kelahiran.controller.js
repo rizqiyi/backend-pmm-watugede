@@ -1,4 +1,5 @@
 const KelahiranSchema = require("../models/kelahiran.model");
+const { dateNow } = require("../utilities/date");
 
 //@desc     GET All Data Kelahiran
 //@routes   GET
@@ -25,7 +26,7 @@ exports.getKelahiran = async (req, res) => {
 //@access   Private
 exports.postKelahiran = async (req, res) => {
   try {
-    const {
+    let {
       nama,
       tanggal_lahir,
       tempat_lahir,
@@ -40,6 +41,8 @@ exports.postKelahiran = async (req, res) => {
       umur_ayah,
       pekerjaan_ayah,
       alamat,
+      created_at,
+      updated_at,
     } = req.body;
 
     const t = await KelahiranSchema.create({
@@ -48,6 +51,8 @@ exports.postKelahiran = async (req, res) => {
       tempat_lahir,
       hubungan_pelapor,
       jenis_kelamin,
+      created_at,
+      updated_at,
       keluarga: {
         nama_ibu,
         nik_ibu,
@@ -111,14 +116,25 @@ exports.updateDataById = async (req, res) => {
         message: "Not Found",
       });
 
-    const t = await KelahiranSchema.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    await KelahiranSchema.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        ...req.body,
+      },
+      { upsert: true, new: true },
+      (err, result) => {
+        if (err)
+          return res.status(500).json({
+            success: false,
+            message: "Something wrong",
+          });
 
-    return res.status(201).json({
-      success: true,
-      data: t,
-    });
+        return res.status(201).json({
+          success: true,
+          data: result,
+        });
+      }
+    );
   } catch (err) {
     return res.status(500).json({
       success: false,
