@@ -3,6 +3,7 @@ const PendudukSchema = require("../models/penduduk.model");
 const {
   getRequestDataPendudukKeluar,
 } = require("../utilities/data_keterangan_keluar");
+const mongoose = require("mongoose");
 
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
@@ -74,9 +75,6 @@ exports.postDataPendudukKeluar = async (req, res) => {
     const t = await PendudukSchema.findByIdAndUpdate(
       req.params.id_penduduk,
       {
-        $set: {
-          keluar_desa: true,
-        },
         $push: {
           pengikut_keluar: r._id,
         },
@@ -98,9 +96,89 @@ exports.postDataPendudukKeluar = async (req, res) => {
 };
 
 exports.updateDataPendudukKeluar = async (req, res) => {
-  res.send("update penduduk keluar");
+  try {
+    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!idPenduduk)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Not Found",
+      });
+
+    const idPendudukKeluar = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk_keluar
+    );
+
+    if (!idPendudukKeluar)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Keluar Not Found",
+      });
+
+    await PendudukKeluarSchema.findByIdAndUpdate(
+      { _id: req.params.id_penduduk_keluar },
+      {
+        ...req.body,
+        nama_pengusul: req.params.id_penduduk,
+      },
+      { upsert: true, new: true },
+      (err, result) => {
+        if (err)
+          return res.status(500).json({
+            success: false,
+            message: "Something wrong",
+            error: err,
+          });
+
+        return res.status(200).json({
+          success: true,
+          message: "Succesfully edited your penduduk keluar",
+          data: result,
+        });
+      }
+    );
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
 };
 
 exports.deleteDataPendudukKeluar = async (req, res) => {
-  res.send("delete penduduk keluar");
+  try {
+    const t = await PendudukSchema.findById(req.params.id_penduduk).populate(
+      "pengikut_keluar"
+    );
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Not Found",
+      });
+
+    const idPendudukKeluar = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk_keluar
+    );
+
+    if (!idPendudukKeluar)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Keluar Not Found",
+      });
+
+    const ok = await PendudukKeluarSchema.findByIdAndDelete(
+      idPendudukKeluar._id
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `${ok.nama_lengkap_keluarga} has been deleted from data penduduk keluar`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 };
