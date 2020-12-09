@@ -3,8 +3,10 @@ const PendudukSchema = require("../models/penduduk.model");
 const {
   getRequestDataPendudukKeluar,
 } = require("../utilities/data_keterangan_keluar");
-const mongoose = require("mongoose");
 
+//@desc     Get All Data Penduduk
+//@routes   GET
+//@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.find().populate("nama_pengusul");
@@ -23,6 +25,9 @@ exports.getDataPendudukKeluar = async (req, res) => {
   }
 };
 
+//@desc     Get Spesific Data Penduduk
+//@routes   GET
+//@access   Private
 exports.getDataPendudukKeluarByName = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.find({
@@ -48,6 +53,9 @@ exports.getDataPendudukKeluarByName = async (req, res) => {
   }
 };
 
+//@desc     POST Data Penduduk
+//@routes   POST
+//@access   Private
 exports.postDataPendudukKeluar = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
@@ -95,6 +103,9 @@ exports.postDataPendudukKeluar = async (req, res) => {
   }
 };
 
+//@desc     Update Data Penduduk
+//@routes   PUT
+//@access   Private
 exports.updateDataPendudukKeluar = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
@@ -145,6 +156,9 @@ exports.updateDataPendudukKeluar = async (req, res) => {
   }
 };
 
+//@desc     Delete Data Penduduk
+//@routes   DELETE
+//@access   Private
 exports.deleteDataPendudukKeluar = async (req, res) => {
   try {
     const t = await PendudukSchema.findById(req.params.id_penduduk).populate(

@@ -26,8 +26,16 @@ const upload = multer({
   storage,
 });
 
+//@desc     GET Data Keterangan Keluar
+//@routes   GET
+//@endpoint /api/keterangan/:id
+//@access   Private
 router.route("/:id").get(getKeteranganPenduduk);
 
+//@desc     POST Data Keterangan Keluar
+//@routes   POST
+//@endpoint /api/keterangan/:id
+//@access   Private
 router
   .route("/:id")
   .put(upload.single("foto_pengusul"), updateKeteranganPenduduk);

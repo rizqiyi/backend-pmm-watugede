@@ -1,5 +1,8 @@
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
 
+//@desc     GET All Data Keterangan Penduduk
+//@routes   GET
+//@access   Private
 exports.getKeteranganPenduduk = async (req, res) => {
   try {
     const yourId = await KeteranganKeluarSchema.findById(req.params.id);
@@ -22,6 +25,9 @@ exports.getKeteranganPenduduk = async (req, res) => {
   }
 };
 
+//@desc     Update Data Keterangan Penduduk
+//@routes   PUT
+//@access   Private
 exports.updateKeteranganPenduduk = async (req, res) => {
   try {
     const yourId = await KeteranganKeluarSchema.findById(req.params.id);
