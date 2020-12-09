@@ -148,7 +148,7 @@ exports.postMutasiKeluar = async (req, res) => {
       pendidikan_terakhir_keluarga:
         keteranganKeluar.pendidikan_terakhir_keluarga,
       nik_keluarga: keteranganKeluar.nik_keluarga,
-      keterangan: keteranganKeluar.keterangan,
+      keterangan_dalam_keluarga: keteranganKeluar.keterangan_dalam_keluarga,
       nama_pengusul: req.params.id,
     });
 

@@ -26,7 +26,7 @@ const getRequestDataPendudukKeluar = (val) => {
     status_perkawinan_keluarga,
     pendidikan_terakhir_keluarga,
     nik_keluarga,
-    keterangan,
+    keterangan_dalam_keluarga,
   } = val;
 
   return {
@@ -36,7 +36,7 @@ const getRequestDataPendudukKeluar = (val) => {
     status_perkawinan_keluarga,
     pendidikan_terakhir_keluarga,
     nik_keluarga,
-    keterangan,
+    keterangan_dalam_keluarga,
   };
 };
 

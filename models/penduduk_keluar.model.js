@@ -20,7 +20,7 @@ const PendudukKeluarSchema = mongoose.Schema({
   nik_keluarga: {
     type: String,
   },
-  keterangan: {
+  keterangan_dalam_keluarga: {
     type: String,
   },
   nama_pengusul: {
