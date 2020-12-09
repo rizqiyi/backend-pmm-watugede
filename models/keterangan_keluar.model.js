@@ -1,88 +1,29 @@
 const mongoose = require("mongoose");
 
-const DaftarKeluargaSchema = mongoose.Schema({
-  nama_lengkap_keluarga: {
-    type: String,
-    trim: true,
-  },
-  jenis_kelamin_keluarga: {
+const KeteranganKeluarSchema = mongoose.Schema({
+  tanggal_ktp: {
     type: String,
   },
-  umur_keluarga: {
+  alamat_pindah: {
     type: String,
   },
-  status_perkawinan_keluarga: {
+  alasan_pindah: {
     type: String,
   },
-  pendidikan_terakhir_keluarga: {
+  pengikut: {
+    type: Number,
+    default: 0,
+  },
+  catatan: {
     type: String,
   },
-  nik_keluarga: {
+  foto_pengusul: {
     type: String,
   },
-  keterangan: {
-    type: String,
+  nama_pengusul_keterangan: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "penduduk",
   },
 });
 
-const MutasiKeluarSchema = mongoose.Schema(
-  {
-    nama_pengusul: {
-      type: String,
-      trim: true,
-    },
-    jenis_kelamin: {
-      type: String,
-    },
-    tempat_tanggal_lahir: {
-      type: String,
-    },
-    umur: {
-      type: String,
-    },
-    kewarganegaraan: {
-      type: String,
-    },
-    agama: {
-      type: String,
-    },
-    status_perkawinan: {
-      type: String,
-    },
-    pekerjaan: {
-      type: String,
-    },
-    pendidikan_terakhir: {
-      type: String,
-    },
-    alamat_asal: {
-      type: String,
-    },
-    nik: {
-      type: String,
-    },
-    tanggal_ktp: {
-      type: String,
-    },
-    alamat_pindah: {
-      type: String,
-    },
-    alasan_pindah: {
-      type: String,
-    },
-    pengikut: {
-      type: Number,
-      default: 0,
-    },
-    catatan: {
-      type: String,
-    },
-    foto_pengusul: {
-      type: String,
-    },
-    keluarga_ikut: [DaftarKeluargaSchema],
-  },
-  { timestamps: true }
-);
-
-module.exports = mongoose.model("keterangan_keluar", MutasiKeluarSchema);
+module.exports = mongoose.model("keterangan_keluar", KeteranganKeluarSchema);

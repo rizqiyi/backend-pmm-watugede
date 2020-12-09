@@ -4,7 +4,8 @@ const cors = require("cors");
 const path = require("path");
 const kelahiran = require("./routes/kelahiran.route");
 const kematian = require("./routes/kematian.route");
-const keterangan_keluar = require("./routes/keterangan_keluar.route");
+const penduduk = require("./routes/penduduk.route");
+// const keterangan_keluar = require("./routes/keterangan_keluar.route");
 
 const connect = require("./config/db");
 
@@ -14,10 +15,12 @@ connect();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "assets")));
+app.use(cors());
 
 app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
-app.use("/api/keterangan_keluar", keterangan_keluar);
+app.use("/api/penduduk", penduduk);
+// app.use("/api/keterangan_keluar", keterangan_keluar);
 
 const PORT = 5000 || process.env.PORT;
 

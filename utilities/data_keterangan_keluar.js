@@ -1,22 +1,25 @@
-const getRequestDataMutasiKeluar = (val) => {
+const getRequestDataKeteranganKeluar = (val) => {
   const {
-    nama_pengusul,
-    jenis_kelamin,
-    tempat_tanggal_lahir,
-    umur,
-    kewarganegaraan,
-    agama,
-    status_perkawinan,
-    pekerjaan,
-    pendidikan_terakhir,
-    alamat_asal,
-    nik,
     tanggal_ktp,
     alamat_pindah,
     alasan_pindah,
     pengikut,
     catatan,
     foto_pengusul,
+  } = val;
+
+  return {
+    tanggal_ktp,
+    alamat_pindah,
+    alasan_pindah,
+    pengikut,
+    catatan,
+    foto_pengusul,
+  };
+};
+
+const getRequestDataPendudukKeluar = (val) => {
+  const {
     nama_lengkap_keluarga,
     jenis_kelamin_keluarga,
     umur_keluarga,
@@ -27,23 +30,6 @@ const getRequestDataMutasiKeluar = (val) => {
   } = val;
 
   return {
-    nama_pengusul,
-    jenis_kelamin,
-    tempat_tanggal_lahir,
-    umur,
-    kewarganegaraan,
-    agama,
-    status_perkawinan,
-    pekerjaan,
-    pendidikan_terakhir,
-    alamat_asal,
-    nik,
-    tanggal_ktp,
-    alamat_pindah,
-    alasan_pindah,
-    pengikut,
-    catatan,
-    foto_pengusul,
     nama_lengkap_keluarga,
     jenis_kelamin_keluarga,
     umur_keluarga,
@@ -54,4 +40,5 @@ const getRequestDataMutasiKeluar = (val) => {
   };
 };
 
-module.exports = getRequestDataMutasiKeluar;
+exports.getRequestDataPendudukKeluar = getRequestDataPendudukKeluar;
+exports.getRequestDataKeteranganKeluar = getRequestDataKeteranganKeluar;
