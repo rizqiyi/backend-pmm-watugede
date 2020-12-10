@@ -1,5 +1,48 @@
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
+const {
+  getRequestDataKeteranganKeluar,
+} = require("../utilities/data_keterangan_keluar");
+
+exports.postKeteranganPendudukKeluar = async (req, res) => {
+  try {
+    const yourId = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!yourId)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    const dataPenduduk = getRequestDataKeteranganKeluar(req.body);
+
+    const t = await KeteranganKeluarSchema.create({
+      tanggal_ktp: dataPenduduk.tanggal_ktp,
+      alamat_pindah: dataPenduduk.alamat_pindah,
+      alasan_pindah: dataPenduduk.alasan_pindah,
+      pengikut: dataPenduduk.pengikut,
+      catatan: dataPenduduk.catatan,
+      foto_pengusul: req.file.path,
+      nama_pengusul_keterangan: req.params.id_penduduk,
+    });
+
+    await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
+      $push: {
+        keterangan_keluar: t._id,
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
 
 //@desc     GET All Data Keterangan Penduduk
 //@routes   GET

@@ -3,6 +3,7 @@ const {
   getKeteranganPendudukKeluar,
   updateKeteranganPendudukKeluar,
   deleteKeteranganPendudukKeluar,
+  postKeteranganPendudukKeluar,
 } = require("../controllers/keterangan_keluar.controller");
 
 const router = express.Router();
@@ -26,6 +27,14 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+
+//@desc     Post Data Keterangan Keluar
+//@routes   POST
+//@endpoint /api/keterangan/:id
+//@access   Private
+router
+  .route("/:id_penduduk")
+  .post(upload.single("foto_pengusul"), postKeteranganPendudukKeluar);
 
 //@desc     GET Data Keterangan Keluar
 //@routes   GET
