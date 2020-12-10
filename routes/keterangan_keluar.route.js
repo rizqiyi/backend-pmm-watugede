@@ -1,7 +1,8 @@
 const express = require("express");
 const {
-  getKeteranganPenduduk,
-  updateKeteranganPenduduk,
+  getKeteranganPendudukKeluar,
+  updateKeteranganPendudukKeluar,
+  deleteKeteranganPendudukKeluar,
 } = require("../controllers/keterangan_keluar.controller");
 
 const router = express.Router();
@@ -30,7 +31,7 @@ const upload = multer({
 //@routes   GET
 //@endpoint /api/keterangan/:id
 //@access   Private
-router.route("/:id").get(getKeteranganPenduduk);
+router.route("/:id").get(getKeteranganPendudukKeluar);
 
 //@desc     POST Data Keterangan Keluar
 //@routes   POST
@@ -38,6 +39,14 @@ router.route("/:id").get(getKeteranganPenduduk);
 //@access   Private
 router
   .route("/:id")
-  .put(upload.single("foto_pengusul"), updateKeteranganPenduduk);
+  .put(upload.single("foto_pengusul"), updateKeteranganPendudukKeluar);
+
+//@desc     Delete Data Keterangan Keluar
+//@routes   DELETE
+//@endpoint /api/keterangan/:id_penduduk/d/:id_keterangan_keluar
+//@access   Private
+router
+  .route("/:id_penduduk/d/:id_keterangan_keluar")
+  .delete(deleteKeteranganPendudukKeluar);
 
 module.exports = router;

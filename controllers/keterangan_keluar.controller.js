@@ -1,9 +1,10 @@
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
+const PendudukSchema = require("../models/penduduk.model");
 
 //@desc     GET All Data Keterangan Penduduk
 //@routes   GET
 //@access   Private
-exports.getKeteranganPenduduk = async (req, res) => {
+exports.getKeteranganPendudukKeluar = async (req, res) => {
   try {
     const yourId = await KeteranganKeluarSchema.findById(req.params.id);
 
@@ -28,7 +29,7 @@ exports.getKeteranganPenduduk = async (req, res) => {
 //@desc     Update Data Keterangan Penduduk
 //@routes   PUT
 //@access   Private
-exports.updateKeteranganPenduduk = async (req, res) => {
+exports.updateKeteranganPendudukKeluar = async (req, res) => {
   try {
     const yourId = await KeteranganKeluarSchema.findById(req.params.id);
 
@@ -65,6 +66,48 @@ exports.updateKeteranganPenduduk = async (req, res) => {
         }
       );
     }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+exports.deleteKeteranganPendudukKeluar = async (req, res) => {
+  try {
+    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!idPenduduk)
+      return res.status(404).json({
+        success: false,
+        message: "Id Penduduk Not Found",
+      });
+
+    const idKeteranganKeluar = await KeteranganKeluarSchema.findById(
+      req.params.id_keterangan_keluar
+    );
+
+    if (!idKeteranganKeluar)
+      return res.status(404).json({
+        success: false,
+        message: "Id Keterangan Keluar Not Found",
+      });
+
+    await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
+      $pull: {
+        keterangan_keluar: req.params.id_keterangan_keluar,
+      },
+    });
+
+    await KeteranganKeluarSchema.findByIdAndDelete(
+      req.params.id_keterangan_keluar
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Successfully deleted your data master.`,
+    });
   } catch (err) {
     return res.status(500).json({
       success: false,
