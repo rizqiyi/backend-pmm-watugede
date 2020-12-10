@@ -181,6 +181,16 @@ exports.deleteDataPendudukKeluar = async (req, res) => {
         message: "ID Penduduk Keluar Not Found",
       });
 
+    await PendudukSchema.findById(req.params.id_penduduk, (err, result) => {
+      if (err)
+        return res.status(500).json({
+          success: false,
+          message: "Something wrong",
+        });
+      result.pengikut_keluar.pull(req.params.id_penduduk_keluar);
+      result.save();
+    });
+
     const ok = await PendudukKeluarSchema.findByIdAndDelete(
       idPendudukKeluar._id
     );
