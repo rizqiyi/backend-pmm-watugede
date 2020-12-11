@@ -1,7 +1,5 @@
 const KelahiranSchema = require("../models/kelahiran.model");
-const {
-  getRequestDataKelahiran,
-} = require("../utilities/data_keterangan_keluar");
+const { getRequestDataKelahiran } = require("../utilities/getRequestData");
 
 //@desc     GET All Data Kelahiran
 //@routes   GET

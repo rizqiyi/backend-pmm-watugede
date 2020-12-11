@@ -2,7 +2,7 @@ const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
 const {
   getRequestDataKeteranganKeluar,
-} = require("../utilities/data_keterangan_keluar");
+} = require("../utilities/getRequestData");
 
 //@desc     Post Data Keterangan Penduduk Keluar
 //@routes   POST

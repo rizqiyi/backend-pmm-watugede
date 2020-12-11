@@ -1,4 +1,5 @@
 const KematianSchema = require("../models/kematian.model");
+const PendudukSchema = require("../models/penduduk.model");
 
 //@desc     GET All Data Kematian
 //@routes   GET
@@ -28,6 +29,10 @@ exports.postKematian = async (req, res) => {
     const t = await KematianSchema.create({
       ...req.body,
     });
+
+    const b = await PendudukSchema.findOne({ nama_lengkap: t.nama });
+
+    if (b) await PendudukSchema.findByIdAndDelete(b._id);
 
     return res.status(201).json({
       success: true,
