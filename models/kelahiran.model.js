@@ -40,7 +40,7 @@ const KelahiranSchema = mongoose.Schema(
       trim: true,
     },
     tanggal_lahir: {
-      type: Date,
+      type: String,
     },
     tempat_lahir: {
       type: String,

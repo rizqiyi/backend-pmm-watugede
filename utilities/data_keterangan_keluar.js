@@ -70,6 +70,43 @@ const getRequestDataPendudukKeluar = (val) => {
   };
 };
 
+const getRequestDataKelahiran = (val) => {
+  const {
+    nama,
+    tanggal_lahir,
+    tempat_lahir,
+    hubungan_pelapor,
+    jenis_kelamin,
+    nama_ibu,
+    nik_ibu,
+    umur_ibu,
+    pekerjaan_ibu,
+    nama_ayah,
+    nik_ayah,
+    umur_ayah,
+    pekerjaan_ayah,
+    alamat,
+  } = val;
+
+  return {
+    nama,
+    tanggal_lahir,
+    tempat_lahir,
+    hubungan_pelapor,
+    jenis_kelamin,
+    nama_ibu,
+    nik_ibu,
+    umur_ibu,
+    pekerjaan_ibu,
+    nama_ayah,
+    nik_ayah,
+    umur_ayah,
+    pekerjaan_ayah,
+    alamat,
+  };
+};
+
 exports.getRequestDataPendudukKeluar = getRequestDataPendudukKeluar;
 exports.getRequestDataKeteranganKeluar = getRequestDataKeteranganKeluar;
 exports.getRequestDataPendudukMasuk = getRequestDataPendudukMasuk;
+exports.getRequestDataKelahiran = getRequestDataKelahiran;

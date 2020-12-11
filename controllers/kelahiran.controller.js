@@ -1,4 +1,7 @@
 const KelahiranSchema = require("../models/kelahiran.model");
+const {
+  getRequestDataKelahiran,
+} = require("../utilities/data_keterangan_keluar");
 
 //@desc     GET All Data Kelahiran
 //@routes   GET
@@ -25,49 +28,30 @@ exports.getKelahiran = async (req, res) => {
 //@access   Private
 exports.postKelahiran = async (req, res) => {
   try {
-    let {
-      nama,
-      tanggal_lahir,
-      tempat_lahir,
-      hubungan_pelapor,
-      jenis_kelamin,
-      nama_ibu,
-      nik_ibu,
-      umur_ibu,
-      pekerjaan_ibu,
-      nama_ayah,
-      nik_ayah,
-      umur_ayah,
-      pekerjaan_ayah,
-      alamat,
-      created_at,
-      updated_at,
-    } = req.body;
+    const t = getRequestDataKelahiran(req.body);
 
-    const t = await KelahiranSchema.create({
-      nama,
-      tanggal_lahir,
-      tempat_lahir,
-      hubungan_pelapor,
-      jenis_kelamin,
-      created_at,
-      updated_at,
+    const r = await KelahiranSchema.create({
+      nama: t.nama,
+      tanggal_lahir: t.tanggal_lahir,
+      tempat_lahir: t.tempat_lahir,
+      hubungan_pelapor: t.hubungan_pelapor,
+      jenis_kelamin: t.jenis_kelamin,
       keluarga: {
-        nama_ibu,
-        nik_ibu,
-        umur_ibu,
-        pekerjaan_ibu,
-        nama_ayah,
-        nik_ayah,
-        umur_ayah,
-        pekerjaan_ayah,
-        alamat,
+        nama_ibu: t.nama_ibu,
+        nik_ibu: t.nik_ibu,
+        umur_ibu: t.umur_ibu,
+        pekerjaan_ibu: t.pekerjaan_ibu,
+        nama_ayah: t.nama_ayah,
+        nik_ayah: t.nik_ayah,
+        umur_ayah: t.umur_ayah,
+        pekerjaan_ayah: t.pekerjaan_ayah,
+        alamat: t.alamat,
       },
     });
 
     return res.status(201).json({
       success: true,
-      data: t,
+      data: r,
     });
   } catch (err) {
     return res.status(500).json({
