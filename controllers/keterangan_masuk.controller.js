@@ -8,7 +8,7 @@ exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       status_penduduk: "penduduk_masuk",
-    }).populate("keterangan_keluar pengikut_keluar");
+    }).populate("keterangan_keluar pengikut_keluar keterangan_masuk");
 
     return res.status(200).json({
       success: true,
@@ -124,5 +124,59 @@ exports.getDataPendudukMasukByName = async (req, res) => {
     });
   }
 };
-exports.updateDataKeteranganMasuk = async (req, res) => {};
+exports.updateDataKeteranganMasuk = async (req, res) => {
+  try {
+    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!idPenduduk)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Not Found",
+      });
+
+    const idKeteranganMasuk = await KeteranganMasukSchema.findById(
+      req.params.id_keterangan_masuk
+    );
+
+    if (!idKeteranganMasuk)
+      return res.status(404).json({
+        success: false,
+        message: "ID Keterangan Masuk Not Found",
+      });
+
+    const condition = (field, stringField) =>
+      req.files[field] ? req.files[field][0].path : stringField;
+
+    await KeteranganMasukSchema.findByIdAndUpdate(
+      { _id: req.params.id_keterangan_masuk },
+      {
+        foto_nik: condition("foto_nik", req.body.foto_nik),
+        foto_surat_masuk: condition(
+          "foto_surat_masuk",
+          req.body.foto_surat_masuk
+        ),
+      },
+      { new: true, upsert: true },
+      (err, result) => {
+        if (err)
+          return res.status(500).json({
+            success: false,
+            message: "Something wrong",
+          });
+
+        return res.status(200).json({
+          success: true,
+          message: "Sukses update data keterangan masuk penduduk",
+          data: result,
+        });
+      }
+    );
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err,
+    });
+  }
+  // res.send(req.params.id_penduduk + "   " + req.params.id_keterangan_masuk);
+};
 exports.deleteDataKeteranganMasuk = async (req, res) => {};

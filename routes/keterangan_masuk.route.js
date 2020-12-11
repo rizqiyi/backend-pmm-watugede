@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(
       null,
-      `${file.originalname}_${Date.now()}_${Math.floor(
+      `${file.fieldname}_${Date.now()}_${Math.floor(
         Math.random() * 100000
       )}_penduduk_masuk.jpg`
     );
@@ -45,7 +45,10 @@ router.route("/:id/p").post(
 
 router
   .route("/:id_penduduk/u/:id_keterangan_masuk")
-  .put(updateDataKeteranganMasuk);
+  .put(
+    upload.fields([{ name: "foto_nik" }, { name: "foto_surat_masuk" }]),
+    updateDataKeteranganMasuk
+  );
 
 router
   .route("/:id_penduduk/d/:id_keterangan_masuk")
