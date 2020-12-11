@@ -8,7 +8,7 @@ exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       status_penduduk: "penduduk_masuk",
-    }).populate("keterangan_keluar pengikut_keluar keterangan_masuk");
+    }).populate("keterangan_keluar pengikut_keluar");
 
     return res.status(200).json({
       success: true,
@@ -98,3 +98,31 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
     });
   }
 };
+
+exports.getDataPendudukMasukByName = async (req, res) => {
+  try {
+    const t = await PendudukSchema.find({
+      status_penduduk: "penduduk_masuk",
+      nama_lengkap: req.query.name,
+    });
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      count: t.length,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+exports.updateDataKeteranganMasuk = async (req, res) => {};
+exports.deleteDataKeteranganMasuk = async (req, res) => {};

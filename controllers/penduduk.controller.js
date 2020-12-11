@@ -6,7 +6,7 @@ const PendudukSchema = require("../models/penduduk.model");
 exports.getPenduduk = async (req, res) => {
   try {
     const t = await PendudukSchema.find().populate(
-      "pengikut_keluar keterangan_keluar"
+      "pengikut_keluar keterangan_keluar keterangan_masuk"
     );
 
     return res.status(200).json({

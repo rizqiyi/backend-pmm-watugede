@@ -4,9 +4,12 @@ const {
   getDataPendudukMasuk,
   postDataPendudukMasuk,
   postKeteranganPendudukMasuk,
+  getDataPendudukMasukByName,
+  updateDataKeteranganMasuk,
+  deleteDataKeteranganMasuk,
 } = require("../controllers/keterangan_masuk.controller");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 const multer = require("multer");
 
@@ -28,6 +31,8 @@ const upload = multer({
   storage,
 });
 
+router.route("/s").get(getDataPendudukMasukByName);
+
 router.route("/").get(getDataPendudukMasuk).post(postDataPendudukMasuk);
 
 router.route("/:id/p").post(
@@ -37,5 +42,13 @@ router.route("/:id/p").post(
   ]),
   postKeteranganPendudukMasuk
 );
+
+router
+  .route("/:id_penduduk/u/:id_keterangan_masuk")
+  .put(updateDataKeteranganMasuk);
+
+router
+  .route("/:id_penduduk/d/:id_keterangan_masuk")
+  .delete(deleteDataKeteranganMasuk);
 
 module.exports = router;
