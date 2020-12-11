@@ -101,7 +101,7 @@ exports.deletePenduduk = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Successfully deleted ${t.nama_lengkap} from penduduk`,
+      message: `Sukses menghapus ${t.nama_lengkap} dari penduduk`,
     });
   } catch (err) {
     return res.status(500).json({

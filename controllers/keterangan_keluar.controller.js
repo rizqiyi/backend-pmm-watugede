@@ -90,7 +90,7 @@ exports.updateKeteranganPendudukKeluar = async (req, res) => {
         (err, result) => {
           return res.status(200).json({
             success: true,
-            message: "Successfully updated keterangan penduduk",
+            message: "Sukses update data keterangan penduduk",
             data: result,
           });
         }
@@ -103,7 +103,7 @@ exports.updateKeteranganPendudukKeluar = async (req, res) => {
         (err, result) => {
           return res.status(200).json({
             success: true,
-            message: "Successfully updated keterangan penduduk",
+            message: "Sukses update data keterangan penduduk",
             data: result,
           });
         }

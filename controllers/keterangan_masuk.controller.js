@@ -87,7 +87,7 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
 
         return res.status(201).json({
           success: true,
-          data: `Succesfully added your keterangan masuk to ${result.nama_lengkap}`,
+          data: `Sukses menambahkan keterangan masuk ke Penduduk ${result.nama_lengkap}`,
         });
       }
     );

@@ -92,7 +92,7 @@ exports.postDataPendudukKeluar = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: `Success add new pengikut keluar to ${t.nama_lengkap}`,
+      message: `Sukses menambahkan pengikut keluar ke ${t.nama_lengkap}`,
       data: t,
     });
   } catch (err) {
@@ -143,7 +143,7 @@ exports.updateDataPendudukKeluar = async (req, res) => {
 
         return res.status(200).json({
           success: true,
-          message: "Succesfully edited your penduduk keluar",
+          message: "Sukses update data penduduk keluar",
           data: result,
         });
       }
@@ -197,7 +197,7 @@ exports.deleteDataPendudukKeluar = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `${ok.nama_lengkap_keluarga} has been deleted from data penduduk keluar`,
+      message: `${ok.nama_lengkap_keluarga} telah dihapus dari data penduduk keluar`,
     });
   } catch (err) {
     return res.status(500).json({

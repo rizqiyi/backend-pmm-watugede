@@ -159,7 +159,7 @@ exports.deleteDataById = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: `${t.nama} has been deleted`,
+      message: `${t.nama} telah dihapus dari data kelahiran.`,
     });
   } catch (err) {
     return res.status(500).json({
