@@ -1,10 +1,4 @@
 const PendudukSchema = require("../models/penduduk.model");
-const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
-const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
-const {
-  getRequestDataPendudukKeluar,
-  getRequestDataKeteranganKeluar,
-} = require("../utilities/data_keterangan_keluar");
 
 //@desc     GET All Data Penduduk
 //@routes   GET

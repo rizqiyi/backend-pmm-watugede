@@ -35,9 +35,13 @@ const PendudukSchema = mongoose.Schema(
     posisi_dalam_keluarga: {
       type: String,
     },
-    keluar_desa: {
-      type: Boolean,
-      default: false,
+    status_penduduk: {
+      type: String,
+      default: "",
+    },
+    keterangan_masuk: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "keterangan_masuk",
     },
     keterangan_keluar: {
       type: mongoose.Schema.Types.ObjectId,

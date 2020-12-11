@@ -18,6 +18,36 @@ const getRequestDataKeteranganKeluar = (val) => {
   };
 };
 
+const getRequestDataPendudukMasuk = (val) => {
+  const {
+    nama_lengkap,
+    jenis_kelamin,
+    tempat_tanggal_lahir,
+    umur,
+    agama,
+    status_perkawinan,
+    pekerjaan,
+    pendidikan_terakhir,
+    alamat_asal,
+    nik,
+    posisi_dalam_keluarga,
+  } = val;
+
+  return {
+    nama_lengkap,
+    jenis_kelamin,
+    tempat_tanggal_lahir,
+    umur,
+    agama,
+    status_perkawinan,
+    pekerjaan,
+    pendidikan_terakhir,
+    alamat_asal,
+    nik,
+    posisi_dalam_keluarga,
+  };
+};
+
 const getRequestDataPendudukKeluar = (val) => {
   const {
     nama_lengkap_keluarga,
@@ -42,3 +72,4 @@ const getRequestDataPendudukKeluar = (val) => {
 
 exports.getRequestDataPendudukKeluar = getRequestDataPendudukKeluar;
 exports.getRequestDataKeteranganKeluar = getRequestDataKeteranganKeluar;
+exports.getRequestDataPendudukMasuk = getRequestDataPendudukMasuk;

@@ -7,6 +7,7 @@ const kematian = require("./routes/kematian.route");
 const penduduk = require("./routes/penduduk.route");
 const keterangan_keluar = require("./routes/keterangan_keluar.route");
 const penduduk_keluar = require("./routes/penduduk_keluar.route");
+const penduduk_masuk = require("./routes/keterangan_masuk.route");
 
 const connect = require("./config/db");
 
@@ -22,6 +23,7 @@ app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
 app.use("/api/penduduk", penduduk);
 app.use("/api/penduduk_keluar", penduduk_keluar);
+app.use("/api/penduduk_masuk", penduduk_masuk);
 app.use("/api/keterangan", keterangan_keluar);
 
 const PORT = 5000 || process.env.PORT;
