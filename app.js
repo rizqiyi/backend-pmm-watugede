@@ -8,6 +8,7 @@ const penduduk = require("./routes/penduduk.route");
 const keterangan_keluar = require("./routes/keterangan_keluar.route");
 const penduduk_keluar = require("./routes/penduduk_keluar.route");
 const penduduk_masuk = require("./routes/keterangan_masuk.route");
+const admin = require("./routes/admin.route");
 
 const connect = require("./config/db");
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "assets")));
 app.use(cors());
 
+app.use("/api/admin", admin);
 app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
 app.use("/api/penduduk", penduduk);
