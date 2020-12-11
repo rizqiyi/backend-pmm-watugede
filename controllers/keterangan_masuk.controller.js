@@ -4,6 +4,9 @@ const {
   getRequestDataPendudukMasuk,
 } = require("../utilities/data_keterangan_keluar");
 
+//@desc     GET All Data Keterangan Penduduk
+//@routes   GET
+//@access   Private
 exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
@@ -23,6 +26,9 @@ exports.getDataPendudukMasuk = async (req, res) => {
   }
 };
 
+//@desc     Post Data Penduduk Masuk
+//@routes   POST
+//@access   Private
 exports.postDataPendudukMasuk = async (req, res) => {
   try {
     const dataMasuk = getRequestDataPendudukMasuk(req.body);
@@ -55,6 +61,9 @@ exports.postDataPendudukMasuk = async (req, res) => {
   }
 };
 
+//@desc     Post Data Keterangan Penduduk Masuk
+//@routes   POST
+//@access   Private
 exports.postKeteranganPendudukMasuk = async (req, res) => {
   try {
     const yourId = await PendudukSchema.findById(req.params.id);
@@ -99,6 +108,9 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
   }
 };
 
+//@desc     GET Spesific Data Keterangan Penduduk Masuk
+//@routes   GET
+//@access   Private
 exports.getDataPendudukMasukByName = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
@@ -124,6 +136,10 @@ exports.getDataPendudukMasukByName = async (req, res) => {
     });
   }
 };
+
+//@desc     Update Data Keterangan Penduduk
+//@routes   PUT
+//@access   Private
 exports.updateDataKeteranganMasuk = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
@@ -177,6 +193,49 @@ exports.updateDataKeteranganMasuk = async (req, res) => {
       message: err,
     });
   }
-  // res.send(req.params.id_penduduk + "   " + req.params.id_keterangan_masuk);
 };
-exports.deleteDataKeteranganMasuk = async (req, res) => {};
+
+//@desc     Delete Data Keterangan Penduduk Masuk
+//@routes   DELETE
+//@access   Private
+exports.deleteDataKeteranganMasuk = async (req, res) => {
+  try {
+    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!idPenduduk)
+      return res.status(404).json({
+        success: false,
+        message: "ID Penduduk Not Found",
+      });
+
+    const idKeteranganMasuk = await KeteranganMasukSchema.findById(
+      req.params.id_keterangan_masuk
+    );
+
+    if (!idKeteranganMasuk)
+      return res.status(404).json({
+        success: false,
+        message: "ID Keterangan Masuk Not Found",
+      });
+
+    const t = await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
+      $pull: {
+        keterangan_masuk: req.params.id_keterangan_masuk,
+      },
+    });
+
+    await KeteranganMasukSchema.findByIdAndDelete(
+      req.params.id_keterangan_masuk
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Data Keterangan Masuk ${t.nama_lengkap} berhasil dihapus`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err,
+    });
+  }
+};

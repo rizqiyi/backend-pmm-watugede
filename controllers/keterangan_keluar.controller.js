@@ -4,6 +4,9 @@ const {
   getRequestDataKeteranganKeluar,
 } = require("../utilities/data_keterangan_keluar");
 
+//@desc     Post Data Keterangan Penduduk Keluar
+//@routes   POST
+//@access   Private
 exports.postKeteranganPendudukKeluar = async (req, res) => {
   try {
     const yourId = await PendudukSchema.findById(req.params.id_penduduk);
@@ -44,7 +47,7 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     GET All Data Keterangan Penduduk
+//@desc     GET All Data Keterangan Penduduk Keluar
 //@routes   GET
 //@access   Private
 exports.getKeteranganPendudukKeluar = async (req, res) => {
@@ -69,7 +72,7 @@ exports.getKeteranganPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     Update Data Keterangan Penduduk
+//@desc     Update Data Keterangan Penduduk Keluar
 //@routes   PUT
 //@access   Private
 exports.updateKeteranganPendudukKeluar = async (req, res) => {
@@ -117,6 +120,9 @@ exports.updateKeteranganPendudukKeluar = async (req, res) => {
   }
 };
 
+//@desc     Delete Data Keterangan Penduduk Keluar
+//@routes   DELETE
+//@access   Private
 exports.deleteKeteranganPendudukKeluar = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);

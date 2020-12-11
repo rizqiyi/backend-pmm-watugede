@@ -31,10 +31,27 @@ const upload = multer({
   storage,
 });
 
+//@desc     Get Spesific Data Penduduk Masuk By Name
+//@routes   GET
+//@endpoint /api/penduduk_masuk/s
+//@access   Private
 router.route("/s").get(getDataPendudukMasukByName);
 
+//@desc     Get All Data Penduduk Masuk
+//@routes   GET
+//@endpoint /api/penduduk_masuk
+//@access   Private
+
+//@desc     Post Data Penduduk Masuk
+//@routes   POST
+//@endpoint /api/penduduk_masuk
+//@access   Private
 router.route("/").get(getDataPendudukMasuk).post(postDataPendudukMasuk);
 
+//@desc     Post Data Keterangan Penduduk Masuk
+//@routes   POST
+//@endpoint /api/penduduk_masuk/:id/p
+//@access   Private
 router.route("/:id/p").post(
   upload.fields([
     { name: "foto_nik", maxCount: 1 },
@@ -43,13 +60,22 @@ router.route("/:id/p").post(
   postKeteranganPendudukMasuk
 );
 
-router
-  .route("/:id_penduduk/u/:id_keterangan_masuk")
-  .put(
-    upload.fields([{ name: "foto_nik" }, { name: "foto_surat_masuk" }]),
-    updateDataKeteranganMasuk
-  );
+//@desc     Update Data Keterangan Penduduk Masuk
+//@routes   PUT
+//@endpoint /api/penduduk_masuk/:id_penduduk/u/id_keterangan_masuk
+//@access   Private
+router.route("/:id_penduduk/u/:id_keterangan_masuk").put(
+  upload.fields([
+    { name: "foto_nik", maxCount: 1 },
+    { name: "foto_surat_masuk", maxCount: 1 },
+  ]),
+  updateDataKeteranganMasuk
+);
 
+//@desc     Delete Data Keterangan Penduduk Masuk
+//@routes   DELETE
+//@endpoint /api/penduduk_masuk/:id_penduduk/d/id_keterangan_masuk
+//@access   Private
 router
   .route("/:id_penduduk/d/:id_keterangan_masuk")
   .delete(deleteDataKeteranganMasuk);
