@@ -8,7 +8,58 @@ exports.getAdminData = async (req, res) => {
 };
 
 exports.postLoginAdmin = async (req, res) => {
-  res.send("hello");
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password)
+      return res.status(400).json({
+        success: false,
+        message: "Please enter all fields.",
+      });
+
+    const t = await AdminSchema.findOne({ username });
+
+    if (!t)
+      return res.status(400).json({
+        success: false,
+        message: "False",
+      });
+
+    const isMatch = await bcrypt.compare(password, t.password);
+
+    if (!isMatch)
+      return res.status(400).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+
+    const activity = await ActivitySchema.create({
+      activity_name: `${t.nama_lengkap} Telah Login.`,
+      activity_by: t._id,
+    });
+
+    jwt.sign(
+      { id: t.id },
+      process.env.JWT_SECRET,
+      { expiresIn: 3600 * 12 },
+      (err, token) => {
+        if (err) throw err;
+
+        return res.status(200).json({
+          success: true,
+          message: `Welcome ${t.nama_lengkap}. Have a nice day!`,
+          token,
+          data: t,
+        });
+      }
+    );
+
+    await AdminSchema.findByIdAndUpdate(t._id, {
+      $push: {
+        activity: activity._id,
+      },
+    });
+  } catch (err) {}
 };
 
 exports.registerAdmin = async (req, res) => {
@@ -32,7 +83,7 @@ exports.registerAdmin = async (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Admin dengan username ini sudah ada. Harap menggunakan username lain",
+          "Admin dengan username ini sudah ada. Harap menggunakan username lain.",
       });
 
     const t = await AdminSchema.create({
