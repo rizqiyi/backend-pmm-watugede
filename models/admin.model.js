@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const AdminSchema = mongoose.Schema({
-  foto_profil: {
+  avatar: {
     type: String,
   },
   nama_lengkap: {

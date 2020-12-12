@@ -87,7 +87,7 @@ exports.updateKematian = async (req, res) => {
 };
 
 //@desc     Delete Data Kematian
-//@routes   DELTE
+//@routes   DELETE
 //@access   Private
 exports.deleteKematian = async (req, res) => {
   try {
