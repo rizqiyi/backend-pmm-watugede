@@ -7,6 +7,7 @@ const {
   updateDataPendudukKeluar,
   deleteDataPendudukKeluar,
 } = require("../controllers/penduduk_keluar.controller");
+const middleware = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -14,19 +15,19 @@ const router = express.Router();
 //@routes   GET
 //@endpoint /api/penduduk_keluar/s
 //@access   Private
-router.route("/s").get(getDataPendudukKeluarByName);
+router.route("/s").all(middleware).get(getDataPendudukKeluarByName);
 
 //@desc     GET Penduduk Keluar
 //@routes   GET
 //@endpoint /api/penduduk_keluar
 //@access   Private
-router.route("/").get(getDataPendudukKeluar);
+router.route("/").all(middleware).get(getDataPendudukKeluar);
 
 //@desc     POST Penduduk Keluar
 //@routes   POST
 //@endpoint /api/penduduk_keluar/:id_penduduk
 //@access   Private
-router.route("/:id_penduduk").post(postDataPendudukKeluar);
+router.route("/:id_penduduk").all(middleware).post(postDataPendudukKeluar);
 
 //@desc     Update Penduduk Keluar
 //@routes   PUT
@@ -34,6 +35,7 @@ router.route("/:id_penduduk").post(postDataPendudukKeluar);
 //@access   Private
 router
   .route("/:id_penduduk/u/:id_penduduk_keluar")
+  .all(middleware)
   .put(updateDataPendudukKeluar);
 
 //@desc     Delete Penduduk Keluar
@@ -42,6 +44,7 @@ router
 //@access   Private
 router
   .route("/:id_penduduk/d/:id_penduduk_keluar")
+  .all(middleware)
   .delete(deleteDataPendudukKeluar);
 
 module.exports = router;

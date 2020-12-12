@@ -9,6 +9,7 @@ const {
 const router = express.Router();
 
 const multer = require("multer");
+const middleware = require("../middlewares/auth");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -34,13 +35,14 @@ const upload = multer({
 //@access   Private
 router
   .route("/:id_penduduk")
+  .all(middleware)
   .post(upload.single("foto_pengusul"), postKeteranganPendudukKeluar);
 
 //@desc     GET Data Keterangan Keluar
 //@routes   GET
 //@endpoint /api/keterangan/:id
 //@access   Private
-router.route("/:id").get(getKeteranganPendudukKeluar);
+router.route("/:id").all(middleware).get(getKeteranganPendudukKeluar);
 
 //@desc     POST Data Keterangan Keluar
 //@routes   POST
@@ -48,6 +50,7 @@ router.route("/:id").get(getKeteranganPendudukKeluar);
 //@access   Private
 router
   .route("/:id")
+  .all(middleware)
   .put(upload.single("foto_pengusul"), updateKeteranganPendudukKeluar);
 
 //@desc     Delete Data Keterangan Keluar
@@ -56,6 +59,7 @@ router
 //@access   Private
 router
   .route("/:id_penduduk/d/:id_keterangan_keluar")
+  .all(middleware)
   .delete(deleteKeteranganPendudukKeluar);
 
 module.exports = router;

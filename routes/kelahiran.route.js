@@ -6,6 +6,7 @@ const {
   updateDataById,
   deleteDataById,
 } = require("../controllers/kelahiran.controller");
+const middleware = require("../middlewares/auth");
 
 const router = express.Router({ mergeParams: true });
 
@@ -13,7 +14,7 @@ const router = express.Router({ mergeParams: true });
 //@routes   GET
 //@endpoint /api/kelahiran/s
 //@access   Private
-router.route("/s").get(getDataByName);
+router.route("/s").all(middleware).get(getDataByName);
 
 //@desc     POST Data Kelahiran
 //@routes   POST
@@ -24,7 +25,7 @@ router.route("/s").get(getDataByName);
 //@routes   GET
 //@endpoint /api/kelahiran
 //@access   Private
-router.route("/").post(postKelahiran).get(getKelahiran);
+router.route("/").all(middleware).post(postKelahiran).get(getKelahiran);
 
 //@desc     Update Data Kelahiran
 //@routes   PUT
@@ -35,6 +36,6 @@ router.route("/").post(postKelahiran).get(getKelahiran);
 //@routes   DELETE
 //@endpoint /api/kelahiran/:id
 //@access   Private
-router.route("/:id").put(updateDataById).delete(deleteDataById);
+router.route("/:id").all(middleware).put(updateDataById).delete(deleteDataById);
 
 module.exports = router;

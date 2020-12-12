@@ -7,13 +7,15 @@ const {
   deleteKematian,
 } = require("../controllers/kematian.controller");
 
+const middleware = require("../middlewares/auth");
+
 const router = express.Router({ mergeParams: true });
 
 //@desc     GET Spesific Data Kematian
 //@routes   GET
 //@endpoint /api/kematian/s
 //@access   Private
-router.route("/s").get(getDataByName);
+router.route("/s").all(middleware).get(getDataByName);
 
 //@desc     GET All Data Kematian
 //@routes   GET
@@ -24,7 +26,7 @@ router.route("/s").get(getDataByName);
 //@routes   POST
 //@endpoint /api/kematian
 //@access   Private
-router.route("/").get(getKematian).post(postKematian);
+router.route("/").all(middleware).get(getKematian).post(postKematian);
 
 //@desc     Update Data Kematian
 //@routes   PUT
@@ -35,6 +37,6 @@ router.route("/").get(getKematian).post(postKematian);
 //@routes   DELETE
 //@endpoint /api/kematian/:id
 //@access   Private
-router.route("/:id").put(updateKematian).delete(deleteKematian);
+router.route("/:id").all(middleware).put(updateKematian).delete(deleteKematian);
 
 module.exports = router;

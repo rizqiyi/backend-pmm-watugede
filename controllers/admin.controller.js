@@ -42,7 +42,7 @@ exports.postLoginAdmin = async (req, res) => {
     jwt.sign(
       { id: t.id },
       process.env.JWT_SECRET,
-      { expiresIn: 3600 * 12 },
+      { expiresIn: 3600 * 6 },
       (err, token) => {
         if (err) throw err;
 
@@ -50,7 +50,6 @@ exports.postLoginAdmin = async (req, res) => {
           success: true,
           message: `Welcome ${t.nama_lengkap}. Have a nice day!`,
           token,
-          data: t,
         });
       }
     );
@@ -113,7 +112,7 @@ exports.registerAdmin = async (req, res) => {
         jwt.sign(
           { id: admin.id },
           process.env.JWT_SECRET,
-          { expiresIn: 3600 * 12 },
+          { expiresIn: 3600 * 6 },
           (err, token) => {
             if (err) throw err;
 
