@@ -4,7 +4,8 @@ const AdminSchema = require("../models/admin.model");
 const ActivitySchema = require("../models/activity.model");
 
 exports.getAdminData = async (req, res) => {
-  res.send("hello");
+  try {
+  } catch (err) {}
 };
 
 exports.postLoginAdmin = async (req, res) => {
@@ -59,7 +60,12 @@ exports.postLoginAdmin = async (req, res) => {
         activity: activity._id,
       },
     });
-  } catch (err) {}
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
 };
 
 exports.registerAdmin = async (req, res) => {
