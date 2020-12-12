@@ -5,7 +5,24 @@ const ActivitySchema = require("../models/activity.model");
 
 exports.getAdminData = async (req, res) => {
   try {
-  } catch (err) {}
+    const t = await AdminSchema.findById(req.user).select("-password");
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
 };
 
 exports.postLoginAdmin = async (req, res) => {

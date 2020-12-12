@@ -18,7 +18,7 @@ const middleware = async (req, res, next) => {
         message: "Token verification failed, authorization denied.",
       });
 
-    req.user = verified;
+    req.user = verified.id;
 
     next();
   } catch (err) {
