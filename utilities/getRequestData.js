@@ -6,6 +6,7 @@ const getRequestDataKeteranganKeluar = (val) => {
     pengikut,
     catatan,
     foto_pengusul,
+    meninggalkan_desa_pada,
   } = val;
 
   return {
@@ -15,6 +16,7 @@ const getRequestDataKeteranganKeluar = (val) => {
     pengikut,
     catatan,
     foto_pengusul,
+    meninggalkan_desa_pada,
   };
 };
 

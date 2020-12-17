@@ -20,6 +20,9 @@ const KeteranganKeluarSchema = mongoose.Schema({
   foto_pengusul: {
     type: String,
   },
+  meninggalkan_desa_pada: {
+    type: String,
+  },
   nama_pengusul_keterangan: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "penduduk",

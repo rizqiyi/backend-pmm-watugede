@@ -26,10 +26,14 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
       pengikut: dataPenduduk.pengikut,
       catatan: dataPenduduk.catatan,
       foto_pengusul: req.file.path,
+      meninggalkan_desa_pada: dataPenduduk.meninggalkan_desa_pada,
       nama_pengusul_keterangan: req.params.id_penduduk,
     });
 
     await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
+      $set: {
+        status_penduduk: "penduduk_keluar",
+      },
       $push: {
         keterangan_keluar: t._id,
       },

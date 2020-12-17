@@ -5,6 +5,7 @@ const {
   updatePenduduk,
   deletePenduduk,
   getPendudukByName,
+  getPendudukById,
 } = require("../controllers/penduduk.controller");
 const middleware = require("../middlewares/auth");
 
@@ -37,5 +38,11 @@ router.route("/s").all(middleware).get(getPendudukByName);
 //@endpoint /api/penduduk/:id
 //@access   Private
 router.route("/:id").all(middleware).put(updatePenduduk).delete(deletePenduduk);
+
+//@desc     GET Penduduk by id
+//@routes   GET
+//@endpoint /api/penduduk/:id
+//@access   Private
+router.route("/:id").all(middleware).get(getPendudukById);
 
 module.exports = router;

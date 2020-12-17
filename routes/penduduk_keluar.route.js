@@ -6,6 +6,8 @@ const {
   postDataPendudukKeluar,
   updateDataPendudukKeluar,
   deleteDataPendudukKeluar,
+  getDataPendudukKeluarByID,
+  getDataPengikutKeluarByID,
 } = require("../controllers/penduduk_keluar.controller");
 const middleware = require("../middlewares/auth");
 
@@ -22,6 +24,7 @@ router.route("/s").all(middleware).get(getDataPendudukKeluarByName);
 //@endpoint /api/penduduk_keluar
 //@access   Private
 router.route("/").all(middleware).get(getDataPendudukKeluar);
+router.route("/:id_penduduk").all(middleware).get(getDataPendudukKeluarByID);
 
 //@desc     POST Penduduk Keluar
 //@routes   POST

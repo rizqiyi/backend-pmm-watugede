@@ -15,7 +15,7 @@ exports.getAdminData = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: t,
+      t,
     });
   } catch (err) {
     return res.status(500).json({
@@ -32,7 +32,7 @@ exports.postLoginAdmin = async (req, res) => {
     if (!username || !password)
       return res.status(400).json({
         success: false,
-        message: "Please enter all fields.",
+        message: "Please enter all fields",
       });
 
     const t = await AdminSchema.findOne({ username });
@@ -40,7 +40,7 @@ exports.postLoginAdmin = async (req, res) => {
     if (!t)
       return res.status(400).json({
         success: false,
-        message: "False",
+        message: "Invalid Credentials",
       });
 
     const isMatch = await bcrypt.compare(password, t.password);
@@ -79,7 +79,7 @@ exports.postLoginAdmin = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: err,
     });
   }
 };

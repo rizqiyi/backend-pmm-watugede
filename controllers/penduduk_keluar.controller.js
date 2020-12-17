@@ -23,6 +23,28 @@ exports.getDataPendudukKeluar = async (req, res) => {
   }
 };
 
+//@desc     Get Data Penduduk Keluar by ID
+//@routes   GET
+//@access   Private
+exports.getDataPendudukKeluarByID = async (req, res) => {
+  try {
+    const t = await PendudukSchema.findById(req.params.id_penduduk).populate(
+      "pengikut_keluar"
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Succesfully fetch your data",
+      t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 //@desc     Get Spesific Data Penduduk
 //@routes   GET
 //@access   Private
@@ -81,6 +103,9 @@ exports.postDataPendudukKeluar = async (req, res) => {
     const t = await PendudukSchema.findByIdAndUpdate(
       req.params.id_penduduk,
       {
+        $set: {
+          status_penduduk: "penduduk_keluar",
+        },
         $push: {
           pengikut_keluar: r._id,
         },
@@ -96,7 +121,7 @@ exports.postDataPendudukKeluar = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: err,
     });
   }
 };

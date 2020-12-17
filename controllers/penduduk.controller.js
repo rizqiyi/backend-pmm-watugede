@@ -22,6 +22,28 @@ exports.getPenduduk = async (req, res) => {
   }
 };
 
+//@desc     GET All Data Penduduk
+//@routes   GET
+//@access   Private
+exports.getPendudukById = async (req, res) => {
+  try {
+    const t = await PendudukSchema.findById(req.params.id).populate(
+      "pengikut_keluar keterangan_keluar keterangan_masuk"
+    );
+
+    return res.status(200).json({
+      success: true,
+      count: t.length,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 //@desc     POST Data Penduduk
 //@routes   POST
 //@access   Private
@@ -34,6 +56,7 @@ exports.postPenduduk = async (req, res) => {
     return res.status(201).json({
       success: true,
       data: t,
+      message: `Berhasil Menambahkan ${t.nama_lengkap} ke Penduduk`,
     });
   } catch (err) {
     return res.status(500).json({
@@ -71,7 +94,7 @@ exports.updatePenduduk = async (req, res) => {
 
         return res.status(200).json({
           success: true,
-          message: "Successfully Updated Data",
+          message: "Berhasil Update Data",
           data: result,
         });
       }
