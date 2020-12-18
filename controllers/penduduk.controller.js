@@ -128,7 +128,7 @@ exports.deletePenduduk = async (req, res) => {
       nama_pengusul_keterangan: req.params.id,
     });
 
-    await PendudukKeluarSchema.remove({
+    await PendudukKeluarSchema.deleteMany({
       nama_pengusul: req.params.id,
     });
 
