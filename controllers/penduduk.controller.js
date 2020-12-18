@@ -7,8 +7,8 @@ const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 //@access   Private
 exports.getPenduduk = async (req, res) => {
   try {
-    const t = await PendudukSchema.find().populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk"
+    const t = await PendudukSchema.find().select(
+      "-_id -__v -pengikut_keluar -keterangan_keluar -status_penduduk"
     );
 
     return res.status(200).json({
