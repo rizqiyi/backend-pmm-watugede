@@ -46,6 +46,39 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
+      message: err,
+    });
+  }
+};
+
+//@desc     GET Data Keterangan Penduduk Keluar By ID Penduduk
+//@routes   GET
+//@access   Private
+exports.getKeteranganPendudukKeluarByIDPenduduk = async (req, res) => {
+  try {
+    const yourId = await KeteranganKeluarSchema.find({
+      nama_pengusul_keterangan: req.params.id,
+    });
+
+    if (!yourId)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    if (yourId.length === 0)
+      return res.status(200).json({
+        success: true,
+        message: "Data kosong",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: yourId,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
       message: "Server Error",
     });
   }
@@ -66,7 +99,7 @@ exports.getKeteranganPendudukKeluar = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: yourId,
+      data: yourId,
     });
   } catch (err) {
     return res.status(500).json({

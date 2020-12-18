@@ -1,4 +1,6 @@
 const PendudukSchema = require("../models/penduduk.model");
+const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
+const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 
 //@desc     GET All Data Penduduk
 //@routes   GET
@@ -121,6 +123,14 @@ exports.deletePenduduk = async (req, res) => {
       });
 
     const t = await PendudukSchema.findByIdAndDelete(req.params.id);
+
+    await KeteranganKeluarSchema.findOneAndDelete({
+      nama_pengusul_keterangan: req.params.id,
+    });
+
+    await PendudukKeluarSchema.remove({
+      nama_pengusul: req.params.id,
+    });
 
     return res.status(200).json({
       success: true,

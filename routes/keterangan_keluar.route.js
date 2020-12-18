@@ -4,6 +4,7 @@ const {
   updateKeteranganPendudukKeluar,
   deleteKeteranganPendudukKeluar,
   postKeteranganPendudukKeluar,
+  getKeteranganPendudukKeluarByIDPenduduk,
 } = require("../controllers/keterangan_keluar.controller");
 
 const router = express.Router();
@@ -44,8 +45,17 @@ router
 //@access   Private
 router.route("/:id").all(middleware).get(getKeteranganPendudukKeluar);
 
-//@desc     POST Data Keterangan Keluar
-//@routes   POST
+//@desc     GET Data Keterangan Keluar By ID Penduduk
+//@routes   GET
+//@endpoint /api/keterangan/p/:id
+//@access   Private
+router
+  .route("/p/:id")
+  .all(middleware)
+  .get(getKeteranganPendudukKeluarByIDPenduduk);
+
+//@desc     Update Data Keterangan Keluar
+//@routes   PUT
 //@endpoint /api/keterangan/:id
 //@access   Private
 router
