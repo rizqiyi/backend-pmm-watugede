@@ -1,6 +1,7 @@
 const PendudukSchema = require("../models/penduduk.model");
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
+const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 
 //@desc     GET All Data Penduduk
 //@routes   GET
@@ -8,7 +9,7 @@ const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 exports.getPenduduk = async (req, res) => {
   try {
     const t = await PendudukSchema.find().select(
-      "-_id -__v -pengikut_keluar -keterangan_keluar -status_penduduk"
+      "-__v -pengikut_keluar -keterangan_keluar"
     );
 
     return res.status(200).json({
@@ -30,7 +31,7 @@ exports.getPenduduk = async (req, res) => {
 exports.getPendudukById = async (req, res) => {
   try {
     const t = await PendudukSchema.findById(req.params.id).populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk"
+      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
     );
 
     return res.status(200).json({
@@ -51,14 +52,42 @@ exports.getPendudukById = async (req, res) => {
 //@access   Private
 exports.postPenduduk = async (req, res) => {
   try {
+    const findKK = await KartuKeluargaSchema.findById(req.params.id);
+
+    if (!findKK) {
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+    }
+
+    if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
+      if (findKK.no_kk !== req.body.nik)
+        return res.status(400).json({
+          success: false,
+          message: "No KK dan No NIK Kepala Keluarga Harus Sama",
+        });
+    }
+
     const t = await PendudukSchema.create({
       ...req.body,
+      keluarga_dari: req.params.id,
     });
+
+    await KartuKeluargaSchema.findOneAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          anggota_keluarga: t._id,
+        },
+      },
+      { upsert: true, new: true, useFindAndModify: false }
+    );
 
     return res.status(201).json({
       success: true,
       data: t,
-      message: `Berhasil Menambahkan ${t.nama_lengkap} ke Penduduk`,
+      message: `Berhasil Menambahkan ${t.nama_lengkap} ke Data Penduduk dan Data KK`,
     });
   } catch (err) {
     return res.status(500).json({
@@ -96,7 +125,7 @@ exports.updatePenduduk = async (req, res) => {
 
         return res.status(200).json({
           success: true,
-          message: "Berhasil Update Data",
+          message: `Berhasil Perbarui Data Penduduk ${result.nama_lengkap}`,
           data: result,
         });
       }
@@ -112,6 +141,7 @@ exports.updatePenduduk = async (req, res) => {
 //@desc     Delete Data Penduduk
 //@routes   DELETE
 //@access   Private
+// referensi lama
 exports.deletePenduduk = async (req, res) => {
   try {
     const yourId = await PendudukSchema.findById(req.params.id);
@@ -140,6 +170,45 @@ exports.deletePenduduk = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
+    });
+  }
+};
+
+// terbaru
+exports.deletePendudukPadaKK = async (req, res) => {
+  try {
+    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+
+    if (!idPenduduk)
+      return res.status(404).json({
+        success: false,
+        message: "Id Penduduk Not Found",
+      });
+
+    const idKK = await KartuKeluargaSchema.findById(req.params.id_kk);
+
+    if (!idKK)
+      return res.status(404).json({
+        success: false,
+        message: "Id KK Not Found",
+      });
+
+    const t = await PendudukSchema.findByIdAndDelete(req.params.id_penduduk);
+
+    await KartuKeluargaSchema.findByIdAndUpdate(req.params.id_kk, {
+      $pull: {
+        anggota_keluarga: req.params.id_penduduk,
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Sukses menghapus ${t.nama_lengkap} dari penduduk`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
     });
   }
 };

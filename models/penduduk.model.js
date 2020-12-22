@@ -34,10 +34,15 @@ const PendudukSchema = mongoose.Schema(
     },
     posisi_dalam_keluarga: {
       type: String,
+      default: "",
     },
     status_penduduk: {
       type: String,
       default: "",
+    },
+    keluarga_dari: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "kartu_keluarga",
     },
     keterangan_masuk: {
       type: mongoose.Schema.Types.ObjectId,

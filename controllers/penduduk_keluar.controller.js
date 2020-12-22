@@ -7,12 +7,16 @@ const { getRequestDataPendudukKeluar } = require("../utilities/getRequestData");
 //@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
-    const t = await PendudukKeluarSchema.find().populate("nama_pengusul");
+    const t = await PendudukSchema.find({
+      status_penduduk: "penduduk_keluar",
+    }).populate("pengikut_keluar");
+
+    const r = await PendudukKeluarSchema.find();
 
     return res.status(200).json({
       success: true,
       message: "Succesfully fetch your data",
-      count: t.length,
+      total_penduduk_keluar: t.length + r.length,
       data: t,
     });
   } catch (err) {
@@ -35,7 +39,7 @@ exports.getDataPendudukKeluarByID = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Succesfully fetch your data",
-      t,
+      data: t,
     });
   } catch (err) {
     return res.status(500).json({
@@ -132,7 +136,6 @@ exports.postDataPendudukKeluar = async (req, res) => {
 exports.updateDataPendudukKeluar = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
-
     if (!idPenduduk)
       return res.status(404).json({
         success: false,

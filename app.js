@@ -9,6 +9,7 @@ const keterangan_keluar = require("./routes/keterangan_keluar.route");
 const penduduk_keluar = require("./routes/penduduk_keluar.route");
 const penduduk_masuk = require("./routes/keterangan_masuk.route");
 const admin = require("./routes/admin.route");
+const kartu_keluarga = require("./routes/kartu_keluarga.route");
 const activity = require("./routes/activity.route");
 
 const connect = require("./config/db");
@@ -23,6 +24,7 @@ app.use(cors());
 
 app.use("/api/auth", admin);
 app.use("/api/activity", activity);
+app.use("/api/kartukeluarga", kartu_keluarga);
 app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
 app.use("/api/penduduk", penduduk);
