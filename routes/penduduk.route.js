@@ -8,10 +8,23 @@ const {
   getPendudukById,
   deletePendudukPadaKK,
   getPendudukByNamaKepalaKeluarga,
+  getPendudukByNoKK,
 } = require("../controllers/penduduk.controller");
 const middleware = require("../middlewares/auth");
 
 const router = express.Router();
+
+//@desc     GET Penduduk by Name
+//@routes   GET
+//@endpoint /api/penduduk/s
+//@access   Private
+router.route("/s").get(getPendudukByName);
+
+//@desc     GET Penduduk
+//@routes   GET
+//@endpoint /api/penduduk/s/kk
+//@access   Private
+router.route("/s/kk").get(getPendudukByNoKK);
 
 //@desc     GET Penduduk
 //@routes   GET
@@ -24,12 +37,6 @@ const router = express.Router();
 //@access   Private
 router.route("/").get(getPenduduk);
 router.route("/:id").post(postPenduduk);
-
-//@desc     GET Penduduk
-//@routes   GET
-//@endpoint /api/penduduk
-//@access   Private
-router.route("/s").all(middleware).get(getPendudukByName);
 
 //@desc     Update Penduduk
 //@routes   PUT

@@ -41,32 +41,6 @@ exports.getKartuKeluargaByID = async (req, res) => {
   }
 };
 
-exports.getKartuKeluargaByName = async (req, res) => {
-  try {
-    const t = await KartuKeluargaSchema.find({ no_kk: req.query.kk }).populate(
-      "anggota_keluarga"
-    );
-
-    if (t.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Kartu Keluarga tidak ditemukan",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      count: t.length,
-      data: t,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
 exports.postKartuKeluarga = async (req, res) => {
   try {
     const t = await KartuKeluargaSchema.create({

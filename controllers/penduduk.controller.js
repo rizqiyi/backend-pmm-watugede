@@ -27,7 +27,6 @@ exports.getPenduduk = async (req, res) => {
 
 exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
   try {
-    console.log("a");
     const t = await PendudukSchema.find({
       posisi_dalam_keluarga: "Kepala Keluarga",
     }).populate(
@@ -240,9 +239,44 @@ exports.deletePendudukPadaKK = async (req, res) => {
 //@access   Private
 exports.getPendudukByName = async (req, res) => {
   try {
-    const t = await PendudukSchema.findOne({ nama_lengkap: req.query.name });
+    const t = await PendudukSchema.find({
+      nama_lengkap: req.query.name,
+      posisi_dalam_keluarga: "Kepala Keluarga",
+    }).populate(
+      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
+    );
 
-    if (!t)
+    if (t.length === 0)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+//@desc     Get Spesific Data Penduduk By No KK Kepala Keluarga
+//@routes   GET
+//@access   Private
+exports.getPendudukByNoKK = async (req, res) => {
+  try {
+    const t = await PendudukSchema.find({
+      nik: req.query.no_kk,
+      posisi_dalam_keluarga: "Kepala Keluarga",
+    }).populate(
+      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
+    );
+
+    if (t.length === 0)
       return res.status(404).json({
         success: false,
         message: "Not Found",
