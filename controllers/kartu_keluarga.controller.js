@@ -43,6 +43,16 @@ exports.getKartuKeluargaByID = async (req, res) => {
 
 exports.postKartuKeluarga = async (req, res) => {
   try {
+    const findDuplicateKK = await KartuKeluargaSchema.find({
+      no_kk: req.body.no_kk,
+    });
+
+    if (findDuplicateKK.length > 0)
+      return res.status(400).json({
+        success: false,
+        message: "Nomor KK yang Anda inputkan sudah terdapat pada data",
+      });
+
     const t = await KartuKeluargaSchema.create({
       no_kk: req.body.no_kk,
     });

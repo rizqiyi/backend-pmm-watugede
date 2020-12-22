@@ -24,7 +24,7 @@ app.use(cors());
 
 app.use("/api/auth", admin);
 app.use("/api/activity", activity);
-app.use("/api/kartukeluarga", kartu_keluarga);
+app.use("/api/kartu_keluarga", kartu_keluarga);
 app.use("/api/kelahiran", kelahiran);
 app.use("/api/kematian", kematian);
 app.use("/api/penduduk", penduduk);

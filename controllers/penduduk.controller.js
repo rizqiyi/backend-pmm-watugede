@@ -82,6 +82,16 @@ exports.postPenduduk = async (req, res) => {
       });
     }
 
+    const findDuplicateNIK = await PendudukSchema.find({
+      nik: req.body.nik,
+    });
+
+    if (findDuplicateNIK.length > 0)
+      return res.status(400).json({
+        success: false,
+        message: "Nomor NIK yang Anda Inputkan sudah Terdapat Pada Data",
+      });
+
     if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
       if (findKK.no_kk !== req.body.nik)
         return res.status(400).json({
@@ -95,11 +105,11 @@ exports.postPenduduk = async (req, res) => {
       keluarga_dari: req.params.id,
     });
 
-    await KartuKeluargaSchema.findOneAndUpdate(
-      req.params.id,
+    await KartuKeluargaSchema.findByIdAndUpdate(
+      { _id: req.params.id },
       {
         $push: {
-          anggota_keluarga: t._id,
+          anggota_keluarga: t.id,
         },
       },
       { upsert: true, new: true, useFindAndModify: false }
@@ -107,13 +117,12 @@ exports.postPenduduk = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      data: t,
       message: `Berhasil Menambahkan ${t.nama_lengkap} ke Data Penduduk dan Data KK`,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: err,
     });
   }
 };
