@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 const KeteranganKeluarSchema = mongoose.Schema({
+  nomor_surat: {
+    type: String,
+  },
   tanggal_ktp: {
     type: String,
   },

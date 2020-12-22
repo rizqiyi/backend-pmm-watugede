@@ -27,6 +27,7 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
       catatan: dataPenduduk.catatan,
       foto_pengusul: req.file.path,
       meninggalkan_desa_pada: dataPenduduk.meninggalkan_desa_pada,
+      nomor_surat: req.body.nomor_surat,
       nama_pengusul_keterangan: req.params.id_penduduk,
     });
 
