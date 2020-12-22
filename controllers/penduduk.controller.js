@@ -25,6 +25,28 @@ exports.getPenduduk = async (req, res) => {
   }
 };
 
+exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
+  try {
+    console.log("a");
+    const t = await PendudukSchema.find({
+      posisi_dalam_keluarga: "Kepala Keluarga",
+    }).populate(
+      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
+    );
+
+    return res.status(200).json({
+      success: true,
+      count: t.length,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 //@desc     GET All Data Penduduk
 //@routes   GET
 //@access   Private
