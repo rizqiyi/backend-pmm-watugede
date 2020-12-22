@@ -18,13 +18,13 @@ const router = express.Router();
 //@routes   GET
 //@endpoint /api/penduduk/s
 //@access   Private
-router.route("/s").get(getPendudukByName);
+router.route("/s").all(middleware).get(getPendudukByName);
 
 //@desc     GET Penduduk
 //@routes   GET
 //@endpoint /api/penduduk/s/kk
 //@access   Private
-router.route("/s/kk").get(getPendudukByNoKK);
+router.route("/s/kk").all(middleware).get(getPendudukByNoKK);
 
 //@desc     GET Penduduk
 //@routes   GET
@@ -35,8 +35,8 @@ router.route("/s/kk").get(getPendudukByNoKK);
 //@routes   POST
 //@endpoint /api/penduduk/:id
 //@access   Private
-router.route("/").get(getPenduduk);
-router.route("/:id").post(postPenduduk);
+router.route("/").all(middleware).get(getPenduduk);
+router.route("/:id").all(middleware).post(postPenduduk);
 
 //@desc     Update Penduduk
 //@routes   PUT
@@ -47,19 +47,22 @@ router.route("/:id").post(postPenduduk);
 //@routes   DELETE
 //@endpoint /api/penduduk/:id
 //@access   Private
-router.route("/:id").put(updatePenduduk).delete(deletePenduduk);
-router.route("/:id_penduduk/d/:id_kk").delete(deletePendudukPadaKK);
+router.route("/:id").all(middleware).put(updatePenduduk).delete(deletePenduduk);
+router
+  .route("/:id_penduduk/d/:id_kk")
+  .all(middleware)
+  .delete(deletePendudukPadaKK);
 
 //@desc     GET Penduduk by Nama Kepala Keluarga
 //@routes   GET
 //@endpoint /api/penduduk/k
 //@access   Private
-router.route("/k").get(getPendudukByNamaKepalaKeluarga);
+router.route("/k").all(middleware).get(getPendudukByNamaKepalaKeluarga);
 
 //@desc     GET Penduduk by id
 //@routes   GET
 //@endpoint /api/penduduk/:id
 //@access   Private
-router.route("/:id").get(getPendudukById);
+router.route("/:id").all(middleware).get(getPendudukById);
 
 module.exports = router;

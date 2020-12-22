@@ -7,6 +7,7 @@ const {
   getKartuKeluargaByID,
 } = require("../controllers/kartu_keluarga.controller");
 const router = express.Router();
+const middleware = require("../middlewares/auth");
 
 //@desc     GET All Kartu Keluarga
 //@routes   GET
@@ -17,13 +18,17 @@ const router = express.Router();
 //@routes   POST
 //@endpoint /api/kartukeluarga
 //@access   Private
-router.route("/").get(getAllKartuKeluarga).post(postKartuKeluarga);
+router
+  .route("/")
+  .all(middleware)
+  .get(getAllKartuKeluarga)
+  .post(postKartuKeluarga);
 
 //@desc     GET Kartu Keluarga By Id
 //@routes   GET
 //@endpoint /api/kartukeluarga/:id
 //@access   Private
-router.route("/:id").get(getKartuKeluargaByID);
+router.route("/:id").all(middleware).get(getKartuKeluargaByID);
 
 //@desc     Update Kartu Keluarga
 //@routes   PUT
@@ -34,6 +39,10 @@ router.route("/:id").get(getKartuKeluargaByID);
 //@routes   DELETE
 //@endpoint /api/kartukeluarga/:id
 //@access   Private
-router.route("/:id").put(updateKartuKeluarga).delete(deleteKartuKeluarga);
+router
+  .route("/:id")
+  .all(middleware)
+  .put(updateKartuKeluarga)
+  .delete(deleteKartuKeluarga);
 
 module.exports = router;
