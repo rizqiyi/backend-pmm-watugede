@@ -17,6 +17,30 @@ exports.getAllKartuKeluarga = async (req, res) => {
   }
 };
 
+exports.getKartuKeluargaByID = async (req, res) => {
+  try {
+    const t = await KartuKeluargaSchema.findById(req.params.id).populate(
+      "anggota_keluarga"
+    );
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "ID KK Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 exports.postKartuKeluarga = async (req, res) => {
   try {
     const t = await KartuKeluargaSchema.create({

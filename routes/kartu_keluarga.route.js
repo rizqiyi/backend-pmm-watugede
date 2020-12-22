@@ -4,6 +4,7 @@ const {
   postKartuKeluarga,
   updateKartuKeluarga,
   deleteKartuKeluarga,
+  getKartuKeluargaByID,
 } = require("../controllers/kartu_keluarga.controller");
 const router = express.Router();
 
@@ -17,6 +18,12 @@ const router = express.Router();
 //@endpoint /api/kartukeluarga
 //@access   Private
 router.route("/").get(getAllKartuKeluarga).post(postKartuKeluarga);
+
+//@desc     GET Kartu Keluarga By Id
+//@routes   GET
+//@endpoint /api/kartukeluarga
+//@access   Private
+router.route("/:id").get(getKartuKeluargaByID);
 
 //@desc     Update Kartu Keluarga
 //@routes   PUT
