@@ -5,8 +5,28 @@ exports.getAllKartuKeluarga = async (req, res) => {
   try {
     const t = await KartuKeluargaSchema.find().populate("anggota_keluarga");
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+exports.getKartuKeluarOnlyWithKepalaKeluarga = async (req, res) => {
+  try {
+    const t = await KartuKeluargaSchema.find({}).populate({
+      path: "anggota_keluarga",
+      match: { posisi_dalam_keluarga: "Kepala Keluarga" },
+    });
+
+    return res.status(200).json({
+      success: true,
+      count: t.length,
       data: t,
     });
   } catch (err) {

@@ -5,6 +5,7 @@ const {
   updateKartuKeluarga,
   deleteKartuKeluarga,
   getKartuKeluargaByID,
+  getKartuKeluarOnlyWithKepalaKeluarga,
 } = require("../controllers/kartu_keluarga.controller");
 const router = express.Router();
 const middleware = require("../middlewares/auth");
@@ -23,6 +24,8 @@ router
   .all(middleware)
   .get(getAllKartuKeluarga)
   .post(postKartuKeluarga);
+
+router.route("/k").get(getKartuKeluarOnlyWithKepalaKeluarga);
 
 //@desc     GET Kartu Keluarga By Id
 //@routes   GET
