@@ -63,23 +63,41 @@ exports.getKartuKeluargaByID = async (req, res) => {
 
 exports.postKartuKeluarga = async (req, res) => {
   try {
-    const findDuplicateKK = await KartuKeluargaSchema.find({
-      no_kk: req.body.no_kk,
-    });
-
-    if (findDuplicateKK.length > 0)
-      return res.status(400).json({
-        success: false,
-        message: "Nomor KK yang Anda inputkan sudah terdapat pada data",
+    if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
+      if (req.body.no_kk !== req.body.nik) {
+        return res.status(400).json({
+          success: false,
+          message: "Nomor KK dan Nomor NIK Kepala Keluarga harus sama",
+        });
+      }
+      const t = await KartuKeluargaSchema.create({
+        no_kk: req.body.no_kk,
       });
 
-    const t = await KartuKeluargaSchema.create({
-      no_kk: req.body.no_kk,
-    });
+      const r = await PendudukSchema.create({
+        ...req.body,
+        keluarga_dari: t._id,
+      });
 
-    return res.status(201).json({
+      await KartuKeluargaSchema.findByIdAndUpdate(
+        { _id: t._id },
+        {
+          $push: {
+            anggota_keluarga: r._id,
+          },
+        },
+        { upsert: true, new: true, useFindAndModify: false }
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: `Berhasil Menambahkan Kartu Keluarga dengan Nomor KK Kepala Keluarga (${t.no_kk})`,
+      });
+    }
+
+    return res.status(400).json({
       success: true,
-      message: `Berhasil Menambahkan Kartu Keluarga dengan Nomor KK ${t.no_kk}`,
+      message: `Inputan harus berupa kepala keluarga`,
     });
   } catch (err) {
     return res.status(500).json({
