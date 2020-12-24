@@ -29,9 +29,14 @@ exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       posisi_dalam_keluarga: "Kepala Keluarga",
-    }).populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
-    );
+    }).populate({
+      path: "keluarga_dari",
+      model: "kartu_keluarga",
+      populate: {
+        path: "anggota_keluarga",
+        model: "penduduk",
+      },
+    });
 
     return res.status(200).json({
       success: true,
