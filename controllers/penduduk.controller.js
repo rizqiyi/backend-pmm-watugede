@@ -215,28 +215,23 @@ exports.updatePenduduk = async (req, res) => {
 // referensi lama
 exports.deletePenduduk = async (req, res) => {
   try {
-    const yourId = await PendudukSchema.findById(req.params.id);
-
-    if (!yourId)
-      return res.status(404).json({
-        success: false,
-        message: "Not found",
-      });
-
-    const t = await PendudukSchema.findByIdAndDelete(req.params.id);
-
-    await KeteranganKeluarSchema.findOneAndDelete({
-      nama_pengusul_keterangan: req.params.id,
-    });
-
-    await PendudukKeluarSchema.deleteMany({
-      nama_pengusul: req.params.id,
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: `Sukses menghapus ${t.nama_lengkap} dari penduduk`,
-    });
+    // const yourId = await PendudukSchema.findById(req.params.id);
+    // if (!yourId)
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Not found",
+    //   });
+    // const t = await PendudukSchema.findByIdAndDelete(req.params.id);
+    // await KeteranganKeluarSchema.findOneAndDelete({
+    //   nama_pengusul_keterangan: req.params.id,
+    // });
+    // await PendudukKeluarSchema.deleteMany({
+    //   nama_pengusul: req.params.id,
+    // });
+    // return res.status(200).json({
+    //   success: true,
+    //   message: `Sukses menghapus ${t.nama_lengkap} dari penduduk`,
+    // });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -266,10 +261,23 @@ exports.deletePendudukPadaKK = async (req, res) => {
 
     const t = await PendudukSchema.findByIdAndDelete(req.params.id_penduduk);
 
-    await KartuKeluargaSchema.findByIdAndUpdate(req.params.id_kk, {
+    const r = await KartuKeluargaSchema.findByIdAndUpdate(req.params.id_kk, {
       $pull: {
         anggota_keluarga: req.params.id_penduduk,
       },
+    });
+
+    await KartuKeluargaSchema.findOne({ _id: r._id }, async (err, result) => {
+      if (err)
+        return res.status(200).json({
+          success: false,
+          message: "Something wrong",
+        });
+
+      // Check if anggota keluarga is null then delete unused kartu keluarga
+      if (result.anggota_keluarga.length === 0) {
+        await KartuKeluargaSchema.deleteOne({ _id: result._id });
+      }
     });
 
     return res.status(200).json({
