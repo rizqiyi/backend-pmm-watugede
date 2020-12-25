@@ -91,7 +91,8 @@ exports.postKartuKeluarga = async (req, res) => {
 
       return res.status(201).json({
         success: true,
-        message: `Berhasil Menambahkan Kartu Keluarga dengan Nomor KK Kepala Keluarga (${t.no_kk})`,
+        data: r,
+        message: `Berhasil Menambahkan Kartu Keluarga dengan Nomor KK Kepala Keluarga Atas nama ${r.nama_lengkap}`,
       });
     }
 

@@ -9,6 +9,7 @@ const {
   deletePendudukPadaKK,
   getPendudukByNamaKepalaKeluarga,
   getPendudukByNoKK,
+  getKepalaKeluargaById,
 } = require("../controllers/penduduk.controller");
 const middleware = require("../middlewares/auth");
 
@@ -58,6 +59,12 @@ router
 //@endpoint /api/penduduk/k
 //@access   Private
 router.route("/k").all(middleware).get(getPendudukByNamaKepalaKeluarga);
+
+//@desc     GET Penduduk by Nama Kepala Keluarga spesific id
+//@routes   GET
+//@endpoint /api/penduduk/k/:id
+//@access   Private
+router.route("/k/:id").all(middleware).get(getKepalaKeluargaById);
 
 //@desc     GET Penduduk by id
 //@routes   GET

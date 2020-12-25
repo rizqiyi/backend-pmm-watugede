@@ -12,12 +12,12 @@ const middleware = require("../middlewares/auth");
 
 //@desc     GET All Kartu Keluarga
 //@routes   GET
-//@endpoint /api/kartukeluarga
+//@endpoint /api/kartu_keluarga
 //@access   Private
 
 //@desc     POST Kartu Keluarga
 //@routes   POST
-//@endpoint /api/kartukeluarga
+//@endpoint /api/kartu_keluarga
 //@access   Private
 router
   .route("/")
@@ -29,18 +29,18 @@ router.route("/k").get(getKartuKeluarOnlyWithKepalaKeluarga);
 
 //@desc     GET Kartu Keluarga By Id
 //@routes   GET
-//@endpoint /api/kartukeluarga/:id
+//@endpoint /api/kartu_keluarga/:id
 //@access   Private
 router.route("/:id").all(middleware).get(getKartuKeluargaByID);
 
 //@desc     Update Kartu Keluarga
 //@routes   PUT
-//@endpoint /api/kartukeluarga/:id
+//@endpoint /api/kartu_keluarga/:id
 //@access   Private
 
 //@desc     Delete Kartu Keluarga
 //@routes   DELETE
-//@endpoint /api/kartukeluarga/:id
+//@endpoint /api/kartu_keluarga/:id
 //@access   Private
 router
   .route("/:id")

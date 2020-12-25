@@ -25,6 +25,41 @@ exports.getPenduduk = async (req, res) => {
   }
 };
 
+exports.getKepalaKeluargaById = async (req, res) => {
+  try {
+    await PendudukSchema.findOne(
+      {
+        _id: req.params.id,
+        posisi_dalam_keluarga: "Kepala Keluarga",
+      },
+      (err, doc) => {
+        if (err)
+          return res.status(404).json({
+            success: false,
+            message: "Not Found",
+          });
+
+        return res.status(200).json({
+          success: true,
+          data: doc,
+        });
+      }
+    ).populate({
+      path: "keluarga_dari",
+      model: "kartu_keluarga",
+      populate: {
+        path: "anggota_keluarga",
+        model: "penduduk",
+      },
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
@@ -122,6 +157,7 @@ exports.postPenduduk = async (req, res) => {
 
     return res.status(201).json({
       success: true,
+      data: t,
       message: `Berhasil Menambahkan ${t.nama_lengkap} ke Data Penduduk dan Data KK`,
     });
   } catch (err) {
