@@ -269,7 +269,7 @@ exports.deletePendudukPadaKK = async (req, res) => {
 
     await KartuKeluargaSchema.findOne({ _id: r._id }, async (err, result) => {
       if (err)
-        return res.status(200).json({
+        return res.status(400).json({
           success: false,
           message: "Something wrong",
         });

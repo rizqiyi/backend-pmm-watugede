@@ -26,9 +26,9 @@ const KeteranganKeluarSchema = mongoose.Schema({
   meninggalkan_desa_pada: {
     type: String,
   },
-  nama_pengusul_keterangan: {
+  keterangan_keluar_oleh: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "penduduk",
+    ref: "penduduk_keluar",
   },
 });
 
