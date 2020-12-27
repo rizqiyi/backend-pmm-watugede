@@ -111,6 +111,9 @@ exports.postDataPendudukKeluar = async (req, res) => {
       await PendudukSchema.findOneAndUpdate(
         { _id: yourId._id },
         {
+          $set: {
+            status_penduduk: "penduduk_keluar",
+          },
           $push: {
             data_penduduk_keluar: r._id,
           },
