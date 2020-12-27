@@ -44,6 +44,10 @@ const PendudukSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "kartu_keluarga",
     },
+    data_penduduk_keluar: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "penduduk_keluar",
+    },
   },
   { timestamps: true }
 );

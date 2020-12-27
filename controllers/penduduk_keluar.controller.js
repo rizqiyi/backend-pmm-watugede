@@ -1,6 +1,7 @@
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
 const { getRequestDataPendudukKeluar } = require("../utilities/getRequestData");
+const { findById } = require("../models/penduduk.model");
 
 //@desc     Get All Data Penduduk
 //@routes   GET
@@ -9,14 +10,12 @@ exports.getDataPendudukKeluar = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       status_penduduk: "penduduk_keluar",
-    }).populate("pengikut_keluar");
-
-    const r = await PendudukKeluarSchema.find();
+    });
 
     return res.status(200).json({
       success: true,
       message: "Succesfully fetch your data",
-      total_penduduk_keluar: t.length + r.length,
+      total_penduduk_keluar: t.length,
       data: t,
     });
   } catch (err) {
@@ -82,45 +81,76 @@ exports.getDataPendudukKeluarByName = async (req, res) => {
 //@access   Private
 exports.postDataPendudukKeluar = async (req, res) => {
   try {
-    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+    const yourId = await PendudukSchema.findById(req.params.id_penduduk);
 
-    if (!idPenduduk)
+    if (!yourId)
       return res.status(404).json({
         success: false,
-        message: "ID Penduduk Not Found",
+        message: "Not Found",
       });
 
-    const keteranganKeluar = getRequestDataPendudukKeluar(req.body);
-
-    const r = await PendudukKeluarSchema.create({
-      nama_lengkap_keluarga: keteranganKeluar.nama_lengkap_keluarga,
-      jenis_kelamin_keluarga: keteranganKeluar.jenis_kelamin_keluarga,
-      umur_keluarga: keteranganKeluar.umur_keluarga,
-      status_perkawinan_keluarga: keteranganKeluar.status_perkawinan_keluarga,
-      pendidikan_terakhir_keluarga:
-        keteranganKeluar.pendidikan_terakhir_keluarga,
-      nik_keluarga: keteranganKeluar.nik_keluarga,
-      keterangan_dalam_keluarga: keteranganKeluar.keterangan_dalam_keluarga,
-      nama_pengusul: req.params.id_penduduk,
+    const findDuplicate = await PendudukKeluarSchema.find({
+      nomor_kartu_keluarga: req.body.no_kk,
     });
 
-    const t = await PendudukSchema.findByIdAndUpdate(
-      req.params.id_penduduk,
+    if (findDuplicate.length < 1) {
+      const r = await PendudukKeluarSchema.create({
+        nomor_kartu_keluarga: req.body.no_kk,
+      });
+
+      await PendudukKeluarSchema.findByIdAndUpdate(
+        { _id: r._id },
+        {
+          $push: {
+            penduduk_keluar_desa: yourId._id,
+          },
+        },
+        { upsert: true, new: true, useFindAndModify: false }
+      );
+
+      await PendudukSchema.findOneAndUpdate(
+        { _id: yourId._id },
+        {
+          $push: {
+            data_penduduk_keluar: r._id,
+          },
+        }
+      );
+
+      return res.status(201).json({
+        success: true,
+        message: `Sukses menambahkan ${yourId.nama_lengkap} ke Data Penduduk Keluar`,
+      });
+    }
+
+    await PendudukKeluarSchema.findByIdAndUpdate(
+      { _id: findDuplicate[0]._id },
       {
         $set: {
           status_penduduk: "penduduk_keluar",
         },
         $push: {
-          pengikut_keluar: r._id,
+          penduduk_keluar_desa: yourId._id,
         },
       },
       { upsert: true, new: true, useFindAndModify: false }
     );
 
+    await PendudukSchema.findOneAndUpdate(
+      { _id: yourId._id },
+      {
+        $set: {
+          status_penduduk: "penduduk_keluar",
+        },
+        $push: {
+          data_penduduk_keluar: findDuplicate[0]._id,
+        },
+      }
+    );
+
     return res.status(201).json({
       success: true,
-      message: `Sukses menambahkan pengikut keluar ke ${t.nama_lengkap}`,
-      data: t,
+      message: `Sukses menambahkan ${yourId.nama_lengkap} ke Data Penduduk Keluar`,
     });
   } catch (err) {
     return res.status(500).json({
