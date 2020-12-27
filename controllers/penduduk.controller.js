@@ -266,37 +266,6 @@ exports.deletePendudukPadaKK = async (req, res) => {
       },
     });
 
-    const findKK = await KartuKeluargaSchema.findOne({ _id: req.params.id_kk });
-
-    await PendudukKeluarSchema.findOne(
-      {
-        nomor_kartu_keluarga: findKK.no_kk,
-      },
-      async (err, res) => {
-        await PendudukKeluarSchema.findByIdAndUpdate(
-          { _id: res._id },
-          {
-            $pull: {
-              penduduk_keluar_desa: req.params.id_penduduk,
-            },
-          }
-        );
-
-        console.log(res.penduduk_keluar_desa.length);
-      }
-    );
-
-    await PendudukKeluarSchema.findOne(
-      {
-        nomor_kartu_keluarga: findKK.no_kk,
-      },
-      async (err, res) => {
-        if (res.penduduk_keluar_desa.length === 0) {
-          await PendudukKeluarSchema.deleteOne({ _id: res._id });
-        }
-      }
-    );
-
     await KartuKeluargaSchema.findOne({ _id: r._id }, async (err, result) => {
       if (err)
         return res.status(400).json({
