@@ -1,21 +1,25 @@
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
-const { getRequestDataPendudukKeluar } = require("../utilities/getRequestData");
-const { findById } = require("../models/penduduk.model");
 
 //@desc     Get All Data Penduduk
 //@routes   GET
 //@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
-    const t = await PendudukSchema.find({
-      status_penduduk: "penduduk_keluar",
+    const t = await PendudukKeluarSchema.find(
+      {},
+      { penduduk_keluar_desa: { $slice: 1 } }
+    ).populate({
+      path: "penduduk_keluar_desa",
+      populate: {
+        path: "keluarga_dari",
+        model: "kartu_keluarga",
+      },
     });
 
     return res.status(200).json({
       success: true,
-      message: "Succesfully fetch your data",
-      total_penduduk_keluar: t.length,
+      count: t.length,
       data: t,
     });
   } catch (err) {
