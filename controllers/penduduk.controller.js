@@ -1,5 +1,4 @@
 const PendudukSchema = require("../models/penduduk.model");
-const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 
@@ -266,6 +265,37 @@ exports.deletePendudukPadaKK = async (req, res) => {
         anggota_keluarga: req.params.id_penduduk,
       },
     });
+
+    const findKK = await KartuKeluargaSchema.findOne({ _id: req.params.id_kk });
+
+    await PendudukKeluarSchema.findOne(
+      {
+        nomor_kartu_keluarga: findKK.no_kk,
+      },
+      async (err, res) => {
+        await PendudukKeluarSchema.findByIdAndUpdate(
+          { _id: res._id },
+          {
+            $pull: {
+              penduduk_keluar_desa: req.params.id_penduduk,
+            },
+          }
+        );
+
+        console.log(res.penduduk_keluar_desa.length);
+      }
+    );
+
+    await PendudukKeluarSchema.findOne(
+      {
+        nomor_kartu_keluarga: findKK.no_kk,
+      },
+      async (err, res) => {
+        if (res.penduduk_keluar_desa.length === 0) {
+          await PendudukKeluarSchema.deleteOne({ _id: res._id });
+        }
+      }
+    );
 
     await KartuKeluargaSchema.findOne({ _id: r._id }, async (err, result) => {
       if (err)

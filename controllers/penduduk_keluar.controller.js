@@ -6,10 +6,7 @@ const PendudukSchema = require("../models/penduduk.model");
 //@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
-    const t = await PendudukKeluarSchema.find(
-      {},
-      { penduduk_keluar_desa: { $slice: 1 } }
-    ).populate({
+    const t = await PendudukKeluarSchema.find({}).populate({
       path: "penduduk_keluar_desa",
       populate: {
         path: "keluarga_dari",
