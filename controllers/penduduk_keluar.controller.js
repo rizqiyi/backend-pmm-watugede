@@ -89,11 +89,11 @@ exports.postDataPendudukKeluar = async (req, res) => {
         message: "Not Found",
       });
 
-    const findDuplicate = await PendudukKeluarSchema.find({
+    const findDuplicate = await PendudukKeluarSchema.findOne({
       nomor_kartu_keluarga: req.body.no_kk,
-    });
+    }).populate("penduduk_keluar_desa");
 
-    if (findDuplicate.length < 1) {
+    if (!findDuplicate) {
       const r = await PendudukKeluarSchema.create({
         nomor_kartu_keluarga: req.body.no_kk,
       });
@@ -123,8 +123,20 @@ exports.postDataPendudukKeluar = async (req, res) => {
       });
     }
 
+    const checkIdIsRegistered = await PendudukSchema.findOne({
+      _id: req.params.id_penduduk,
+      status_penduduk: "penduduk_keluar",
+    });
+
+    if (checkIdIsRegistered)
+      return res.status(400).json({
+        success: false,
+        message:
+          "Penduduk yang anda tambahkan sudah terdapat pada data penduduk keluar",
+      });
+
     await PendudukKeluarSchema.findByIdAndUpdate(
-      { _id: findDuplicate[0]._id },
+      { _id: findDuplicate._id },
       {
         $set: {
           status_penduduk: "penduduk_keluar",
@@ -143,7 +155,7 @@ exports.postDataPendudukKeluar = async (req, res) => {
           status_penduduk: "penduduk_keluar",
         },
         $push: {
-          data_penduduk_keluar: findDuplicate[0]._id,
+          data_penduduk_keluar: findDuplicate._id,
         },
       }
     );
