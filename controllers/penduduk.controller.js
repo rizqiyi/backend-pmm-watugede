@@ -277,13 +277,12 @@ exports.deletePendudukPadaKK = async (req, res) => {
           { _id: res._id },
           {
             $pull: { penduduk_keluar_desa: req.params.id_penduduk },
-          },
-          async (err, res) => {
-            if (res.penduduk_keluar_desa.length === 0) {
-              await PendudukKeluarSchema.deleteOne({ _id: res._id });
-            }
           }
         );
+
+        if (res.penduduk_keluar_desa.length === 0) {
+          await PendudukKeluarSchema.deleteOne({ _id: res._id });
+        }
       }
     );
 
@@ -293,6 +292,17 @@ exports.deletePendudukPadaKK = async (req, res) => {
           success: false,
           message: "Something wrong",
         });
+
+      await PendudukKeluarSchema.findOne(
+        {
+          nomor_kartu_keluarga: findKK.no_kk,
+        },
+        async (err, res) => {
+          if (res.penduduk_keluar_desa.length === 0) {
+            await PendudukKeluarSchema.deleteOne({ _id: res._id });
+          }
+        }
+      );
 
       // Check if anggota keluarga is null then delete unused kartu keluarga
       if (result.anggota_keluarga.length === 0) {
