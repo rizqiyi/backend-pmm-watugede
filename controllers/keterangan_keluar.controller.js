@@ -1,5 +1,5 @@
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
-const PendudukSchema = require("../models/penduduk.model");
+const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const {
   getRequestDataKeteranganKeluar,
 } = require("../utilities/getRequestData");
@@ -9,36 +9,38 @@ const {
 //@access   Private
 exports.postKeteranganPendudukKeluar = async (req, res) => {
   try {
-    const yourId = await PendudukSchema.findById(req.params.id_penduduk);
+    const findPendudukKeluar = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk_keluar
+    );
 
-    if (!yourId)
+    if (!findPendudukKeluar)
       return res.status(404).json({
         success: false,
         message: "Not Found",
       });
 
-    const dataPenduduk = getRequestDataKeteranganKeluar(req.body);
+    const dataToPost = getRequestDataKeteranganKeluar(req.body);
 
     const t = await KeteranganKeluarSchema.create({
-      tanggal_ktp: dataPenduduk.tanggal_ktp,
-      alamat_pindah: dataPenduduk.alamat_pindah,
-      alasan_pindah: dataPenduduk.alasan_pindah,
-      pengikut: dataPenduduk.pengikut,
-      catatan: dataPenduduk.catatan,
+      nomor_surat: dataToPost.nomor_surat,
+      tanggal_ktp: dataToPost.tanggal_ktp,
+      alamat_pindah: dataToPost.alamat_pindah,
+      alasan_pindah: dataToPost.alasan_pindah,
+      pengikut: dataToPost.pengikut,
+      catatan: dataToPost.catatan,
       foto_pengusul: req.file.path,
-      meninggalkan_desa_pada: dataPenduduk.meninggalkan_desa_pada,
-      nomor_surat: req.body.nomor_surat,
-      nama_pengusul_keterangan: req.params.id_penduduk,
+      meninggalkan_desa_pada: dataToPost.meninggalkan_desa_pada,
+      keterangan_keluar_oleh: req.params.id_penduduk_keluar,
     });
 
-    await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
-      $set: {
-        status_penduduk: "penduduk_keluar",
-      },
-      $push: {
-        keterangan_keluar: t._id,
-      },
-    });
+    await PendudukKeluarSchema.findByIdAndUpdate(
+      { _id: req.params.id_penduduk_keluar },
+      {
+        $push: {
+          keterangan_keluar_desa: t._id,
+        },
+      }
+    );
 
     return res.status(201).json({
       success: true,
@@ -48,39 +50,6 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: err,
-    });
-  }
-};
-
-//@desc     GET Data Keterangan Penduduk Keluar By ID Penduduk
-//@routes   GET
-//@access   Private
-exports.getKeteranganPendudukKeluarByIDPenduduk = async (req, res) => {
-  try {
-    const yourId = await KeteranganKeluarSchema.find({
-      nama_pengusul_keterangan: req.params.id,
-    });
-
-    if (!yourId)
-      return res.status(404).json({
-        success: false,
-        message: "Not Found",
-      });
-
-    if (yourId.length === 0)
-      return res.status(200).json({
-        success: true,
-        message: "Data kosong",
-      });
-
-    return res.status(200).json({
-      success: true,
-      yourId,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
     });
   }
 };
@@ -163,37 +132,42 @@ exports.updateKeteranganPendudukKeluar = async (req, res) => {
 //@access   Private
 exports.deleteKeteranganPendudukKeluar = async (req, res) => {
   try {
-    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+    const findPendudukKeluar = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk_keluar
+    );
 
-    if (!idPenduduk)
+    if (!findPendudukKeluar)
       return res.status(404).json({
         success: false,
-        message: "Id Penduduk Not Found",
+        message: "Id Penduduk Keluar Not Found",
       });
 
-    const idKeteranganKeluar = await KeteranganKeluarSchema.findById(
+    const findKeteranganKeluar = await KeteranganKeluarSchema.findById(
       req.params.id_keterangan_keluar
     );
 
-    if (!idKeteranganKeluar)
+    if (!findKeteranganKeluar)
       return res.status(404).json({
         success: false,
         message: "Id Keterangan Keluar Not Found",
       });
 
-    await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
-      $pull: {
-        keterangan_keluar: req.params.id_keterangan_keluar,
-      },
-    });
-
-    await KeteranganKeluarSchema.findByIdAndDelete(
-      req.params.id_keterangan_keluar
+    const t = await PendudukKeluarSchema.findByIdAndUpdate(
+      req.params.id_penduduk_keluar,
+      {
+        $pull: {
+          keterangan_keluar_desa: req.params.id_keterangan_keluar,
+        },
+      }
     );
+
+    await KeteranganKeluarSchema.deleteOne({
+      _id: req.params.id_keterangan_keluar,
+    });
 
     return res.status(200).json({
       success: true,
-      message: `Successfully deleted your data master.`,
+      message: `Sukses menghapus data keterangan keluar dari nomor kk ${t.nomor_kartu_keluarga}`,
     });
   } catch (err) {
     return res.status(500).json({

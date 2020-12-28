@@ -4,7 +4,6 @@ const {
   updateKeteranganPendudukKeluar,
   deleteKeteranganPendudukKeluar,
   postKeteranganPendudukKeluar,
-  getKeteranganPendudukKeluarByIDPenduduk,
 } = require("../controllers/keterangan_keluar.controller");
 
 const router = express.Router();
@@ -35,7 +34,7 @@ const upload = multer({
 //@endpoint /api/keterangan/:id
 //@access   Private
 router
-  .route("/:id_penduduk")
+  .route("/:id_penduduk_keluar")
   .all(middleware)
   .post(upload.single("foto_pengusul"), postKeteranganPendudukKeluar);
 
@@ -44,15 +43,6 @@ router
 //@endpoint /api/keterangan/:id
 //@access   Private
 router.route("/:id").all(middleware).get(getKeteranganPendudukKeluar);
-
-//@desc     GET Data Keterangan Keluar By ID Penduduk
-//@routes   GET
-//@endpoint /api/keterangan/p/:id
-//@access   Private
-router
-  .route("/p/:id")
-  .all(middleware)
-  .get(getKeteranganPendudukKeluarByIDPenduduk);
 
 //@desc     Update Data Keterangan Keluar
 //@routes   PUT
@@ -68,7 +58,7 @@ router
 //@endpoint /api/keterangan/:id_penduduk/d/:id_keterangan_keluar
 //@access   Private
 router
-  .route("/:id_penduduk/d/:id_keterangan_keluar")
+  .route("/:id_penduduk_keluar/d/:id_keterangan_keluar")
   .all(middleware)
   .delete(deleteKeteranganPendudukKeluar);
 
