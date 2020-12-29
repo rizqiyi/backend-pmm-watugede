@@ -32,9 +32,9 @@ exports.getDataPendudukKeluar = async (req, res) => {
 //@access   Private
 exports.getDataPendudukKeluarByID = async (req, res) => {
   try {
-    const t = await PendudukSchema.findById(req.params.id_penduduk).populate(
-      "pengikut_keluar"
-    );
+    const t = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk
+    ).populate("keterangan_keluar_desa penduduk_keluar_desa");
 
     return res.status(200).json({
       success: true,
