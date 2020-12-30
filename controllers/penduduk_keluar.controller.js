@@ -86,6 +86,48 @@ exports.getDataPendudukKeluarByName = async (req, res) => {
   }
 };
 
+exports.postManyDataPendudukKeluar = async (req, res) => {
+  try {
+    const findID = await KartuKeluargaSchema.findById(req.params.id_penduduk);
+
+    if (!findID)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    const t = await PendudukKeluarSchema.create({
+      nomor_kartu_keluarga: findID.no_kk,
+    });
+
+    await PendudukSchema.updateMany(
+      { _id: findID.anggota_keluarga },
+      {
+        $set: {
+          status_penduduk: "penduduk_keluar",
+        },
+      }
+    );
+
+    await PendudukKeluarSchema.updateOne(
+      { _id: t._id },
+      {
+        $push: {
+          penduduk_keluar_desa: findID.anggota_keluarga,
+        },
+      }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message:
+        "Berhasil Menambahkan Semua Anggota Keluarga ke Data Penduduk Keluar",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 //@desc     POST Data Penduduk
 //@routes   POST
 //@access   Private

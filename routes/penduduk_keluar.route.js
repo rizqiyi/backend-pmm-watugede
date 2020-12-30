@@ -4,6 +4,7 @@ const {
   getDataPendudukKeluarByName,
   getDataPendudukKeluar,
   postDataPendudukKeluar,
+  postManyDataPendudukKeluar,
   deleteDataPendudukKeluar,
   getDataPendudukKeluarByID,
   deleteAllDataPendudukKeluar,
@@ -35,6 +36,15 @@ router.route("/:id_penduduk").all(middleware).get(getDataPendudukKeluarByID);
 //@endpoint /api/penduduk_keluar/:id_penduduk
 //@access   Private
 router.route("/:id_penduduk").all(middleware).post(postDataPendudukKeluar);
+
+//@desc     POST Penduduk Keluar
+//@routes   POST
+//@endpoint /api/penduduk_keluar/:id_penduduk/m
+//@access   Private
+router
+  .route("/:id_penduduk/m")
+  .all(middleware)
+  .post(postManyDataPendudukKeluar);
 
 //@desc     Delete Penduduk Keluar
 //@routes   DELETE
