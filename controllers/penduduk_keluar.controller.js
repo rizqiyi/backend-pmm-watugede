@@ -1,5 +1,8 @@
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
+const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
+const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
+const { find } = require("../models/keterangan_keluar.model");
 
 //@desc     Get All Data Penduduk
 //@routes   GET
@@ -232,6 +235,44 @@ exports.deleteDataPendudukKeluar = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
+    });
+  }
+};
+
+exports.deleteAllDataPendudukKeluar = async (req, res) => {
+  try {
+    const findData = await PendudukKeluarSchema.findById(req.params.id_data);
+
+    if (!findData)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    await PendudukSchema.updateMany(
+      { _id: findData.penduduk_keluar_desa },
+      {
+        $set: {
+          status_penduduk: "",
+        },
+      }
+    );
+
+    await KeteranganKeluarSchema.deleteOne({
+      _id: findData.keterangan_keluar_desa,
+    });
+
+    await PendudukKeluarSchema.deleteOne({ _id: req.params.id_data });
+
+    return res.status(200).json({
+      success: true,
+      message: "Sukses Menghapus Semua Data Penduduk Keluar",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: err,
     });
   }
 };

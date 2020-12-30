@@ -6,6 +6,7 @@ const {
   postDataPendudukKeluar,
   deleteDataPendudukKeluar,
   getDataPendudukKeluarByID,
+  deleteAllDataPendudukKeluar,
 } = require("../controllers/penduduk_keluar.controller");
 const middleware = require("../middlewares/auth");
 
@@ -43,5 +44,7 @@ router
   .route("/:id_penduduk/d/:id_penduduk_keluar")
   .all(middleware)
   .delete(deleteDataPendudukKeluar);
+
+router.route("/:id_data/d").delete(deleteAllDataPendudukKeluar);
 
 module.exports = router;
