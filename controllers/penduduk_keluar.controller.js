@@ -96,6 +96,20 @@ exports.postManyDataPendudukKeluar = async (req, res) => {
         message: "Not Found",
       });
 
+    const findDuplicateEntries = await PendudukSchema.find({
+      _id: {
+        $in: findID.anggota_keluarga,
+      },
+      status_penduduk: "penduduk_keluar",
+    });
+
+    if (findDuplicateEntries.length > 0)
+      return res.status(400).json({
+        success: false,
+        message:
+          "Data yang Anda Tambahkan Sudah Terdapat Pada Data Penduduk Keluar",
+      });
+
     const t = await PendudukKeluarSchema.create({
       nomor_kartu_keluarga: findID.no_kk,
     });
@@ -124,7 +138,10 @@ exports.postManyDataPendudukKeluar = async (req, res) => {
         "Berhasil Menambahkan Semua Anggota Keluarga ke Data Penduduk Keluar",
     });
   } catch (err) {
-    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: err,
+    });
   }
 };
 
