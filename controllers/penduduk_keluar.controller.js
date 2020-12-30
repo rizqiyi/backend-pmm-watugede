@@ -34,7 +34,13 @@ exports.getDataPendudukKeluarByID = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.findById(
       req.params.id_penduduk
-    ).populate("keterangan_keluar_desa penduduk_keluar_desa");
+    ).populate({
+      path: "penduduk_keluar_desa keterangan_keluar_desa",
+      populate: {
+        path: "keluarga_dari",
+        model: "kartu_keluarga",
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -176,100 +182,51 @@ exports.postDataPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     Update Data Penduduk
-//@routes   PUT
-//@access   Private
-exports.updateDataPendudukKeluar = async (req, res) => {
-  try {
-    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
-    if (!idPenduduk)
-      return res.status(404).json({
-        success: false,
-        message: "ID Penduduk Not Found",
-      });
-
-    const idPendudukKeluar = await PendudukKeluarSchema.findById(
-      req.params.id_penduduk_keluar
-    );
-
-    if (!idPendudukKeluar)
-      return res.status(404).json({
-        success: false,
-        message: "ID Penduduk Keluar Not Found",
-      });
-
-    await PendudukKeluarSchema.findByIdAndUpdate(
-      { _id: req.params.id_penduduk_keluar },
-      {
-        ...req.body,
-        nama_pengusul: req.params.id_penduduk,
-      },
-      { upsert: true, new: true },
-      (err, result) => {
-        if (err)
-          return res.status(500).json({
-            success: false,
-            message: "Something wrong",
-            error: err,
-          });
-
-        return res.status(200).json({
-          success: true,
-          message: "Sukses update data penduduk keluar",
-          data: result,
-        });
-      }
-    );
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
-  }
-};
-
 //@desc     Delete Data Penduduk
 //@routes   DELETE
 //@access   Private
 exports.deleteDataPendudukKeluar = async (req, res) => {
   try {
-    const t = await PendudukSchema.findById(req.params.id_penduduk).populate(
-      "pengikut_keluar"
-    );
+    const findPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
 
-    if (!t)
+    if (!findPenduduk)
       return res.status(404).json({
         success: false,
-        message: "ID Penduduk Not Found",
+        message: "Not Found",
       });
 
-    const idPendudukKeluar = await PendudukKeluarSchema.findById(
+    const findPendudukKeluar = await PendudukKeluarSchema.findById(
       req.params.id_penduduk_keluar
     );
 
-    if (!idPendudukKeluar)
+    if (!findPendudukKeluar)
       return res.status(404).json({
         success: false,
-        message: "ID Penduduk Keluar Not Found",
+        message: "Not Found",
       });
 
-    await PendudukSchema.findById(req.params.id_penduduk, (err, result) => {
-      if (err)
-        return res.status(500).json({
-          success: false,
-          message: "Something wrong",
-        });
-      result.pengikut_keluar.pull(req.params.id_penduduk_keluar);
-      result.save();
-    });
+    const t = await PendudukSchema.findByIdAndUpdate(
+      { _id: req.params.id_penduduk },
+      {
+        $set: {
+          status_penduduk: "",
+        },
+      },
+      { upsert: true, new: true, useFindAndModify: false }
+    );
 
-    const ok = await PendudukKeluarSchema.findByIdAndDelete(
-      idPendudukKeluar._id
+    await PendudukKeluarSchema.findByIdAndUpdate(
+      { _id: req.params.id_penduduk_keluar },
+      {
+        $pull: {
+          penduduk_keluar_desa: req.params.id_penduduk,
+        },
+      }
     );
 
     return res.status(200).json({
       success: true,
-      message: `${ok.nama_lengkap_keluarga} telah dihapus dari data penduduk keluar`,
+      message: `Sukses menghapus ${t.nama_lengkap} dari data penduduk keluar`,
     });
   } catch (err) {
     return res.status(500).json({

@@ -25,7 +25,7 @@ router.route("/").all(middleware).get(getDataPendudukKeluar);
 
 //@desc     GET Penduduk Keluar By ID
 //@routes   GET
-//@endpoint /api/penduduk_keluar
+//@endpoint /api/penduduk_keluar/:id_penduduk
 //@access   Private
 router.route("/:id_penduduk").all(middleware).get(getDataPendudukKeluarByID);
 
