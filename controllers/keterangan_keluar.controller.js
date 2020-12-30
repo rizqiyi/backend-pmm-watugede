@@ -167,7 +167,7 @@ exports.deleteKeteranganPendudukKeluar = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Sukses menghapus data keterangan keluar dari nomor kk ${t.nomor_kartu_keluarga}`,
+      message: `Sukses Menghapus Data Keterangan Keluar dari Nomor Kartu Keluarga ${t.nomor_kartu_keluarga}`,
     });
   } catch (err) {
     return res.status(500).json({
