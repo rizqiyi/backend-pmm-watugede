@@ -1,10 +1,8 @@
 const express = require("express");
 
 const {
-  getDataPendudukMasuk,
-  postDataPendudukMasuk,
+  getDataPendudukMasukByID,
   postKeteranganPendudukMasuk,
-  getDataPendudukMasukByName,
   updateDataKeteranganMasuk,
   deleteDataKeteranganMasuk,
 } = require("../controllers/keterangan_masuk.controller");
@@ -32,26 +30,12 @@ const upload = multer({
   storage,
 });
 
-//@desc     Get Spesific Data Penduduk Masuk By Name
-//@routes   GET
-//@endpoint /api/penduduk_masuk/s
-//@access   Private
-router.route("/s").all(middleware).get(getDataPendudukMasukByName);
-
 //@desc     Get All Data Penduduk Masuk
 //@routes   GET
 //@endpoint /api/penduduk_masuk
 //@access   Private
 
-//@desc     Post Data Penduduk Masuk
-//@routes   POST
-//@endpoint /api/penduduk_masuk
-//@access   Private
-router
-  .route("/")
-  .all(middleware)
-  .get(getDataPendudukMasuk)
-  .post(postDataPendudukMasuk);
+router.route("/:id").all(middleware).get(getDataPendudukMasukByID);
 
 //@desc     Post Data Keterangan Penduduk Masuk
 //@routes   POST
@@ -70,10 +54,10 @@ router
 
 //@desc     Update Data Keterangan Penduduk Masuk
 //@routes   PUT
-//@endpoint /api/penduduk_masuk/:id_penduduk/u/id_keterangan_masuk
+//@endpoint /api/penduduk_masuk/id_keterangan_masuk
 //@access   Private
 router
-  .route("/:id_penduduk/u/:id_keterangan_masuk")
+  .route("/:id_keterangan_masuk")
   .all(middleware)
   .put(
     upload.fields([
@@ -88,7 +72,7 @@ router
 //@endpoint /api/penduduk_masuk/:id_penduduk/d/id_keterangan_masuk
 //@access   Private
 router
-  .route("/:id_penduduk/d/:id_keterangan_masuk")
+  .route("/:id_kartu_keluarga/d/:id_keterangan_masuk")
   .all(middleware)
   .delete(deleteDataKeteranganMasuk);
 

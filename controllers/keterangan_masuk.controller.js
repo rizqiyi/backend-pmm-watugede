@@ -1,15 +1,19 @@
 const PendudukSchema = require("../models/penduduk.model");
 const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
-const { getRequestDataPendudukMasuk } = require("../utilities/getRequestData");
+const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 
-//@desc     GET All Data Keterangan Penduduk
-//@routes   GET
-//@access   Private
 exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       status_penduduk: "penduduk_masuk",
-    }).populate("keterangan_keluar pengikut_keluar keterangan_masuk");
+    }).populate({
+      path: "keluarga_dari",
+      model: "kartu_keluarga",
+      populate: {
+        path: "anggota_keluarga",
+        model: "penduduk",
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -24,37 +28,41 @@ exports.getDataPendudukMasuk = async (req, res) => {
   }
 };
 
-//@desc     Post Data Penduduk Masuk
-//@routes   POST
+//@desc     GET All Data Keterangan Penduduk
+//@routes   GET
 //@access   Private
-exports.postDataPendudukMasuk = async (req, res) => {
+exports.getDataPendudukMasukByID = async (req, res) => {
   try {
-    const dataMasuk = getRequestDataPendudukMasuk(req.body);
-    const r = await PendudukSchema.create([
+    await PendudukSchema.findOne(
       {
-        nama_lengkap: dataMasuk.nama_lengkap,
-        jenis_kelamin: dataMasuk.jenis_kelamin,
-        tempat_tanggal_lahir: dataMasuk.tempat_tanggal_lahir,
-        umur: dataMasuk.umur,
-        agama: dataMasuk.agama,
-        status_perkawinan: dataMasuk.status_perkawinan,
-        pekerjaan: dataMasuk.pekerjaan,
-        pendidikan_terakhir: dataMasuk.pendidikan_terakhir,
-        alamat_asal: dataMasuk.alamat_asal,
-        nik: dataMasuk.nik,
-        posisi_dalam_keluarga: dataMasuk.posisi_dalam_keluarga,
+        _id: req.params.id,
         status_penduduk: "penduduk_masuk",
+        posisi_dalam_keluarga: "Kepala Keluarga",
       },
-    ]);
+      (err, doc) => {
+        if (err)
+          return res.status(404).json({
+            success: false,
+            message: "Not Found",
+          });
 
-    return res.status(201).json({
-      success: true,
-      data: r,
+        return res.status(200).json({
+          success: true,
+          data: doc,
+        });
+      }
+    ).populate({
+      path: "keluarga_dari",
+      model: "kartu_keluarga",
+      populate: {
+        path: "anggota_keluarga",
+        model: "penduduk",
+      },
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: "Server Error",
     });
   }
 };
@@ -64,7 +72,7 @@ exports.postDataPendudukMasuk = async (req, res) => {
 //@access   Private
 exports.postKeteranganPendudukMasuk = async (req, res) => {
   try {
-    const yourId = await PendudukSchema.findById(req.params.id);
+    const yourId = await KartuKeluargaSchema.findById(req.params.id);
 
     if (!yourId)
       return res.status(404).json({
@@ -78,11 +86,11 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
       pemilik: req.params.id,
     });
 
-    PendudukSchema.findByIdAndUpdate(
+    KartuKeluargaSchema.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $push: {
-          keterangan_masuk: t._id,
+          data_penduduk_masuk: t._id,
         },
       },
       (err, result) => {
@@ -94,39 +102,10 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
 
         return res.status(201).json({
           success: true,
-          data: `Sukses menambahkan keterangan masuk ke Penduduk ${result.nama_lengkap}`,
+          data: `Sukses menambahkan keterangan masuk ke Data KK ${result.no_kk}`,
         });
       }
     );
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
-
-//@desc     GET Spesific Data Keterangan Penduduk Masuk
-//@routes   GET
-//@access   Private
-exports.getDataPendudukMasukByName = async (req, res) => {
-  try {
-    const t = await PendudukSchema.find({
-      status_penduduk: "penduduk_masuk",
-      nama_lengkap: req.query.name,
-    });
-
-    if (!t)
-      return res.status(404).json({
-        success: false,
-        message: "Not Found",
-      });
-
-    return res.status(200).json({
-      success: true,
-      count: t.length,
-      data: t,
-    });
   } catch (err) {
     return res.status(500).json({
       success: false,
@@ -140,14 +119,6 @@ exports.getDataPendudukMasukByName = async (req, res) => {
 //@access   Private
 exports.updateDataKeteranganMasuk = async (req, res) => {
   try {
-    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
-
-    if (!idPenduduk)
-      return res.status(404).json({
-        success: false,
-        message: "ID Penduduk Not Found",
-      });
-
     const idKeteranganMasuk = await KeteranganMasukSchema.findById(
       req.params.id_keterangan_masuk
     );
@@ -198,12 +169,14 @@ exports.updateDataKeteranganMasuk = async (req, res) => {
 //@access   Private
 exports.deleteDataKeteranganMasuk = async (req, res) => {
   try {
-    const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
+    const idKK = await KartuKeluargaSchema.findById(
+      req.params.id_kartu_keluarga
+    );
 
-    if (!idPenduduk)
+    if (!idKK)
       return res.status(404).json({
         success: false,
-        message: "ID Penduduk Not Found",
+        message: "ID KK Not Found",
       });
 
     const idKeteranganMasuk = await KeteranganMasukSchema.findById(
@@ -216,11 +189,14 @@ exports.deleteDataKeteranganMasuk = async (req, res) => {
         message: "ID Keterangan Masuk Not Found",
       });
 
-    const t = await PendudukSchema.findByIdAndUpdate(req.params.id_penduduk, {
-      $pull: {
-        keterangan_masuk: req.params.id_keterangan_masuk,
-      },
-    });
+    const t = await KartuKeluargaSchema.findByIdAndUpdate(
+      req.params.id_kartu_keluarga,
+      {
+        $pull: {
+          data_penduduk_masuk: req.params.id_keterangan_masuk,
+        },
+      }
+    );
 
     await KeteranganMasukSchema.findByIdAndDelete(
       req.params.id_keterangan_masuk

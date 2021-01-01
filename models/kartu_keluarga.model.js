@@ -11,6 +11,12 @@ const KartuKeluargaSchema = mongoose.Schema(
         ref: "penduduk",
       },
     ],
+    data_penduduk_masuk: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "keterangan_masuk",
+      },
+    ],
   },
   { timestamps: true }
 );

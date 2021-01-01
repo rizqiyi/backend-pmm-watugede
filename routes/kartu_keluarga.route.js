@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getAllKartuKeluarga,
   postKartuKeluarga,
+  postKartuKeluargaPendudukMasuk,
   updateKartuKeluarga,
   deleteKartuKeluarga,
   getKartuKeluargaByID,
@@ -15,15 +16,17 @@ const middleware = require("../middlewares/auth");
 //@endpoint /api/kartu_keluarga
 //@access   Private
 
-//@desc     POST Kartu Keluarga
-//@routes   POST
-//@endpoint /api/kartu_keluarga
-//@access   Private
 router
   .route("/")
   .all(middleware)
   .get(getAllKartuKeluarga)
   .post(postKartuKeluarga);
+
+//@desc     POST Kartu Keluarga Penduduk Masuk
+//@routes   POST
+//@endpoint /api/kartu_keluarga/in
+//@access   Private
+router.route("/in").post(postKartuKeluargaPendudukMasuk);
 
 router.route("/k").get(getKartuKeluarOnlyWithKepalaKeluarga);
 

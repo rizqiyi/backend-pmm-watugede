@@ -9,7 +9,7 @@ const PendudukMasukSchema = mongoose.Schema({
   },
   pemilik: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "penduduk",
+    ref: "kartu_keluarga",
   },
 });
 
