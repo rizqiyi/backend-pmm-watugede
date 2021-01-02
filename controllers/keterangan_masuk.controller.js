@@ -64,8 +64,7 @@ exports.getDataPendudukMasukByID = async (req, res) => {
       path: "keluarga_dari",
       model: "kartu_keluarga",
       populate: {
-        path: "anggota_keluarga",
-        model: "penduduk",
+        path: "anggota_keluarga data_penduduk_masuk",
       },
     });
   } catch (err) {
