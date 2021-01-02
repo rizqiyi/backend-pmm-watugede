@@ -4,7 +4,6 @@ const {
   getDataPendudukMasuk,
   getDataPendudukMasukByID,
   postKeteranganPendudukMasuk,
-  postPendudukMasuk,
   updateDataKeteranganMasuk,
   deleteDataKeteranganMasuk,
 } = require("../controllers/keterangan_masuk.controller");
@@ -40,12 +39,6 @@ router.route("/k").all(middleware).get(getDataPendudukMasuk);
 //@access   Private
 router.route("/:id").all(middleware).get(getDataPendudukMasukByID);
 
-//@desc     POST Data Penduduk Masuk
-//@routes   POST
-//@endpoint /api/penduduk_masuk/p
-//@access   Private
-router.route("/p").all(middleware).post(postPendudukMasuk);
-
 //@desc     Post Data Keterangan Penduduk Masuk
 //@routes   POST
 //@endpoint /api/penduduk_masuk/:id/p
@@ -55,7 +48,7 @@ router
   .all(middleware)
   .post(
     upload.fields([
-      { name: "foto_nik", maxCount: 1 },
+      { name: "foto_kk", maxCount: 1 },
       { name: "foto_surat_masuk", maxCount: 1 },
     ]),
     postKeteranganPendudukMasuk
@@ -70,7 +63,7 @@ router
   .all(middleware)
   .put(
     upload.fields([
-      { name: "foto_nik", maxCount: 1 },
+      { name: "foto_kk", maxCount: 1 },
       { name: "foto_surat_masuk", maxCount: 1 },
     ]),
     updateDataKeteranganMasuk

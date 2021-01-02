@@ -76,67 +76,6 @@ exports.getDataPendudukMasukByID = async (req, res) => {
   }
 };
 
-//@desc     POST Data Penduduk Masuk
-//@routes   POST
-//@access   Private
-exports.postPendudukMasuk = async (req, res) => {
-  try {
-    const findKK = await KartuKeluargaSchema.findById(req.params.id);
-
-    if (!findKK) {
-      return res.status(404).json({
-        success: false,
-        message: "Not Found",
-      });
-    }
-
-    const findDuplicateNIK = await PendudukSchema.find({
-      nik: req.body.nik,
-    });
-
-    if (findDuplicateNIK.length > 0)
-      return res.status(400).json({
-        success: false,
-        message: "Nomor NIK yang Anda Inputkan sudah Terdapat Pada Data",
-      });
-
-    if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
-      if (findKK.no_kk !== req.body.nik)
-        return res.status(400).json({
-          success: false,
-          message: "No KK dan No NIK Kepala Keluarga Harus Sama",
-        });
-    }
-
-    const t = await PendudukSchema.create({
-      ...req.body,
-      status_penduduk: "penduduk_masuk",
-      keluarga_dari: req.params.id,
-    });
-
-    await KartuKeluargaSchema.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $push: {
-          anggota_keluarga: t.id,
-        },
-      },
-      { upsert: true, new: true, useFindAndModify: false }
-    );
-
-    return res.status(201).json({
-      success: true,
-      data: t,
-      message: `Berhasil Menambahkan ${t.nama_lengkap} ke Data Penduduk dan Data KK`,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: err,
-    });
-  }
-};
-
 //@desc     Post Data Keterangan Penduduk Masuk
 //@routes   POST
 //@access   Private
@@ -151,7 +90,7 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
       });
 
     const t = await KeteranganMasukSchema.create({
-      foto_nik: req.files["foto_nik"][0].path,
+      foto_kk: req.files["foto_kk"][0].path,
       foto_surat_masuk: req.files["foto_surat_masuk"][0].path,
       pemilik: req.params.id,
     });
@@ -172,7 +111,7 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
 
         return res.status(201).json({
           success: true,
-          data: `Sukses menambahkan keterangan masuk ke Data KK ${result.no_kk}`,
+          data: `Sukses Menambahkan Data Keterangan Masuk ke Data KK ${result.no_kk}`,
         });
       }
     );
@@ -205,7 +144,7 @@ exports.updateDataKeteranganMasuk = async (req, res) => {
     await KeteranganMasukSchema.findByIdAndUpdate(
       { _id: req.params.id_keterangan_masuk },
       {
-        foto_nik: condition("foto_nik", req.body.foto_nik),
+        foto_kk: condition("foto_kk", req.body.foto_kk),
         foto_surat_masuk: condition(
           "foto_surat_masuk",
           req.body.foto_surat_masuk

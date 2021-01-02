@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const PendudukMasukSchema = mongoose.Schema({
-  foto_nik: {
+  foto_kk: {
     type: String,
   },
   foto_surat_masuk: {
