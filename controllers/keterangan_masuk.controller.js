@@ -2,6 +2,9 @@ const PendudukSchema = require("../models/penduduk.model");
 const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 
+//@desc     GET All Data Keterangan Penduduk
+//@routes   GET
+//@access   Private
 exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
@@ -28,7 +31,7 @@ exports.getDataPendudukMasuk = async (req, res) => {
   }
 };
 
-//@desc     GET All Data Keterangan Penduduk
+//@desc     GET Data Keterangan Penduduk By ID
 //@routes   GET
 //@access   Private
 exports.getDataPendudukMasukByID = async (req, res) => {
@@ -44,6 +47,12 @@ exports.getDataPendudukMasukByID = async (req, res) => {
           return res.status(404).json({
             success: false,
             message: "Not Found",
+          });
+
+        if (!doc)
+          return res.status(404).json({
+            success: false,
+            message: "Penduduk Not Found",
           });
 
         return res.status(200).json({
@@ -63,6 +72,67 @@ exports.getDataPendudukMasukByID = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server Error",
+    });
+  }
+};
+
+//@desc     POST Data Penduduk
+//@routes   POST
+//@access   Private
+exports.postPendudukMasuk = async (req, res) => {
+  try {
+    const findKK = await KartuKeluargaSchema.findById(req.params.id);
+
+    if (!findKK) {
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+    }
+
+    const findDuplicateNIK = await PendudukSchema.find({
+      nik: req.body.nik,
+    });
+
+    if (findDuplicateNIK.length > 0)
+      return res.status(400).json({
+        success: false,
+        message: "Nomor NIK yang Anda Inputkan sudah Terdapat Pada Data",
+      });
+
+    if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
+      if (findKK.no_kk !== req.body.nik)
+        return res.status(400).json({
+          success: false,
+          message: "No KK dan No NIK Kepala Keluarga Harus Sama",
+        });
+    }
+
+    const t = await PendudukSchema.create({
+      ...req.body,
+      status_penduduk: "penduduk_masuk",
+      keluarga_dari: req.params.id,
+    });
+
+    await KartuKeluargaSchema.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          anggota_keluarga: t.id,
+        },
+      },
+      { upsert: true, new: true, useFindAndModify: false }
+    );
+
+    return res.status(201).json({
+      success: true,
+      data: t,
+      message: `Berhasil Menambahkan ${t.nama_lengkap} ke Data Penduduk dan Data KK`,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err,
     });
   }
 };

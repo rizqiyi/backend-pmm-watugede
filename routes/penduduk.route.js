@@ -3,7 +3,6 @@ const {
   getPenduduk,
   postPenduduk,
   updatePenduduk,
-  deletePenduduk,
   getPendudukByName,
   getPendudukById,
   deletePendudukPadaKK,
@@ -48,7 +47,7 @@ router.route("/:id").all(middleware).post(postPenduduk);
 //@routes   DELETE
 //@endpoint /api/penduduk/:id
 //@access   Private
-router.route("/:id").all(middleware).put(updatePenduduk).delete(deletePenduduk);
+router.route("/:id").all(middleware).put(updatePenduduk);
 router
   .route("/:id_penduduk/d/:id_kk")
   .all(middleware)

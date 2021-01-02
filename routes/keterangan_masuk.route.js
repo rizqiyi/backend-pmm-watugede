@@ -3,6 +3,7 @@ const express = require("express");
 const {
   getDataPendudukMasukByID,
   postKeteranganPendudukMasuk,
+  postPendudukMasuk,
   updateDataKeteranganMasuk,
   deleteDataKeteranganMasuk,
 } = require("../controllers/keterangan_masuk.controller");
@@ -30,12 +31,17 @@ const upload = multer({
   storage,
 });
 
-//@desc     Get All Data Penduduk Masuk
+//@desc     Get Data Penduduk Masuk By ID
 //@routes   GET
-//@endpoint /api/penduduk_masuk
+//@endpoint /api/penduduk_masuk/:id
 //@access   Private
-
 router.route("/:id").all(middleware).get(getDataPendudukMasukByID);
+
+//@desc     POST Data Penduduk Masuk
+//@routes   POST
+//@endpoint /api/penduduk_masuk/p
+//@access   Private
+router.route("/p").all(middleware).post(postPendudukMasuk);
 
 //@desc     Post Data Keterangan Penduduk Masuk
 //@routes   POST

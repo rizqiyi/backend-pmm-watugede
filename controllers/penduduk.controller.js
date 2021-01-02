@@ -211,35 +211,6 @@ exports.updatePenduduk = async (req, res) => {
 //@desc     Delete Data Penduduk
 //@routes   DELETE
 //@access   Private
-// referensi lama
-exports.deletePenduduk = async (req, res) => {
-  try {
-    // const yourId = await PendudukSchema.findById(req.params.id);
-    // if (!yourId)
-    //   return res.status(404).json({
-    //     success: false,
-    //     message: "Not found",
-    //   });
-    // const t = await PendudukSchema.findByIdAndDelete(req.params.id);
-    // await KeteranganKeluarSchema.findOneAndDelete({
-    //   nama_pengusul_keterangan: req.params.id,
-    // });
-    // await PendudukKeluarSchema.deleteMany({
-    //   nama_pengusul: req.params.id,
-    // });
-    // return res.status(200).json({
-    //   success: true,
-    //   message: `Sukses menghapus ${t.nama_lengkap} dari penduduk`,
-    // });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
-
-// terbaru
 exports.deletePendudukPadaKK = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
