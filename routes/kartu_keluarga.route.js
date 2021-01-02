@@ -26,9 +26,9 @@ router
 //@routes   POST
 //@endpoint /api/kartu_keluarga/in
 //@access   Private
-router.route("/in").post(postKartuKeluargaPendudukMasuk);
+router.route("/in").all(middleware).post(postKartuKeluargaPendudukMasuk);
 
-router.route("/k").get(getKartuKeluarOnlyWithKepalaKeluarga);
+router.route("/k").all(middleware).get(getKartuKeluarOnlyWithKepalaKeluarga);
 
 //@desc     GET Kartu Keluarga By Id
 //@routes   GET

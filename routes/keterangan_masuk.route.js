@@ -1,6 +1,7 @@
 const express = require("express");
 
 const {
+  getDataPendudukMasuk,
   getDataPendudukMasukByID,
   postKeteranganPendudukMasuk,
   postPendudukMasuk,
@@ -30,6 +31,8 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+
+router.route("/k").all(middleware).get(getDataPendudukMasuk);
 
 //@desc     Get Data Penduduk Masuk By ID
 //@routes   GET

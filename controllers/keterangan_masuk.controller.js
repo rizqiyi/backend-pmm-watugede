@@ -76,7 +76,7 @@ exports.getDataPendudukMasukByID = async (req, res) => {
   }
 };
 
-//@desc     POST Data Penduduk
+//@desc     POST Data Penduduk Masuk
 //@routes   POST
 //@access   Private
 exports.postPendudukMasuk = async (req, res) => {
