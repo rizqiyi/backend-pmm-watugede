@@ -9,6 +9,7 @@ exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
       status_penduduk: "penduduk_masuk",
+      posisi_dalam_keluarga: "Kepala Keluarga",
     }).populate({
       path: "keluarga_dari",
       model: "kartu_keluarga",
@@ -212,7 +213,7 @@ exports.deleteDataKeteranganMasuk = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Data Keterangan Masuk ${t.nama_lengkap} berhasil dihapus`,
+      message: `Data Keterangan Masuk ${t.no_kk} berhasil dihapus`,
     });
   } catch (err) {
     return res.status(500).json({
