@@ -1,6 +1,7 @@
 const PendudukSchema = require("../models/penduduk.model");
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
+const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
 
 //@desc     GET All Data Penduduk
 //@routes   GET
@@ -275,6 +276,17 @@ exports.deletePendudukPadaKK = async (req, res) => {
             if (res.penduduk_keluar_desa.length === 0) {
               await PendudukKeluarSchema.deleteOne({ _id: res._id });
             }
+        }
+      );
+
+      await KeteranganMasukSchema.findOne(
+        { pemilik: result._id },
+        async (err, res) => {
+          if (result.anggota_keluarga.length === 0) {
+            if (res !== null) {
+              await KeteranganMasukSchema.deleteOne({ _id: res._id });
+            }
+          }
         }
       );
 
