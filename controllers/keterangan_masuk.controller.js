@@ -138,31 +138,37 @@ exports.updateDataKeteranganMasuk = async (req, res) => {
         message: "ID Keterangan Masuk Not Found",
       });
 
-    const condition = (field, stringField) =>
-      req.files[field] ? req.files[field][0].path : stringField;
-
-    await KeteranganMasukSchema.findByIdAndUpdate(
+    await KeteranganMasukSchema.findById(
       { _id: req.params.id_keterangan_masuk },
-      {
-        foto_kk: condition("foto_kk", req.body.foto_kk),
-        foto_surat_masuk: condition(
-          "foto_surat_masuk",
-          req.body.foto_surat_masuk
-        ),
-      },
-      { new: true, upsert: true },
-      (err, result) => {
+      {},
+      async (err, result) => {
         if (err)
           return res.status(500).json({
             success: false,
             message: "Something wrong",
           });
 
-        return res.status(200).json({
-          success: true,
-          message: "Sukses update data keterangan masuk penduduk",
-          data: result,
-        });
+        await KeteranganMasukSchema.findByIdAndUpdate(
+          {
+            _id: req.params.id_keterangan_masuk,
+          },
+          {
+            foto_kk: req.files["foto_kk"]
+              ? req.files["foto_kk"][0].path
+              : result.foto_kk,
+            foto_surat_masuk: req.files["foto_surat_masuk"]
+              ? req.files["foto_surat_masuk"][0].path
+              : result.foto_surat_masuk,
+          },
+          { new: true },
+          (err, result) => {
+            return res.status(200).json({
+              success: true,
+              message: "Sukses update data keterangan masuk penduduk",
+              data: result,
+            });
+          }
+        );
       }
     );
   } catch (err) {
