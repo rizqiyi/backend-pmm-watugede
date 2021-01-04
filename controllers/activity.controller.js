@@ -3,7 +3,11 @@ const AdminSchema = require("../models/admin.model");
 
 exports.getActivityData = async (req, res) => {
   try {
-    const all = await ActivitySchema.find();
+    const all = await ActivitySchema.find({}, null, {
+      sort: {
+        createdAt: -1,
+      },
+    }).populate("activity_by", "nama_lengkap");
 
     return res.status(200).json({
       success: true,

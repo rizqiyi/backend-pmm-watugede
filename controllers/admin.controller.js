@@ -15,7 +15,7 @@ exports.getAdminData = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      t,
+      data: t,
     });
   } catch (err) {
     return res.status(500).json({
@@ -66,6 +66,7 @@ exports.postLoginAdmin = async (req, res) => {
         return res.status(200).json({
           success: true,
           message: `Welcome ${t.nama_lengkap}. Have a nice day!`,
+          id: t._id,
           token,
         });
       }
