@@ -37,41 +37,26 @@ exports.getDataPendudukMasuk = async (req, res) => {
 //@access   Private
 exports.getDataPendudukMasukByID = async (req, res) => {
   try {
-    await PendudukSchema.findOne(
-      {
-        _id: req.params.id,
-        status_penduduk: "penduduk_masuk",
-        posisi_dalam_keluarga: "Kepala Keluarga",
-      },
-      (err, doc) => {
-        if (err)
-          return res.status(404).json({
-            success: false,
-            message: "Not Found",
-          });
-
-        if (!doc)
-          return res.status(404).json({
-            success: false,
-            message: "Penduduk Not Found",
-          });
-
-        return res.status(200).json({
-          success: true,
-          data: doc,
-        });
-      }
-    ).populate({
+    const doc = await PendudukSchema.findOne({
+      _id: req.params.id,
+      status_penduduk: "penduduk_masuk",
+      posisi_dalam_keluarga: "Kepala Keluarga",
+    }).populate({
       path: "keluarga_dari",
       model: "kartu_keluarga",
       populate: {
         path: "anggota_keluarga data_penduduk_masuk",
       },
     });
+
+    return res.status(200).json({
+      success: true,
+      data: doc,
+    });
   } catch (err) {
-    return res.status(500).json({
+    return res.status(404).json({
       success: false,
-      message: "Server Error",
+      message: "Not Found",
     });
   }
 };
