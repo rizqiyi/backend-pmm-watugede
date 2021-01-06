@@ -2,6 +2,8 @@ const PendudukSchema = require("../models/penduduk.model");
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
+const KematianSchema = require("../models/kematian.model");
+const ArsipKematianSchema = require("../models/arsip_kematian.model");
 
 //@desc     GET All Data Penduduk
 //@routes   GET
@@ -251,6 +253,25 @@ exports.deletePendudukPadaKK = async (req, res) => {
         }
       }
     );
+
+    const dataKematian = await KematianSchema.findById(t.data_kematian);
+
+    if (dataKematian)
+      await KematianSchema.findOne(
+        { _id: dataKematian._id },
+        async (err, res) => {
+          if (res !== null) {
+            const findArsip = await ArsipKematianSchema.findById(
+              res.arsip_kematian
+            );
+
+            if (findArsip)
+              await ArsipKematianSchema.deleteOne({ _id: findArsip._id });
+
+            await KematianSchema.deleteOne({ _id: res._id });
+          }
+        }
+      );
 
     await KartuKeluargaSchema.findOne({ _id: r._id }, async (err, result) => {
       if (err)
