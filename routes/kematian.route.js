@@ -5,11 +5,32 @@ const {
   postKematian,
   updateKematian,
   deleteKematian,
+  postArsipKematian,
+  updateArsipKematian,
+  deleteArsipKematian,
 } = require("../controllers/kematian.controller");
 
 const middleware = require("../middlewares/auth");
-
+const multer = require("multer");
 const router = express.Router({ mergeParams: true });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./assets");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      `${file.fieldname}_${Date.now()}_${Math.floor(
+        Math.random() * 100000
+      )}_arsip_kematian.jpg`
+    );
+  },
+});
+
+const upload = multer({
+  storage,
+});
 
 //@desc     GET Spesific Data Kematian
 //@routes   GET
@@ -22,11 +43,37 @@ router.route("/s").all(middleware).get(getDataByName);
 //@endpoint /api/kematian
 //@access   Private
 
+router.route("/").all(middleware).get(getKematian);
+
 //@desc     POST Data Kematian
 //@routes   POST
-//@endpoint /api/kematian
+//@endpoint /api/kematian/:id_penduduk
 //@access   Private
-router.route("/").all(middleware).get(getKematian).post(postKematian);
+router.route("/:id_penduduk").all(middleware).post(postKematian);
+
+//@desc     POST Data Arsip Kematian
+//@routes   POST
+//@endpoint /api/kematian/arsip/:id_penduduk
+//@access   Private
+router
+  .route("/arsip/:id_penduduk")
+  .all(middleware)
+  .post(upload.single("arsip_kematian"), postArsipKematian);
+
+//@desc     PUT Data Arsip Kematian
+//@routes   PUT
+//@endpoint /api/kematian/arsip/:id_data
+//@access   Private
+router
+  .route("/arsip/:id_data")
+  .all(middleware)
+  .put(upload.single("arsip_kematian"), updateArsipKematian);
+
+//@desc     Delete Data Arsip Kematian
+//@routes   DELETE
+//@endpoint /api/kematian/arsip/:id_data
+//@access   Private
+router.route("/arsip/:id_data").all(middleware).delete(deleteArsipKematian);
 
 //@desc     Update Data Kematian
 //@routes   PUT
