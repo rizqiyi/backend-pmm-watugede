@@ -2,18 +2,6 @@ const mongoose = require("mongoose");
 
 const KematianSchema = mongoose.Schema(
   {
-    nama: {
-      type: String,
-    },
-    nik: {
-      type: String,
-    },
-    jenis_kelamin: {
-      type: String,
-    },
-    alamat_asal: {
-      type: String,
-    },
     tanggal_meninggal: {
       type: String,
     },
@@ -22,6 +10,10 @@ const KematianSchema = mongoose.Schema(
     },
     penyebab_meninggal: {
       type: String,
+    },
+    pemilik_data: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "penduduk",
     },
   },
   { timestamps: true }

@@ -48,6 +48,10 @@ const PendudukSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "penduduk_keluar",
     },
+    data_kematian: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "kematian",
+    },
   },
   { timestamps: true }
 );
