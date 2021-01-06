@@ -225,11 +225,21 @@ exports.deleteKematian = async (req, res) => {
         message: "Not Found",
       });
 
-    const t = await KematianSchema.findByIdAndDelete(req.params.id);
+    const t = await PendudukSchema.findByIdAndUpdate(
+      { _id: yourId.pemilik_data },
+      {
+        $set: {
+          status_penduduk: "",
+        },
+        $pull: { data_kematian: yourId._id },
+      }
+    );
 
-    return res.status(201).json({
+    await KematianSchema.deleteOne({ _id: yourId._id });
+
+    return res.status(200).json({
       success: true,
-      message: `${t.nama} telah dihapus dari data kematian.`,
+      message: `Berhasil menghapus data kematian dari penduduk atas nama ${t.nama_lengkap}`,
     });
   } catch (err) {
     return res.status(500).json({
