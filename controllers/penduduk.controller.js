@@ -132,14 +132,6 @@ exports.postPenduduk = async (req, res) => {
         message: "Nomor NIK yang Anda Inputkan sudah Terdapat Pada Data",
       });
 
-    if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
-      if (findKK.no_kk !== req.body.nik)
-        return res.status(400).json({
-          success: false,
-          message: "No KK dan No NIK Kepala Keluarga Harus Sama",
-        });
-    }
-
     const t = await PendudukSchema.create({
       ...req.body,
       keluarga_dari: req.params.id,

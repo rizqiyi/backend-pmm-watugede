@@ -64,13 +64,6 @@ exports.getKartuKeluargaByID = async (req, res) => {
 exports.postKartuKeluarga = async (req, res) => {
   try {
     if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
-      if (req.body.no_kk !== req.body.nik) {
-        return res.status(400).json({
-          success: false,
-          message: "Nomor KK dan Nomor NIK Kepala Keluarga harus sama",
-        });
-      }
-
       const t = await KartuKeluargaSchema.create({
         no_kk: req.body.no_kk,
       });
@@ -112,13 +105,6 @@ exports.postKartuKeluarga = async (req, res) => {
 exports.postKartuKeluargaPendudukMasuk = async (req, res) => {
   try {
     if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
-      if (req.body.no_kk !== req.body.nik) {
-        return res.status(400).json({
-          success: false,
-          message: "Nomor KK dan Nomor NIK Kepala Keluarga harus sama",
-        });
-      }
-
       const t = await KartuKeluargaSchema.create({
         no_kk: req.body.no_kk,
       });
