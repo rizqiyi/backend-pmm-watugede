@@ -1,5 +1,5 @@
 const KelahiranSchema = require("../models/kelahiran.model");
-const { getRequestDataKelahiran } = require("../utilities/getRequestData");
+const PendudukSchema = require("../models/penduduk.model");
 
 //@desc     GET All Data Kelahiran
 //@routes   GET
@@ -26,35 +26,59 @@ exports.getKelahiran = async (req, res) => {
 //@access   Private
 exports.postKelahiran = async (req, res) => {
   try {
-    const t = getRequestDataKelahiran(req.body);
+    const findFather = await PendudukSchema.findOne({ nik: req.body.nik_ayah });
 
-    const r = await KelahiranSchema.create({
-      nama: t.nama,
-      tanggal_lahir: t.tanggal_lahir,
-      tempat_lahir: t.tempat_lahir,
-      hubungan_pelapor: t.hubungan_pelapor,
-      jenis_kelamin: t.jenis_kelamin,
-      keluarga: {
-        nama_ibu: t.nama_ibu,
-        nik_ibu: t.nik_ibu,
-        umur_ibu: t.umur_ibu,
-        pekerjaan_ibu: t.pekerjaan_ibu,
-        nama_ayah: t.nama_ayah,
-        nik_ayah: t.nik_ayah,
-        umur_ayah: t.umur_ayah,
-        pekerjaan_ayah: t.pekerjaan_ayah,
-        alamat: t.alamat,
-      },
+    if (!findFather)
+      return res.status(404).json({
+        success: false,
+        message: "Data ayah tidak ditemukan",
+      });
+
+    const findMother = await PendudukSchema.findOne({ nik: req.body.nik_ibu });
+
+    if (!findMother)
+      return res.status(404).json({
+        success: false,
+        message: "Data ibu tidak ditemukan",
+      });
+
+    const t = await KelahiranSchema.create({
+      ...req.body,
+      data_ayah: findFather._id,
+      data_ibu: findMother._id,
     });
+
+    await PendudukSchema.findByIdAndUpdate(
+      {
+        _id: findFather._id,
+      },
+      {
+        $push: {
+          data_kelahiran: t._id,
+        },
+      }
+    );
+
+    await PendudukSchema.findByIdAndUpdate(
+      {
+        _id: findMother._id,
+      },
+      {
+        $push: {
+          data_kelahiran: t._id,
+        },
+      }
+    );
 
     return res.status(201).json({
       success: true,
-      data: r,
+      message: `Berhasil Menambahkan ${t.nama} ke Data Kelahiran`,
+      data: t,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: "Server Error",
+      error: err,
     });
   }
 };
