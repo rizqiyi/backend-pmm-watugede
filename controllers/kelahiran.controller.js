@@ -6,12 +6,12 @@ const PendudukSchema = require("../models/penduduk.model");
 //@access   Private
 exports.getKelahiran = async (req, res) => {
   try {
-    const kelahiran = await KelahiranSchema.find();
+    const t = await KelahiranSchema.find().populate("data_ayah data_ibu");
 
     return res.status(200).json({
       success: true,
-      count: kelahiran.length,
-      data: kelahiran,
+      count: t.length,
+      data: t,
     });
   } catch (err) {
     return res.status(500).json({
@@ -96,7 +96,7 @@ exports.getDataByName = async (req, res) => {
         message: "Data Not Found",
       });
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       data: t,
     });
@@ -116,7 +116,7 @@ exports.updateDataById = async (req, res) => {
     const yourId = await KelahiranSchema.findById(req.params.id);
 
     if (!yourId)
-      return res.status(201).json({
+      return res.status(404).json({
         success: false,
         message: "Not Found",
       });
@@ -128,13 +128,7 @@ exports.updateDataById = async (req, res) => {
       },
       { upsert: true, new: true },
       (err, result) => {
-        if (err)
-          return res.status(500).json({
-            success: false,
-            message: "Something wrong",
-          });
-
-        return res.status(201).json({
+        return res.status(200).json({
           success: true,
           data: result,
         });
@@ -156,14 +150,14 @@ exports.deleteDataById = async (req, res) => {
     const yourId = await KelahiranSchema.findById(req.params.id);
 
     if (!yourId)
-      return res.status(201).json({
+      return res.status(404).json({
         success: false,
         message: "Not Found",
       });
 
     const t = await KelahiranSchema.findByIdAndDelete(req.params.id);
 
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: `${t.nama} telah dihapus dari data kelahiran.`,
     });
