@@ -52,6 +52,10 @@ const PendudukSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "kematian",
     },
+    data_kelahiran: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "kelahiran",
+    },
   },
   { timestamps: true }
 );

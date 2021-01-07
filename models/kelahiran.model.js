@@ -1,40 +1,10 @@
 const mongoose = require("mongoose");
 
-const KeluargaSchema = mongoose.Schema({
-  nama_ibu: {
-    type: String,
-    trim: true,
-  },
-  nik_ibu: {
-    type: String,
-  },
-  umur_ibu: {
-    type: String,
-  },
-  pekerjaan_ibu: {
-    type: String,
-  },
-  nama_ayah: {
-    type: String,
-    trim: true,
-  },
-  nik_ayah: {
-    type: String,
-  },
-  umur_ayah: {
-    type: String,
-  },
-  pekerjaan_ayah: {
-    type: String,
-  },
-  alamat: {
-    type: String,
-    trim: true,
-  },
-});
-
 const KelahiranSchema = mongoose.Schema(
   {
+    nik: {
+      type: String,
+    },
     nama: {
       type: String,
       trim: true,
@@ -48,7 +18,14 @@ const KelahiranSchema = mongoose.Schema(
     hubungan_pelapor: {
       type: String,
     },
-    keluarga: KeluargaSchema,
+    data_ayah: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "penduduk",
+    },
+    data_ibu: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "penduduk",
+    },
   },
   { timestamps: true }
 );
