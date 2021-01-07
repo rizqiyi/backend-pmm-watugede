@@ -155,6 +155,15 @@ exports.deleteDataById = async (req, res) => {
         message: "Not Found",
       });
 
+    await PendudukSchema.updateMany(
+      { $or: [{ _id: yourId.data_ayah }, { _id: yourId.data_ibu }] },
+      {
+        $pull: {
+          data_kelahiran: yourId._id,
+        },
+      }
+    );
+
     const t = await KelahiranSchema.findByIdAndDelete(req.params.id);
 
     return res.status(200).json({
@@ -164,7 +173,7 @@ exports.deleteDataById = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: "Server Error",
+      error: err,
     });
   }
 };
