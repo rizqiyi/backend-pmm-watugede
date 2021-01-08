@@ -24,6 +24,30 @@ exports.getKematian = async (req, res) => {
   }
 };
 
+exports.getKematianByID = async (req, res) => {
+  try {
+    const find = await KematianSchema.findById(req.params.id).populate(
+      "pemilik_data arsip_kematian"
+    );
+
+    if (!find)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: find,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 //@desc     Create Data Kematian
 //@routes   POST
 //@access   Private

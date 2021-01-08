@@ -8,6 +8,7 @@ const {
   postArsipKematian,
   updateArsipKematian,
   deleteArsipKematian,
+  getKematianByID,
 } = require("../controllers/kematian.controller");
 
 const middleware = require("../middlewares/auth");
@@ -42,8 +43,13 @@ router.route("/s").all(middleware).get(getDataByName);
 //@routes   GET
 //@endpoint /api/kematian
 //@access   Private
-
 router.route("/").all(middleware).get(getKematian);
+
+//@desc     GET All Data Kematian
+//@routes   GET
+//@endpoint /api/kematian
+//@access   Private
+router.route("/:id").all(middleware).get(getKematianByID);
 
 //@desc     POST Data Kematian
 //@routes   POST
