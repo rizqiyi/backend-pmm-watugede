@@ -61,6 +61,14 @@ exports.postKematian = async (req, res) => {
         message: "Not Found",
       });
 
+    // check if this person was dead then cancel the creating data.
+    if (findPenduduk.status_penduduk === "meninggal") {
+      return res.status(400).json({
+        success: false,
+        message: "Penduduk ini sudah terdapat pada data kematian",
+      });
+    }
+
     const t = await KematianSchema.create({
       tanggal_meninggal: req.body.tanggal_meninggal,
       tempat_meninggal: req.body.tempat_meninggal,
