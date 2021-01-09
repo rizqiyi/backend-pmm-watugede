@@ -150,7 +150,7 @@ exports.updateArsipKematian = async (req, res) => {
         message: "Not Found",
       });
 
-    await ArsipKematianSchema.updateOne(
+    const t = await ArsipKematianSchema.updateOne(
       { _id: findData._id },
       {
         $set: {
@@ -162,6 +162,7 @@ exports.updateArsipKematian = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Arsip Kematian Berhasil Diperbarui",
+      data: t,
     });
   } catch (err) {
     return res.status(500).json({

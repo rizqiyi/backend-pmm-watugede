@@ -7,6 +7,7 @@ exports.getAllKartuKeluarga = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      count: t.length,
       data: t,
     });
   } catch (err) {
@@ -64,6 +65,25 @@ exports.getKartuKeluargaByID = async (req, res) => {
 exports.postKartuKeluarga = async (req, res) => {
   try {
     if (req.body.posisi_dalam_keluarga === "Kepala Keluarga") {
+      const findDuplicateKK = await KartuKeluargaSchema.find({
+        no_kk: req.body.no_kk,
+      });
+
+      if (findDuplicateKK.length > 0)
+        return res.status(400).json({
+          success: false,
+          message:
+            "No. KK yang anda inputkan sudah terdapat pada data penduduk",
+        });
+
+      const findDuplicateNIK = await PendudukSchema.find({ nik: req.body.nik });
+
+      if (findDuplicateNIK.length > 0)
+        return res.status(400).json({
+          success: false,
+          message: "NIK yang anda inputkan sudah terdapat pada data penduduk",
+        });
+
       const t = await KartuKeluargaSchema.create({
         no_kk: req.body.no_kk,
       });

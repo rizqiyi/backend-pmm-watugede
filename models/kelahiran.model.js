@@ -15,7 +15,13 @@ const KelahiranSchema = mongoose.Schema(
     tempat_lahir: {
       type: String,
     },
+    jenis_kelamin: {
+      type: String,
+    },
     hubungan_pelapor: {
+      type: String,
+    },
+    agama: {
       type: String,
     },
     data_ayah: {
