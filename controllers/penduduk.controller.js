@@ -4,6 +4,7 @@ const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
 const KematianSchema = require("../models/kematian.model");
 const ArsipKematianSchema = require("../models/arsip_kematian.model");
+const KelahiranSchema = require("../models/kelahiran.model");
 
 //@desc     GET All Data Penduduk
 //@routes   GET
@@ -233,6 +234,18 @@ exports.deletePendudukPadaKK = async (req, res) => {
     });
 
     const findKK = await KartuKeluargaSchema.findOne({ _id: req.params.id_kk });
+
+    await KelahiranSchema.findOne(
+      {
+        $or: [{ data_ayah: t._id }, { data_ibu: t._id }],
+      },
+      {},
+      async (err, res) => {
+        if (res !== null || res !== undefined) {
+          await KelahiranSchema.deleteOne({ _id: res._id });
+        }
+      }
+    );
 
     await PendudukKeluarSchema.findOne(
       {

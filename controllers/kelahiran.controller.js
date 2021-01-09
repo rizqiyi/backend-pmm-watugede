@@ -26,6 +26,14 @@ exports.getKelahiran = async (req, res) => {
 //@access   Private
 exports.postKelahiran = async (req, res) => {
   try {
+    const find = await PendudukSchema.find({ nik: req.body.nik });
+
+    if (find.length > 0)
+      return res.status(400).json({
+        success: false,
+        message: "NIK yang anda inputkan sudah terdapat pada data penduduk",
+      });
+
     const findFather = await PendudukSchema.findOne({ nik: req.body.nik_ayah });
 
     if (!findFather)
