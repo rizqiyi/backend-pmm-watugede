@@ -241,7 +241,7 @@ exports.deletePendudukPadaKK = async (req, res) => {
       },
       {},
       async (err, res) => {
-        if (res !== null || res !== undefined) {
+        if (res) {
           await KelahiranSchema.deleteOne({ _id: res._id });
         }
       }
