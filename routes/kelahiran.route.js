@@ -5,6 +5,7 @@ const {
   getDataByName,
   updateDataById,
   deleteDataById,
+  getKelahiranById,
 } = require("../controllers/kelahiran.controller");
 const middleware = require("../middlewares/auth");
 
@@ -26,6 +27,12 @@ router.route("/s").all(middleware).get(getDataByName);
 //@endpoint /api/kelahiran
 //@access   Private
 router.route("/").all(middleware).post(postKelahiran).get(getKelahiran);
+
+//@desc     GET Data Kelahiran By ID
+//@routes   GET
+//@endpoint /api/kelahiran
+//@access   Private
+router.route("/:id").all(middleware).get(getKelahiranById);
 
 //@desc     Update Data Kelahiran
 //@routes   PUT

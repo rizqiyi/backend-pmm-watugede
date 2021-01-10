@@ -65,7 +65,7 @@ exports.postLoginAdmin = async (req, res) => {
 
         return res.status(200).json({
           success: true,
-          message: `Welcome ${t.nama_lengkap}. Have a nice day!`,
+          message: `Hi, ${t.nama_lengkap}`,
           id: t._id,
           token,
         });

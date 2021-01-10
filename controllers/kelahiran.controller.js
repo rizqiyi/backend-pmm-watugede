@@ -21,6 +21,36 @@ exports.getKelahiran = async (req, res) => {
   }
 };
 
+//@desc     GET All Data Kelahiran
+//@routes   GET
+//@access   Private
+exports.getKelahiranById = async (req, res) => {
+  try {
+    const t = await KelahiranSchema.findById(req.params.id).populate({
+      path: "data_ayah data_ibu",
+      populate: {
+        path: "keluarga_dari",
+      },
+    });
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: "Server error",
+    });
+  }
+};
+
 //@desc     Create Data Kelahiran
 //@routes   POST
 //@access   Private
@@ -139,6 +169,7 @@ exports.updateDataById = async (req, res) => {
         return res.status(200).json({
           success: true,
           data: result,
+          message: `Berhasil memperbarui data kelahiran atas nama ${result.nama}`,
         });
       }
     );
