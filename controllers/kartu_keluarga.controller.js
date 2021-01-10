@@ -146,6 +146,7 @@ exports.postKartuKeluargaPendudukMasuk = async (req, res) => {
 
       const t = await KartuKeluargaSchema.create({
         no_kk: req.body.no_kk,
+        data_masuk: true,
       });
 
       const r = await PendudukSchema.create({

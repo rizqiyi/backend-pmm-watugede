@@ -11,6 +11,10 @@ const KartuKeluargaSchema = mongoose.Schema(
         ref: "penduduk",
       },
     ],
+    data_masuk: {
+      type: Boolean,
+      default: false,
+    },
     data_penduduk_masuk: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "keterangan_masuk",
