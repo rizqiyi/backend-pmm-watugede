@@ -3,7 +3,6 @@ const AdminSchema = require("../models/admin.model");
 const PendudukSchema = require("../models/penduduk.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
-const PendudukMasukSchema = require("../models/keterangan_masuk.model");
 const KematianSchema = require("../models/kematian.model");
 
 exports.getAllCountedData = async (req, res) => {
@@ -16,13 +15,19 @@ exports.getAllCountedData = async (req, res) => {
       jenis_kelamin: "Perempuan",
     });
 
-    const countPenduduk = await PendudukSchema.estimatedDocumentCount();
+    const countPenduduk = await PendudukSchema.countDocuments({
+      status_penduduk: "",
+    });
 
     const countKK = await KartuKeluargaSchema.estimatedDocumentCount();
 
-    const countPendudukKeluar = await PendudukKeluarSchema.estimatedDocumentCount();
+    const countPendudukKeluar = await PendudukSchema.countDocuments({
+      status_penduduk: "penduduk_keluar",
+    });
 
-    const countPendudukMasuk = await PendudukMasukSchema.estimatedDocumentCount();
+    const countPendudukMasuk = await PendudukSchema.countDocuments({
+      status_penduduk: "penduduk_masuk",
+    });
 
     const inCompleteDataPendudukKeluar = await PendudukKeluarSchema.countDocuments(
       {

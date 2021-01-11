@@ -10,7 +10,7 @@ const { find } = require("../models/keterangan_keluar.model");
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.find({}).populate({
-      path: "penduduk_keluar_desa",
+      path: "penduduk_keluar_desa keterangan_keluar_desa",
       populate: {
         path: "keluarga_dari",
         model: "kartu_keluarga",

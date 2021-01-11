@@ -9,6 +9,17 @@ const {
 //@access   Private
 exports.postKeteranganPendudukKeluar = async (req, res) => {
   try {
+    const checkIsComplete = await PendudukKeluarSchema.findById(
+      req.params.id_penduduk_keluar
+    );
+
+    if (checkIsComplete.keterangan_keluar_desa !== undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "Gagal menambahkan. Data keterangan keluar sudah ada.",
+      });
+    }
+
     const findPendudukKeluar = await PendudukKeluarSchema.findById(
       req.params.id_penduduk_keluar
     );
