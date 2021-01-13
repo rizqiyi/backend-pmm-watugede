@@ -73,6 +73,7 @@ exports.postKematian = async (req, res) => {
       tanggal_meninggal: req.body.tanggal_meninggal,
       tempat_meninggal: req.body.tempat_meninggal,
       penyebab_meninggal: req.body.penyebab_meninggal,
+      nomor_surat_kematian: req.body.nomor_surat_kematian,
       pemilik_data: findPenduduk._id,
     });
 

@@ -24,6 +24,9 @@ const KelahiranSchema = mongoose.Schema(
     agama: {
       type: String,
     },
+    nomor_surat_kelahiran: {
+      type: String,
+    },
     data_ayah: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "penduduk",

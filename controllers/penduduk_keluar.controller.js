@@ -96,6 +96,15 @@ exports.postManyDataPendudukKeluar = async (req, res) => {
         message: "Not Found",
       });
 
+    await KartuKeluargaSchema.updateOne(
+      { _id: findID._id },
+      {
+        $set: {
+          data_masuk: false,
+        },
+      }
+    );
+
     const findDuplicateEntries = await PendudukSchema.find({
       _id: {
         $in: findID.anggota_keluarga,

@@ -20,6 +20,9 @@ const KeteranganKeluarSchema = mongoose.Schema({
   catatan: {
     type: String,
   },
+  kewarganegaraan: {
+    type: String,
+  },
   foto_pengusul: {
     type: String,
   },

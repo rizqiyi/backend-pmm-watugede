@@ -11,6 +11,9 @@ const KematianSchema = mongoose.Schema(
     penyebab_meninggal: {
       type: String,
     },
+    nomor_surat_kematian: {
+      type: String,
+    },
     arsip_kematian: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "arsip_kematian",
