@@ -39,7 +39,7 @@ exports.postKeteranganPendudukKeluar = async (req, res) => {
       alasan_pindah: dataToPost.alasan_pindah,
       pengikut: dataToPost.pengikut,
       catatan: dataToPost.catatan,
-      foto_pengusul: req.file.path,
+      foto_pengusul: req.file ? req.file.path : req.body.foto_pengusul,
       meninggalkan_desa_pada: dataToPost.meninggalkan_desa_pada,
       keterangan_keluar_oleh: req.params.id_penduduk_keluar,
     });

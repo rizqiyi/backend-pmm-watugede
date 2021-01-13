@@ -22,19 +22,21 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "assets")));
 app.use(cors());
 
-app.use("/api/auth", admin);
-app.use("/api/activity", activity);
-app.use("/api/kartu_keluarga", kartu_keluarga);
-app.use("/api/kelahiran", kelahiran);
-app.use("/api/kematian", kematian);
-app.use("/api/penduduk", penduduk);
-app.use("/api/penduduk_keluar", penduduk_keluar);
-app.use("/api/penduduk_masuk", penduduk_masuk);
-app.use("/api/keterangan", keterangan_keluar);
+app.use(`${process.env.AUTH_URI}`, admin);
+app.use(`${process.env.ACTIVITY_URI}`, activity);
+app.use(`${process.env.KK_URI}`, kartu_keluarga);
+app.use(`${process.env.KELAHIRAN_URI}`, kelahiran);
+app.use(`${process.env.KEMATIAN_URI}`, kematian);
+app.use(`${process.env.PENDUDUK_URI}`, penduduk);
+app.use(`${process.env.PENDUDUK_KELUAR_URI}`, penduduk_keluar);
+app.use(`${process.env.PENDUDUK_MASUK_URI}`, penduduk_masuk);
+app.use(`${process.env.KETERANGAN_URI}`, keterangan_keluar);
 
 const PORT = 5000 || process.env.PORT;
 
 app.listen(
   PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on PORT ${PORT}`)
+  console.log(
+    `🚀Server running in ${process.env.NODE_ENV} mode on PORT ${PORT}🚀`
+  )
 );
