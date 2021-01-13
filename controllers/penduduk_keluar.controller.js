@@ -186,6 +186,20 @@ exports.postDataPendudukKeluar = async (req, res) => {
         { upsert: true, new: true, useFindAndModify: false }
       );
 
+      await KartuKeluargaSchema.findOne(
+        { no_kk: req.body.no_kk },
+        async (err, res) => {
+          await KartuKeluargaSchema.updateOne(
+            { _id: res._id },
+            {
+              $set: {
+                data_masuk: false,
+              },
+            }
+          );
+        }
+      );
+
       await PendudukSchema.findOneAndUpdate(
         { _id: yourId._id },
         {
