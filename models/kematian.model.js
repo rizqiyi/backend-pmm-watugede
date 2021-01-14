@@ -5,6 +5,9 @@ const KematianSchema = mongoose.Schema(
     tanggal_meninggal: {
       type: String,
     },
+    hari_meninggal: {
+      type: String,
+    },
     tempat_meninggal: {
       type: String,
     },

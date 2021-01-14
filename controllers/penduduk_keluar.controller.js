@@ -9,7 +9,7 @@ const { find } = require("../models/keterangan_keluar.model");
 //@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
-    const t = await PendudukKeluarSchema.find({}).populate({
+    const t = await PendudukKeluarSchema.find().populate({
       path: "penduduk_keluar_desa keterangan_keluar_desa",
       populate: {
         path: "keluarga_dari",
@@ -351,7 +351,6 @@ exports.deleteAllDataPendudukKeluar = async (req, res) => {
       message: "Sukses Menghapus Semua Data Penduduk Keluar",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: err,
