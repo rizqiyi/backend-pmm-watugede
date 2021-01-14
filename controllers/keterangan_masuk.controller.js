@@ -7,16 +7,10 @@ const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 //@access   Private
 exports.getDataPendudukMasuk = async (req, res) => {
   try {
-    const t = await PendudukSchema.find({
-      status_penduduk: "penduduk_masuk",
-      posisi_dalam_keluarga: "Kepala Keluarga",
+    const t = await KartuKeluargaSchema.find({
+      data_masuk: true,
     }).populate({
-      path: "keluarga_dari",
-      model: "kartu_keluarga",
-      populate: {
-        path: "anggota_keluarga",
-        model: "penduduk",
-      },
+      path: "anggota_keluarga data_penduduk_masuk",
     });
 
     return res.status(200).json({
@@ -37,16 +31,8 @@ exports.getDataPendudukMasuk = async (req, res) => {
 //@access   Private
 exports.getDataPendudukMasukByID = async (req, res) => {
   try {
-    const doc = await PendudukSchema.findOne({
-      _id: req.params.id,
-      status_penduduk: "penduduk_masuk",
-      posisi_dalam_keluarga: "Kepala Keluarga",
-    }).populate({
-      path: "keluarga_dari",
-      model: "kartu_keluarga",
-      populate: {
-        path: "anggota_keluarga data_penduduk_masuk",
-      },
+    const doc = await KartuKeluargaSchema.findById(req.params.id).populate({
+      path: "anggota_keluarga data_penduduk_masuk",
     });
 
     return res.status(200).json({

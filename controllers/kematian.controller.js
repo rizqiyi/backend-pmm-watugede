@@ -7,9 +7,12 @@ const ArsipKematianSchema = require("../models/arsip_kematian.model");
 //@access   Private
 exports.getKematian = async (req, res) => {
   try {
-    const t = await KematianSchema.find().populate(
-      "arsip_kematian pemilik_data"
-    );
+    const t = await KematianSchema.find().populate({
+      path: "arsip_kematian pemilik_data",
+      populate: {
+        path: "keluarga_dari",
+      },
+    });
 
     return res.status(201).json({
       success: true,

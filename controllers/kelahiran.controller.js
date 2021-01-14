@@ -6,7 +6,12 @@ const PendudukSchema = require("../models/penduduk.model");
 //@access   Private
 exports.getKelahiran = async (req, res) => {
   try {
-    const t = await KelahiranSchema.find().populate("data_ayah data_ibu");
+    const t = await KelahiranSchema.find().populate({
+      path: "data_ayah data_ibu",
+      populate: {
+        path: "keluarga_dari",
+      },
+    });
 
     return res.status(200).json({
       success: true,
