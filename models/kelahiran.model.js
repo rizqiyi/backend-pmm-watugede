@@ -12,6 +12,12 @@ const KelahiranSchema = mongoose.Schema(
     tanggal_lahir: {
       type: String,
     },
+    hari_kelahiran: {
+      type: String,
+    },
+    jam_lahir: {
+      type: String,
+    },
     tempat_lahir: {
       type: String,
     },

@@ -370,11 +370,11 @@ exports.getPendudukByName = async (req, res) => {
 exports.getPendudukByNoKK = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
-      nik: req.query.no_kk,
       posisi_dalam_keluarga: "Kepala Keluarga",
-    }).populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
-    );
+    }).populate({
+      path: "keluarga_dari",
+      match: { no_kk: req.query.no_kk },
+    });
 
     if (t.length === 0)
       return res.status(404).json({
@@ -389,7 +389,7 @@ exports.getPendudukByNoKK = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server error",
+      message: err,
     });
   }
 };
