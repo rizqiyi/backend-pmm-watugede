@@ -4,6 +4,7 @@ const PendudukSchema = mongoose.Schema(
   {
     nama_lengkap: {
       type: String,
+      index: "text",
     },
     jenis_kelamin: {
       type: String,
@@ -31,6 +32,7 @@ const PendudukSchema = mongoose.Schema(
     },
     nik: {
       type: String,
+      index: "text",
     },
     posisi_dalam_keluarga: {
       type: String,

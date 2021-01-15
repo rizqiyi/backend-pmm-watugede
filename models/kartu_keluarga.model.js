@@ -4,6 +4,7 @@ const KartuKeluargaSchema = mongoose.Schema(
   {
     no_kk: {
       type: String,
+      index: "text",
     },
     anggota_keluarga: [
       {

@@ -340,13 +340,21 @@ exports.deletePendudukPadaKK = async (req, res) => {
 exports.getPendudukByName = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
-      nama_lengkap: req.query.name,
-      posisi_dalam_keluarga: "Kepala Keluarga",
+      $and: [
+        {
+          $text: {
+            $search: req.query.name,
+          },
+        },
+        {
+          posisi_dalam_keluarga: "Kepala Keluarga",
+        },
+      ],
     }).populate(
       "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
     );
 
-    if (t.length === 0)
+    if (t.length < 1)
       return res.status(404).json({
         success: false,
         message: "Not Found",
@@ -369,11 +377,12 @@ exports.getPendudukByName = async (req, res) => {
 //@access   Private
 exports.getPendudukByNoKK = async (req, res) => {
   try {
-    const t = await PendudukSchema.find({
-      posisi_dalam_keluarga: "Kepala Keluarga",
+    const t = await KartuKeluargaSchema.find({
+      $text: {
+        $search: req.query.no_kk,
+      },
     }).populate({
-      path: "keluarga_dari",
-      match: { no_kk: req.query.no_kk },
+      path: "anggota_keluarga",
     });
 
     if (t.length === 0)
