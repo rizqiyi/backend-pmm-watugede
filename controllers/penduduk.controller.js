@@ -11,9 +11,11 @@ const KelahiranSchema = require("../models/kelahiran.model");
 //@access   Private
 exports.getPenduduk = async (req, res) => {
   try {
-    const t = await PendudukSchema.find().select(
-      "-__v -pengikut_keluar -keterangan_keluar"
-    );
+    const t = await PendudukSchema.find()
+      .populate({
+        path: "keluarga_dari data_penduduk_keluar data_kematian data_kelahiran",
+      })
+      .select("-__v");
 
     return res.status(200).json({
       success: true,
@@ -24,67 +26,6 @@ exports.getPenduduk = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Server error",
-    });
-  }
-};
-
-exports.getKepalaKeluargaById = async (req, res) => {
-  try {
-    await PendudukSchema.findOne(
-      {
-        _id: req.params.id,
-        posisi_dalam_keluarga: "Kepala Keluarga",
-      },
-      (err, doc) => {
-        if (err)
-          return res.status(404).json({
-            success: false,
-            message: "Not Found",
-          });
-
-        return res.status(200).json({
-          success: true,
-          data: doc,
-        });
-      }
-    ).populate({
-      path: "keluarga_dari",
-      model: "kartu_keluarga",
-      populate: {
-        path: "anggota_keluarga",
-        model: "penduduk",
-      },
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
-
-exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
-  try {
-    const t = await PendudukSchema.find({
-      posisi_dalam_keluarga: "Kepala Keluarga",
-    }).populate({
-      path: "keluarga_dari",
-      model: "kartu_keluarga",
-      populate: {
-        path: "anggota_keluarga",
-        model: "penduduk",
-      },
-    });
-
-    return res.status(200).json({
-      success: true,
-      count: t.length,
-      data: t,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
     });
   }
 };
@@ -94,13 +35,14 @@ exports.getPendudukByNamaKepalaKeluarga = async (req, res) => {
 //@access   Private
 exports.getPendudukById = async (req, res) => {
   try {
-    const t = await PendudukSchema.findById(req.params.id).populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
-    );
+    const t = await PendudukSchema.findById(req.params.id)
+      .populate({
+        path: "keluarga_dari data_penduduk_keluar data_kematian data_kelahiran",
+      })
+      .select("-__v");
 
     return res.status(200).json({
       success: true,
-      count: t.length,
       data: t,
     });
   } catch (err) {
@@ -339,18 +281,25 @@ exports.deletePendudukPadaKK = async (req, res) => {
 //@access   Private
 exports.getPendudukByName = async (req, res) => {
   try {
-    const t = await PendudukSchema.find({
-      $and: [
-        {
-          $text: {
-            $search: req.query.name,
+    const t = await PendudukSchema.find(
+      {
+        $and: [
+          {
+            $text: {
+              $search: req.query.name,
+            },
           },
+          {
+            posisi_dalam_keluarga: "Kepala Keluarga",
+          },
+        ],
+      },
+      {
+        score: {
+          $meta: "textScore",
         },
-        {
-          posisi_dalam_keluarga: "Kepala Keluarga",
-        },
-      ],
-    }).populate(
+      }
+    ).populate(
       "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
     );
 
