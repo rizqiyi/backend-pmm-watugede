@@ -30,6 +30,73 @@ exports.getPenduduk = async (req, res) => {
   }
 };
 
+//@desc     Get Spesific Data Penduduk
+//@routes   GET
+//@access   Private
+exports.getPendudukByName = async (req, res) => {
+  try {
+    const t = await PendudukSchema.find(
+      {
+        $text: {
+          $search: req.query.name,
+        },
+      },
+      {
+        score: {
+          $meta: "textScore",
+        },
+      }
+    ).populate(
+      "keluarga_dari data_penduduk_keluar data_kematian data_kelahiran"
+    );
+
+    if (t.length < 1)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+//@desc     Get Spesific Data Penduduk
+//@routes   GET
+//@access   Private
+exports.getPendudukByNIK = async (req, res) => {
+  try {
+    const t = await PendudukSchema.find({
+      nik: req.query.nik,
+    }).populate(
+      "keluarga_dari data_penduduk_keluar data_kematian data_kelahiran"
+    );
+
+    if (t.length < 1)
+      return res.status(404).json({
+        success: false,
+        message: t,
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 //@desc     GET All Data Penduduk
 //@routes   GET
 //@access   Private
@@ -279,7 +346,7 @@ exports.deletePendudukPadaKK = async (req, res) => {
 //@desc     Get Spesific Data Penduduk
 //@routes   GET
 //@access   Private
-exports.getPendudukByName = async (req, res) => {
+exports.getPendudukByNameOnlyHead = async (req, res) => {
   try {
     const t = await PendudukSchema.find(
       {
@@ -300,7 +367,7 @@ exports.getPendudukByName = async (req, res) => {
         },
       }
     ).populate(
-      "pengikut_keluar keterangan_keluar keterangan_masuk keluarga_dari"
+      "keluarga_dari data_penduduk_keluar data_kematian data_kelahiran"
     );
 
     if (t.length < 1)

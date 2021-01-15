@@ -3,26 +3,40 @@ const {
   getPenduduk,
   postPenduduk,
   updatePenduduk,
-  getPendudukByName,
+  getPendudukByNameOnlyHead,
   getPendudukById,
   deletePendudukPadaKK,
   getPendudukByNoKK,
+  getPendudukByName,
+  getPendudukByNIK,
 } = require("../controllers/penduduk.controller");
 const middleware = require("../middlewares/auth");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 //@desc     GET Penduduk by Name
 //@routes   GET
 //@endpoint /api/penduduk/s
 //@access   Private
-router.route("/s").all(middleware).get(getPendudukByName);
+router.route("/s").all(middleware).get(getPendudukByNameOnlyHead);
 
 //@desc     GET Penduduk
 //@routes   GET
 //@endpoint /api/penduduk/s/kk
 //@access   Private
 router.route("/s/kk").all(middleware).get(getPendudukByNoKK);
+
+//@desc     GET Penduduk by Name
+//@routes   GET
+//@endpoint /api/penduduk/all/nik/s
+//@access   Private
+router.route("/all/nik/s").all(middleware).get(getPendudukByNIK);
+
+//@desc     GET Penduduk by Name
+//@routes   GET
+//@endpoint /api/penduduk/all/s
+//@access   Private
+router.route("/all/s").all(middleware).get(getPendudukByName);
 
 //@desc     GET Penduduk
 //@routes   GET

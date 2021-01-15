@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const PendudukSchema = mongoose.Schema(
   {
+    nik: {
+      type: String,
+      index: "text",
+    },
     nama_lengkap: {
       type: String,
       index: "text",
@@ -29,10 +33,6 @@ const PendudukSchema = mongoose.Schema(
     },
     alamat_asal: {
       type: String,
-    },
-    nik: {
-      type: String,
-      index: "text",
     },
     posisi_dalam_keluarga: {
       type: String,
