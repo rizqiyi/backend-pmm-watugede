@@ -30,7 +30,7 @@ router.route("/").all(middleware).post(postKelahiran).get(getKelahiran);
 
 //@desc     GET Data Kelahiran By ID
 //@routes   GET
-//@endpoint /api/kelahiran
+//@endpoint /api/kelahiran/:id
 //@access   Private
 router.route("/:id").all(middleware).get(getKelahiranById);
 

@@ -31,7 +31,7 @@ const upload = multer({
 
 //@desc     Post Data Keterangan Keluar
 //@routes   POST
-//@endpoint /api/keterangan/:id
+//@endpoint /api/keterangan/id_penduduk_keluar
 //@access   Private
 router
   .route("/:id_penduduk_keluar")

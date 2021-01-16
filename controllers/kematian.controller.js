@@ -2,9 +2,6 @@ const KematianSchema = require("../models/kematian.model");
 const PendudukSchema = require("../models/penduduk.model");
 const ArsipKematianSchema = require("../models/arsip_kematian.model");
 
-//@desc     GET All Data Kematian
-//@routes   GET
-//@access   Private
 exports.getKematian = async (req, res) => {
   try {
     const t = await KematianSchema.find().populate({
@@ -51,9 +48,6 @@ exports.getKematianByID = async (req, res) => {
   }
 };
 
-//@desc     Create Data Kematian
-//@routes   POST
-//@access   Private
 exports.postKematian = async (req, res) => {
   try {
     const findPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
@@ -210,9 +204,6 @@ exports.deleteArsipKematian = async (req, res) => {
   }
 };
 
-//@desc     Update Data Kematian
-//@routes   PUT
-//@access   Private
 exports.updateKematian = async (req, res) => {
   try {
     const yourId = await KematianSchema.findById(req.params.id);
@@ -250,9 +241,6 @@ exports.updateKematian = async (req, res) => {
   }
 };
 
-//@desc     Delete Data Kematian
-//@routes   DELETE
-//@access   Private
 exports.deleteKematian = async (req, res) => {
   try {
     const yourId = await KematianSchema.findById(req.params.id);
@@ -287,9 +275,6 @@ exports.deleteKematian = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Kematian
-//@routes   GET
-//@access   Private
 exports.getDataByName = async (req, res) => {
   try {
     const t = await KematianSchema.findOne({ nama: req.query.name });

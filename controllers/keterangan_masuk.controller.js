@@ -2,9 +2,6 @@ const PendudukSchema = require("../models/penduduk.model");
 const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 
-//@desc     GET All Data Keterangan Penduduk
-//@routes   GET
-//@access   Private
 exports.getDataPendudukMasuk = async (req, res) => {
   try {
     const t = await KartuKeluargaSchema.find({
@@ -26,9 +23,6 @@ exports.getDataPendudukMasuk = async (req, res) => {
   }
 };
 
-//@desc     GET Data Keterangan Penduduk By ID
-//@routes   GET
-//@access   Private
 exports.getDataPendudukMasukByID = async (req, res) => {
   try {
     const doc = await KartuKeluargaSchema.findById(req.params.id).populate({
@@ -47,9 +41,6 @@ exports.getDataPendudukMasukByID = async (req, res) => {
   }
 };
 
-//@desc     Post Data Keterangan Penduduk Masuk
-//@routes   POST
-//@access   Private
 exports.postKeteranganPendudukMasuk = async (req, res) => {
   try {
     const yourId = await KartuKeluargaSchema.findById(req.params.id);
@@ -94,9 +85,6 @@ exports.postKeteranganPendudukMasuk = async (req, res) => {
   }
 };
 
-//@desc     Update Data Keterangan Penduduk
-//@routes   PUT
-//@access   Private
 exports.updateDataKeteranganMasuk = async (req, res) => {
   try {
     const idKeteranganMasuk = await KeteranganMasukSchema.findById(
@@ -150,9 +138,6 @@ exports.updateDataKeteranganMasuk = async (req, res) => {
   }
 };
 
-//@desc     Delete Data Keterangan Penduduk Masuk
-//@routes   DELETE
-//@access   Private
 exports.deleteDataKeteranganMasuk = async (req, res) => {
   try {
     const idKK = await KartuKeluargaSchema.findById(

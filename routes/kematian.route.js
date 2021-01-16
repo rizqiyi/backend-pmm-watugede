@@ -47,7 +47,7 @@ router.route("/").all(middleware).get(getKematian);
 
 //@desc     GET All Data Kematian
 //@routes   GET
-//@endpoint /api/kematian
+//@endpoint /api/kematian/:id
 //@access   Private
 router.route("/:id").all(middleware).get(getKematianByID);
 

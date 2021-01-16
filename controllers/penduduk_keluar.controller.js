@@ -2,11 +2,7 @@ const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
-const { find } = require("../models/keterangan_keluar.model");
 
-//@desc     Get All Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.find().populate({
@@ -30,9 +26,6 @@ exports.getDataPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     Get Data Penduduk Keluar by ID
-//@routes   GET
-//@access   Private
 exports.getDataPendudukKeluarByID = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.findById(
@@ -58,9 +51,6 @@ exports.getDataPendudukKeluarByID = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getDataPendudukKeluarByName = async (req, res) => {
   try {
     const t = await PendudukKeluarSchema.find({
@@ -154,9 +144,6 @@ exports.postManyDataPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     POST Data Penduduk
-//@routes   POST
-//@access   Private
 exports.postDataPendudukKeluar = async (req, res) => {
   try {
     const yourId = await PendudukSchema.findById(req.params.id_penduduk);
@@ -267,9 +254,6 @@ exports.postDataPendudukKeluar = async (req, res) => {
   }
 };
 
-//@desc     Delete Data Penduduk
-//@routes   DELETE
-//@access   Private
 exports.deleteDataPendudukKeluar = async (req, res) => {
   try {
     const findPenduduk = await PendudukSchema.findById(req.params.id_penduduk);

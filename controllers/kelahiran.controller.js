@@ -1,9 +1,6 @@
 const KelahiranSchema = require("../models/kelahiran.model");
 const PendudukSchema = require("../models/penduduk.model");
 
-//@desc     GET All Data Kelahiran
-//@routes   GET
-//@access   Private
 exports.getKelahiran = async (req, res) => {
   try {
     const t = await KelahiranSchema.find().populate({
@@ -26,9 +23,6 @@ exports.getKelahiran = async (req, res) => {
   }
 };
 
-//@desc     GET All Data Kelahiran
-//@routes   GET
-//@access   Private
 exports.getKelahiranById = async (req, res) => {
   try {
     const t = await KelahiranSchema.findById(req.params.id).populate({
@@ -56,9 +50,6 @@ exports.getKelahiranById = async (req, res) => {
   }
 };
 
-//@desc     Create Data Kelahiran
-//@routes   POST
-//@access   Private
 exports.postKelahiran = async (req, res) => {
   try {
     const find = await PendudukSchema.find({ nik: req.body.nik });
@@ -126,9 +117,6 @@ exports.postKelahiran = async (req, res) => {
   }
 };
 
-//@desc     GET Spesific Data Kelahiran
-//@routes   GET
-//@access   Private
 exports.getDataByName = async (req, res) => {
   try {
     const t = await KelahiranSchema.findOne({ nama: req.query.name });
@@ -151,9 +139,6 @@ exports.getDataByName = async (req, res) => {
   }
 };
 
-//@desc     Update Data Kelahiran
-//@routes   PUT
-//@access   Private
 exports.updateDataById = async (req, res) => {
   try {
     const yourId = await KelahiranSchema.findById(req.params.id);
@@ -186,9 +171,6 @@ exports.updateDataById = async (req, res) => {
   }
 };
 
-//@desc     Delete Data Kelahiran
-//@routes   DELETE
-//@access   Private
 exports.deleteDataById = async (req, res) => {
   try {
     const yourId = await KelahiranSchema.findById(req.params.id);

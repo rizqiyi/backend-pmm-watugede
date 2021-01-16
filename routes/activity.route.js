@@ -15,13 +15,13 @@ const router = express.Router();
 //@access   Private
 router.route("/").all(middleware).get(getActivityData);
 
-//@desc     GET Data Activity
+//@desc     GET All Data Collections
 //@routes   GET
-//@endpoint /api/activity
+//@endpoint /api/activity/all
 //@access   Private
 router.route("/all").all(middleware).get(getAllCountedData);
 
-//@desc     POST Data Activity
+//@desc     POST Data Activity When Logout
 //@routes   POST
 //@endpoint /api/activity/:id
 //@access   Private

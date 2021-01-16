@@ -6,9 +6,6 @@ const KematianSchema = require("../models/kematian.model");
 const ArsipKematianSchema = require("../models/arsip_kematian.model");
 const KelahiranSchema = require("../models/kelahiran.model");
 
-//@desc     GET All Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getPenduduk = async (req, res) => {
   try {
     const t = await PendudukSchema.find()
@@ -30,9 +27,6 @@ exports.getPenduduk = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getPendudukByName = async (req, res) => {
   try {
     const t = await PendudukSchema.find(
@@ -68,9 +62,6 @@ exports.getPendudukByName = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getPendudukByNIK = async (req, res) => {
   try {
     const t = await PendudukSchema.find({
@@ -97,9 +88,6 @@ exports.getPendudukByNIK = async (req, res) => {
   }
 };
 
-//@desc     GET All Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getPendudukById = async (req, res) => {
   try {
     const t = await PendudukSchema.findById(req.params.id)
@@ -120,9 +108,6 @@ exports.getPendudukById = async (req, res) => {
   }
 };
 
-//@desc     POST Data Penduduk
-//@routes   POST
-//@access   Private
 exports.postPenduduk = async (req, res) => {
   try {
     const findKK = await KartuKeluargaSchema.findById(req.params.id);
@@ -172,9 +157,6 @@ exports.postPenduduk = async (req, res) => {
   }
 };
 
-//@desc     Update Data Penduduk
-//@routes   PUT
-//@access   Private
 exports.updatePenduduk = async (req, res) => {
   try {
     const yourId = await PendudukSchema.findById(req.params.id);
@@ -213,9 +195,6 @@ exports.updatePenduduk = async (req, res) => {
   }
 };
 
-//@desc     Delete Data Penduduk
-//@routes   DELETE
-//@access   Private
 exports.deletePendudukPadaKK = async (req, res) => {
   try {
     const idPenduduk = await PendudukSchema.findById(req.params.id_penduduk);
@@ -343,9 +322,6 @@ exports.deletePendudukPadaKK = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Penduduk
-//@routes   GET
-//@access   Private
 exports.getPendudukByNameOnlyHead = async (req, res) => {
   try {
     const t = await PendudukSchema.find(
@@ -388,9 +364,6 @@ exports.getPendudukByNameOnlyHead = async (req, res) => {
   }
 };
 
-//@desc     Get Spesific Data Penduduk By No KK Kepala Keluarga
-//@routes   GET
-//@access   Private
 exports.getPendudukByNoKK = async (req, res) => {
   try {
     const t = await KartuKeluargaSchema.find({

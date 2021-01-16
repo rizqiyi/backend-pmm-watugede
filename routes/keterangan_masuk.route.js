@@ -31,6 +31,10 @@ const upload = multer({
   storage,
 });
 
+//@desc     Get Data Penduduk Masuk
+//@routes   GET
+//@endpoint /api/penduduk_masuk/k
+//@access   Private
 router.route("/k").all(middleware).get(getDataPendudukMasuk);
 
 //@desc     Get Data Penduduk Masuk By ID
