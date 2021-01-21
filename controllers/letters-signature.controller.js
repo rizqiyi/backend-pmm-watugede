@@ -19,6 +19,32 @@ exports.getSignatureByID = async (req, res) => {
   }
 };
 
+exports.updateSignatureByID = async (req, res) => {
+  try {
+    const yourId = await LetterSignatureSchema.findById(req.params.id);
+
+    await LetterSignatureSchema.findByIdAndUpdate(
+      { _id: yourId._id },
+      {
+        ...req.body,
+      },
+      { upsert: true, new: true },
+      (err, result) => {
+        return res.status(200).json({
+          success: true,
+          data: result,
+          message: `Berhasil memperbarui data`,
+        });
+      }
+    );
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err,
+    });
+  }
+};
+
 exports.postSignatureKelahiran = async (req, res) => {
   try {
     const findKelahiran = await KelahiranSchema.findById(req.params.id);
@@ -85,7 +111,7 @@ exports.postSignaturePendudukKeluar = async (req, res) => {
 
     const t = await LetterSignatureSchema.create({
       ...req.body,
-      surat_kematian: findID._id,
+      surat_keluar: findID._id,
     });
 
     await PendudukKeluarSchema.findByIdAndUpdate(
