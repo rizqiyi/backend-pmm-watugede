@@ -89,8 +89,7 @@ exports.registerAdmin = async (req, res) => {
   try {
     const { username, email, password, nama_lengkap, avatar } = req.body;
 
-    const isEmpty =
-      !username || !email || !password || !nama_lengkap || !avatar;
+    const isEmpty = !username || !email || !password || !nama_lengkap;
 
     if (isEmpty)
       return res.status(400).json({
@@ -114,7 +113,6 @@ exports.registerAdmin = async (req, res) => {
       email,
       nama_lengkap,
       password,
-      avatar,
     });
 
     bcrypt.genSalt(10, (err, salt) => {

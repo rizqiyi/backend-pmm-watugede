@@ -25,6 +25,10 @@ const KematianSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "penduduk",
     },
+    signatures: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "signature",
+    },
   },
   { timestamps: true }
 );

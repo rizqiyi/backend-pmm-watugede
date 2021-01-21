@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 
 const AdminSchema = mongoose.Schema(
   {
-    avatar: {
-      type: String,
-    },
     nama_lengkap: {
       type: String,
     },

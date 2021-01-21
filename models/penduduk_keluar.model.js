@@ -9,6 +9,10 @@ const PendudukKeluarSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "keterangan_keluar",
     },
+    signatures: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "signature",
+    },
     penduduk_keluar_desa: [
       {
         type: mongoose.Schema.Types.ObjectId,

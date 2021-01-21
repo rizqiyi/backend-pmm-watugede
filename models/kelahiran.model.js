@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 
 const KelahiranSchema = mongoose.Schema(
   {
-    nik: {
-      type: String,
-    },
     nama: {
       type: String,
       trim: true,
@@ -40,6 +37,10 @@ const KelahiranSchema = mongoose.Schema(
     data_ibu: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "penduduk",
+    },
+    signatures: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "signature",
     },
   },
   { timestamps: true }

@@ -52,14 +52,6 @@ exports.getKelahiranById = async (req, res) => {
 
 exports.postKelahiran = async (req, res) => {
   try {
-    const find = await PendudukSchema.find({ nik: req.body.nik });
-
-    if (find.length > 0)
-      return res.status(400).json({
-        success: false,
-        message: "NIK yang anda inputkan sudah terdapat pada data penduduk",
-      });
-
     const findFather = await PendudukSchema.findOne({ nik: req.body.nik_ayah });
 
     if (!findFather)
@@ -113,28 +105,6 @@ exports.postKelahiran = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: err,
-    });
-  }
-};
-
-exports.getDataByName = async (req, res) => {
-  try {
-    const t = await KelahiranSchema.findOne({ nama: req.query.name });
-
-    if (!t)
-      return res.status(404).json({
-        success: false,
-        message: "Data Not Found",
-      });
-
-    return res.status(200).json({
-      success: true,
-      data: t,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: "Server Error",
     });
   }
 };
