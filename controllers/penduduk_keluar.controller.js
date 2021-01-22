@@ -2,6 +2,7 @@ const PendudukKeluarSchema = require("../models/penduduk_keluar.model");
 const PendudukSchema = require("../models/penduduk.model");
 const KartuKeluargaSchema = require("../models/kartu_keluarga.model");
 const KeteranganKeluarSchema = require("../models/keterangan_keluar.model");
+const LetterSignatureSchema = require("../models/letters-signature.model");
 
 exports.getDataPendudukKeluar = async (req, res) => {
   try {
@@ -314,6 +315,10 @@ exports.deleteAllDataPendudukKeluar = async (req, res) => {
         success: false,
         message: "Not Found",
       });
+
+    await LetterSignatureSchema.deleteOne({
+      _id: findData.signatures,
+    });
 
     await PendudukSchema.updateMany(
       { _id: findData.penduduk_keluar_desa },

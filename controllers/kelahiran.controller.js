@@ -1,5 +1,6 @@
 const KelahiranSchema = require("../models/kelahiran.model");
 const PendudukSchema = require("../models/penduduk.model");
+const LetterSignatureSchema = require("../models/letters-signature.model");
 
 exports.getKelahiran = async (req, res) => {
   try {
@@ -159,6 +160,10 @@ exports.deleteDataById = async (req, res) => {
         },
       }
     );
+
+    await LetterSignatureSchema.deleteOne({
+      _id: yourId.signatures,
+    });
 
     const t = await KelahiranSchema.findByIdAndDelete(req.params.id);
 

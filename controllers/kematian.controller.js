@@ -1,6 +1,7 @@
 const KematianSchema = require("../models/kematian.model");
 const PendudukSchema = require("../models/penduduk.model");
 const ArsipKematianSchema = require("../models/arsip_kematian.model");
+const LetterSignatureSchema = require("../models/letters-signature.model");
 
 exports.getKematian = async (req, res) => {
   try {
@@ -234,6 +235,8 @@ exports.updateKematian = async (req, res) => {
       }
     );
   } catch (err) {
+    console.log("a");
+
     return res.status(500).json({
       success: false,
       message: "Server error",
@@ -250,6 +253,10 @@ exports.deleteKematian = async (req, res) => {
         success: false,
         message: "Not Found",
       });
+
+    await LetterSignatureSchema.deleteOne({
+      _id: yourId.signatures,
+    });
 
     const t = await PendudukSchema.findByIdAndUpdate(
       { _id: yourId.pemilik_data },
@@ -270,7 +277,7 @@ exports.deleteKematian = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: err,
     });
   }
 };

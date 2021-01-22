@@ -55,6 +55,10 @@ router
   .all(middleware)
   .delete(deleteDataPendudukKeluar);
 
+//@desc     Delete Penduduk Keluar
+//@routes   DELETE
+//@endpoint /api/penduduk_keluar/:id_data/d
+//@access   Private
 router.route("/:id_data/d").delete(deleteAllDataPendudukKeluar);
 
 module.exports = router;

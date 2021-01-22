@@ -27,7 +27,7 @@ router.route("/:id/p/kelahiran").post(postSignatureKelahiran);
 //@access   Private
 router.route("/:id/p/kematian").post(postSignatureKematian);
 
-//@desc     Create surat keluar letter signature
+//@desc     Create keluar letter signature
 //@routes   POST
 //@endpoint /api/signature/:id/p/keluar
 //@access   Private
