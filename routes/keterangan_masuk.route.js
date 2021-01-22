@@ -31,22 +31,10 @@ const upload = multer({
   storage,
 });
 
-//@desc     Get Data Penduduk Masuk
-//@routes   GET
-//@endpoint /api/penduduk_masuk/k
-//@access   Private
 router.route("/k").all(middleware).get(getDataPendudukMasuk);
 
-//@desc     Get Data Penduduk Masuk By ID
-//@routes   GET
-//@endpoint /api/penduduk_masuk/:id
-//@access   Private
 router.route("/:id").all(middleware).get(getDataPendudukMasukByID);
 
-//@desc     Post Data Keterangan Penduduk Masuk
-//@routes   POST
-//@endpoint /api/penduduk_masuk/:id/p
-//@access   Private
 router
   .route("/:id/p")
   .all(middleware)
@@ -58,10 +46,6 @@ router
     postKeteranganPendudukMasuk
   );
 
-//@desc     Update Data Keterangan Penduduk Masuk
-//@routes   PUT
-//@endpoint /api/penduduk_masuk/id_keterangan_masuk
-//@access   Private
 router
   .route("/:id_keterangan_masuk")
   .all(middleware)
@@ -73,10 +57,6 @@ router
     updateDataKeteranganMasuk
   );
 
-//@desc     Delete Data Keterangan Penduduk Masuk
-//@routes   DELETE
-//@endpoint /api/penduduk_masuk/:id_penduduk/d/id_keterangan_masuk
-//@access   Private
 router
   .route("/:id_kartu_keluarga/d/:id_keterangan_masuk")
   .all(middleware)

@@ -29,34 +29,18 @@ const upload = multer({
   storage,
 });
 
-//@desc     Post Data Keterangan Keluar
-//@routes   POST
-//@endpoint /api/keterangan/id_penduduk_keluar
-//@access   Private
 router
   .route("/:id_penduduk_keluar")
   .all(middleware)
   .post(upload.single("foto_pengusul"), postKeteranganPendudukKeluar);
 
-//@desc     GET Data Keterangan Keluar
-//@routes   GET
-//@endpoint /api/keterangan/:id
-//@access   Private
 router.route("/:id").all(middleware).get(getKeteranganPendudukKeluar);
 
-//@desc     Update Data Keterangan Keluar
-//@routes   PUT
-//@endpoint /api/keterangan/:id
-//@access   Private
 router
   .route("/:id")
   .all(middleware)
   .put(upload.single("foto_pengusul"), updateKeteranganPendudukKeluar);
 
-//@desc     Delete Data Keterangan Keluar
-//@routes   DELETE
-//@endpoint /api/keterangan/:id_penduduk/d/:id_keterangan_keluar
-//@access   Private
 router
   .route("/:id_penduduk_keluar/d/:id_keterangan_keluar")
   .all(middleware)

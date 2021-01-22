@@ -9,22 +9,10 @@ const middleware = require("../middlewares/auth");
 
 const router = express.Router();
 
-//@desc     GET Data Activity
-//@routes   GET
-//@endpoint /api/activity
-//@access   Private
 router.route("/").all(middleware).get(getActivityData);
 
-//@desc     GET All Data Collections
-//@routes   GET
-//@endpoint /api/activity/all
-//@access   Private
 router.route("/all").all(middleware).get(getAllCountedData);
 
-//@desc     POST Data Activity When Logout
-//@routes   POST
-//@endpoint /api/activity/:id
-//@access   Private
 router.route("/:id").all(middleware).post(postActivityWhenLogOut);
 
 module.exports = router;

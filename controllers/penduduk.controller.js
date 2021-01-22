@@ -5,6 +5,7 @@ const KeteranganMasukSchema = require("../models/keterangan_masuk.model");
 const KematianSchema = require("../models/kematian.model");
 const ArsipKematianSchema = require("../models/arsip_kematian.model");
 const KelahiranSchema = require("../models/kelahiran.model");
+const LetterSignatureSchema = require("../models/letters-signature.model");
 
 exports.getPenduduk = async (req, res) => {
   try {
@@ -230,27 +231,10 @@ exports.deletePendudukPadaKK = async (req, res) => {
       {},
       async (err, res) => {
         if (res) {
+          if (res.signatures)
+            await LetterSignatureSchema.deleteOne({ _id: res.signatures });
+
           await KelahiranSchema.deleteOne({ _id: res._id });
-        }
-      }
-    );
-
-    await PendudukKeluarSchema.findOne(
-      {
-        nomor_kartu_keluarga: findKK.no_kk,
-      },
-      async (err, res) => {
-        if (res !== null) {
-          await PendudukKeluarSchema.findByIdAndUpdate(
-            { _id: res._id },
-            {
-              $pull: { penduduk_keluar_desa: req.params.id_penduduk },
-            }
-          );
-
-          if (res.penduduk_keluar_desa.length === 0) {
-            await PendudukKeluarSchema.deleteOne({ _id: res._id });
-          }
         }
       }
     );
@@ -262,6 +246,9 @@ exports.deletePendudukPadaKK = async (req, res) => {
         { _id: dataKematian._id },
         async (err, res) => {
           if (res !== null) {
+            if (res.signatures)
+              await LetterSignatureSchema.deleteOne({ _id: res.signatures });
+
             const findArsip = await ArsipKematianSchema.findById(
               res.arsip_kematian
             );
@@ -288,6 +275,9 @@ exports.deletePendudukPadaKK = async (req, res) => {
         async (err, res) => {
           if (res !== null)
             if (res.penduduk_keluar_desa.length === 0) {
+              if (res.signatures)
+                await LetterSignatureSchema.deleteOne({ _id: res.signatures });
+
               await PendudukKeluarSchema.deleteOne({ _id: res._id });
             }
         }
