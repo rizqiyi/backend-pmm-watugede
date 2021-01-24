@@ -28,7 +28,7 @@ exports.getKematian = async (req, res) => {
 exports.getKematianByID = async (req, res) => {
   try {
     const find = await KematianSchema.findById(req.params.id).populate(
-      "pemilik_data arsip_kematian"
+      "pemilik_data arsip_kematian signatures"
     );
 
     if (!find)

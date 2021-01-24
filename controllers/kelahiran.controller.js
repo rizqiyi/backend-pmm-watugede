@@ -27,7 +27,7 @@ exports.getKelahiran = async (req, res) => {
 exports.getKelahiranById = async (req, res) => {
   try {
     const t = await KelahiranSchema.findById(req.params.id).populate({
-      path: "data_ayah data_ibu",
+      path: "signatures data_ayah data_ibu",
       populate: {
         path: "keluarga_dari",
       },

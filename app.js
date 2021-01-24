@@ -13,6 +13,8 @@ const kartu_keluarga = require("./routes/kartu_keluarga.route");
 const signatures = require("./routes/letters-signature.route");
 const activity = require("./routes/activity.route");
 
+const { corsOptions } = require("./utilities/cors");
+
 const connect = require("./config/db");
 
 const app = express();
@@ -21,7 +23,8 @@ connect();
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "assets")));
-app.use(cors());
+
+app.use(cors(corsOptions));
 
 app.use(`/api/auth`, admin);
 app.use(`/api/activity`, activity);

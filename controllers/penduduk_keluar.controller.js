@@ -32,7 +32,7 @@ exports.getDataPendudukKeluarByID = async (req, res) => {
     const t = await PendudukKeluarSchema.findById(
       req.params.id_penduduk
     ).populate({
-      path: "penduduk_keluar_desa keterangan_keluar_desa",
+      path: "penduduk_keluar_desa keterangan_keluar_desa signatures",
       populate: {
         path: "keluarga_dari",
         model: "kartu_keluarga",
