@@ -20,6 +20,7 @@ dotenv.config({ path: "./.env" });
 connect();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "assets")));
 
 app.use(cors());
