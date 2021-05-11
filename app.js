@@ -16,7 +16,7 @@ const activity = require("./routes/activity.route");
 const connect = require("./config/db");
 
 const app = express();
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./.env" });
 connect();
 
 app.use(express.json());
