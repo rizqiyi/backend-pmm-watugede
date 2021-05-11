@@ -37,7 +37,7 @@ app.use(`/api/penduduk_masuk`, penduduk_masuk);
 app.use(`/api/keterangan`, keterangan_keluar);
 app.use(`/api/signature`, signatures);
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.listen(
   PORT,
