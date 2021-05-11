@@ -18,7 +18,6 @@ exports.getAdminData = async (req, res) => {
       data: t,
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Server error",
@@ -79,6 +78,7 @@ exports.postLoginAdmin = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: err,
