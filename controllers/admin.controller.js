@@ -59,7 +59,7 @@ exports.postLoginAdmin = async (req, res) => {
     jwt.sign(
       { id: t.id },
       process.env.JWT_SECRET,
-      { expiresIn: 3600 * 24 * 7 },
+      { expiresIn: 1000 * 60 * 30 },
       (err, token) => {
         if (err) throw err;
 
