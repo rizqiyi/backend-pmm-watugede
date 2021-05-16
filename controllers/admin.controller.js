@@ -25,6 +25,7 @@ exports.getAdminData = async (req, res) => {
   }
 };
 
+// test
 exports.postLoginAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
