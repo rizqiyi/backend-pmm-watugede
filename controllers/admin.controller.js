@@ -57,7 +57,7 @@ exports.postLoginAdmin = async (req, res) => {
     });
 
     jwt.sign(
-      { id: t.id },
+      { id: t.id, role: t.role },
       process.env.JWT_SECRET,
       { expiresIn: 3600 * 24 * 7 },
       (err, token) => {
@@ -87,9 +87,9 @@ exports.postLoginAdmin = async (req, res) => {
 
 exports.registerAdmin = async (req, res) => {
   try {
-    const { username, email, password, nama_lengkap, avatar } = req.body;
+    const { username, email, password, nama_lengkap, role } = req.body;
 
-    const isEmpty = !username || !email || !password || !nama_lengkap;
+    const isEmpty = !username || !email || !password || !nama_lengkap || !role;
 
     if (isEmpty)
       return res.status(400).json({
@@ -113,6 +113,7 @@ exports.registerAdmin = async (req, res) => {
       email,
       nama_lengkap,
       password,
+      role,
     });
 
     bcrypt.genSalt(10, (err, salt) => {

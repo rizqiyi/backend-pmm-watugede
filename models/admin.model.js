@@ -17,6 +17,9 @@ const AdminSchema = mongoose.Schema(
         ref: "activity_log",
       },
     ],
+    role: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

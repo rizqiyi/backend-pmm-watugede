@@ -16,10 +16,12 @@ const activity = require("./routes/activity.route");
 const connect = require("./config/db");
 
 const app = express();
+
 dotenv.config({ path: "./config/config.env" });
 connect();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "assets")));
 
 app.use(cors());

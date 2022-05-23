@@ -19,6 +19,7 @@ const middleware = async (req, res, next) => {
       });
 
     req.user = verified.id;
+    req.role = verified.role;
 
     next();
   } catch (err) {
