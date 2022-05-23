@@ -25,7 +25,32 @@ exports.getAdminData = async (req, res) => {
   }
 };
 
-// test
+exports.getAllAdminData = async (req, res) => {
+  try {
+    const t = await AdminSchema.find().select([
+      "username",
+      "nama_lengkap",
+      "role",
+    ]);
+
+    if (!t)
+      return res.status(404).json({
+        success: false,
+        message: "Not Found",
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: t,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 exports.postLoginAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -83,6 +108,59 @@ exports.postLoginAdmin = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: err,
+    });
+  }
+};
+
+exports.deleteAdmin = async (req, res) => {
+  try {
+    const checkAdmin = await AdminSchema.findById(req.params.id);
+
+    if (!checkAdmin) throw new Error("Admin tidak ditemukan");
+
+    await AdminSchema.deleteOne({ _id: req.params.id });
+
+    return res.status(200).json({
+      success: true,
+      message: "Admin berhasil dihapus",
+    });
+  } catch (err) {
+    return res.status(404).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+exports.updateAdmin = async (req, res) => {
+  try {
+    const checkAdmin = await AdminSchema.findById(req.params.id);
+
+    if (!checkAdmin) throw new Error("Admin tidak ditemukan");
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hash = await bcrypt.hash(req.body.password, salt);
+
+    await AdminSchema.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          username: req.body.username,
+          nama_lengkap: req.body.nama_lengkap,
+          ...(req.body.password ? { password: hash } : {}),
+        },
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Admin berhasil diperbarui",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
     });
   }
 };
