@@ -15,6 +15,8 @@ const activity = require("./routes/activity.route");
 
 const connect = require("./config/db");
 
+const { corsOptions } = require("./utilities/cors");
+
 const app = express();
 
 dotenv.config({ path: "./config/config.env" });
@@ -24,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "assets")));
 
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => res.send("API Desa Watugede"));
 
@@ -39,7 +41,7 @@ app.use(`/api/penduduk_masuk`, penduduk_masuk);
 app.use(`/api/keterangan`, keterangan_keluar);
 app.use(`/api/signature`, signatures);
 
-const PORT = 5000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.listen(
   PORT,

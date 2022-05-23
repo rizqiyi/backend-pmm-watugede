@@ -1,4 +1,7 @@
-const whitelist = ["http://localhost:3000", "https://desawatugede.com"];
+const whitelist = [
+  "http://localhost:3000",
+  "https://populationsystem.vercel.app",
+];
 
 exports.corsOptions = {
   credentials: true,

@@ -25,6 +25,7 @@ exports.getAdminData = async (req, res) => {
   }
 };
 
+// test
 exports.postLoginAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -59,7 +60,7 @@ exports.postLoginAdmin = async (req, res) => {
     jwt.sign(
       { id: t.id, role: t.role },
       process.env.JWT_SECRET,
-      { expiresIn: 3600 * 24 * 7 },
+      { expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 },
       (err, token) => {
         if (err) throw err;
 
@@ -78,6 +79,7 @@ exports.postLoginAdmin = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: err,
