@@ -25,7 +25,7 @@ router
   .all(roleMiddleware)
   .put(updateAdmin);
 
-router.route("/all").all(middleware).get(getAllAdminData);
+router.route("/all").all(middleware).all(roleMiddleware).get(getAllAdminData);
 
 router.route("/").all(middleware).get(getAdminData);
 

@@ -31,6 +31,7 @@ exports.getAllAdminData = async (req, res) => {
       "username",
       "nama_lengkap",
       "role",
+      "createdAt",
     ]);
 
     if (!t)
@@ -140,7 +141,7 @@ exports.updateAdmin = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
 
-    const hash = await bcrypt.hash(req.body.password, salt);
+    const hash = await bcrypt.hash(req.body.password || "", salt);
 
     await AdminSchema.updateOne(
       { _id: req.params.id },
@@ -148,6 +149,7 @@ exports.updateAdmin = async (req, res) => {
         $set: {
           username: req.body.username,
           nama_lengkap: req.body.nama_lengkap,
+          role: req.body.role,
           ...(req.body.password ? { password: hash } : {}),
         },
       }
@@ -167,9 +169,9 @@ exports.updateAdmin = async (req, res) => {
 
 exports.registerAdmin = async (req, res) => {
   try {
-    const { username, email, password, nama_lengkap, role } = req.body;
+    const { username, password, nama_lengkap, role } = req.body;
 
-    const isEmpty = !username || !email || !password || !nama_lengkap || !role;
+    const isEmpty = !username || !password || !nama_lengkap || !role;
 
     if (isEmpty)
       return res.status(400).json({
@@ -190,7 +192,6 @@ exports.registerAdmin = async (req, res) => {
 
     const t = await AdminSchema.create({
       username,
-      email,
       nama_lengkap,
       password,
       role,
@@ -226,7 +227,7 @@ exports.registerAdmin = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: err,
     });
   }
 };
